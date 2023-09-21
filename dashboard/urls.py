@@ -24,7 +24,7 @@ from users import users_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('data/', include('data.urls', namespace='data')),
-    path('mophy/', include('mophy.urls', namespace='mophy')),
+    path('', include('mophy.urls', namespace='mophy')),
     path('reset_password/', auth_views.PasswordResetView.as_view(form_class=EmailValidationOnForgotPassword),
          name='reset_password'),
     path('reset_password_sent/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
