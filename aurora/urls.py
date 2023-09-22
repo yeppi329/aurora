@@ -3,18 +3,28 @@ from aurora import aurora_views
 from users import users_views
 
 app_name = "aurora"
+
 urlpatterns = [
+
+    path("", aurora_views.index, name="index"),
+    path("index/", aurora_views.index, name="index"),
+
+    path("login/", users_views.login_user, name="login"),
+    path("logout/", users_views.logout_user, name="logout"),
+    path("signup/", users_views.signup, name="signup"),
+    path("activate/<uidb64>/<token>/", users_views.activate, name="activate"),
+
     path("users/", users_views.users, name="users"),
     path("user-details/<int:id>/", users_views.user_details, name="user-details"),
     path("add-user/", users_views.add_user, name="add-user"),
     path("edit-user/<int:id>/", users_views.edit_user, name="edit-user"),
     path("delete-user/<int:id>/", users_views.delete_user, name="delete-user"),
-    path("login/", users_views.login_user, name="login"),
-    path("logout/", users_views.logout_user, name="logout"),
+
     path("groups/", users_views.groups_list, name="groups"),
     path("group-edit/<int:id>/", users_views.group_edit, name="group-edit"),
     path("group-delete/<int:id>/", users_views.group_delete, name="group-delete"),
     path("group-add/", users_views.group_add, name="group-add"),
+
     path("permissions/", users_views.permissions, name="permissions"),
     path(
         "edit-permissions/<int:id>/",
@@ -31,13 +41,34 @@ urlpatterns = [
         users_views.assign_permissions_to_user,
         name="assign-permissions-to-user",
     ),
-    path("signup/", users_views.signup, name="signup"),
-    path("activate/<uidb64>/<token>/", users_views.activate, name="activate"),
-    path("", aurora_views.index, name="index"),
-    path("index/", aurora_views.index, name="index"),
+
+    path("data/svc-user-status/", aurora_views.svc_user_status, name="svc-user-status"),
+    path("data/scan-status/", aurora_views.scan_status, name="scan-status"),
+
+    path(
+        "operation/svc-user-list/",
+        aurora_views.svc_user_list,
+        name="svc-user-list",
+    ),
+    path(
+        "operation/object-list/",
+        aurora_views.object_list,
+        name="object-list",
+    ),
+    path(
+        "operation/content-list/",
+        aurora_views.content_list,
+        name="content-list",
+    ),
+    path(
+        "operation/report-list/",
+        aurora_views.report_list,
+        name="report-list",
+    ),
+
+    path("invoices/", aurora_views.invoices, name="invoices"),
     path("index-2/", aurora_views.index2, name="index-2"),
     path("my-wallet/", aurora_views.my_wallet, name="my-wallet"),
-    path("invoices/", aurora_views.invoices, name="invoices"),
     path("cards-center/", aurora_views.cards_center, name="cards-center"),
     path("transactions/", aurora_views.transactions, name="transactions"),
     path(
