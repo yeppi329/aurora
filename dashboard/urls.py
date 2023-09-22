@@ -22,9 +22,10 @@ from django.contrib.auth import views as auth_views
 from users import users_views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('data/', include('data.urls', namespace='data')),
+
     path('', include('aurora.urls', namespace='aurora')),
+
+    path('admin/', admin.site.urls),
     path('reset_password/', auth_views.PasswordResetView.as_view(form_class=EmailValidationOnForgotPassword),
          name='reset_password'),
     path('reset_password_sent/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
