@@ -36,7 +36,7 @@ from django.http import HttpResponseRedirect
 
 email_list = ['customer@example.com','manager@example.com','admin@example.com']
 
-@login_required(login_url='mophy:login')
+@login_required(login_url='aurora:login')
 def change_password(request):
 	if request.method == 'POST':
 		form = PasswordChangeForm(request.user,request.POST)
@@ -49,19 +49,19 @@ def change_password(request):
 			messages.warning(request,'Form is not valid')
 	else:
 		form = PasswordChangeForm(request.user)
-	return render(request, 'mophy/modules/change-password.html', {'form': form})
+	return render(request, 'aurora/modules/change-password.html', {'form': form})
 
 
-@login_required(login_url='mophy:login')
+@login_required(login_url='aurora:login')
 @permission_required({'users.view_newuser'}, raise_exception=True)
 def users(request):
 	context={
 		"user_list": NewUser.objects.filter(is_superuser=False).order_by('groups__name')
 	}
 	print(context)
-	return render(request, "mophy/modules/users.html",context)
+	return render(request, "aurora/modules/users.html",context)
 
-@login_required(login_url='mophy:login')
+@login_required(login_url='aurora:login')
 @permission_required({'users.view_newuser'}, raise_exception=True)
 def user_details(request,id):
 	user_obj=get_object_or_404(NewUser,id=id)
@@ -73,18 +73,18 @@ def user_details(request,id):
 	}
 
 
-	return render(request,"mophy/modules/user-details.html",context)
+	return render(request,"aurora/modules/user-details.html",context)
 
 
-@login_required(login_url='mophy:login')
+@login_required(login_url='aurora:login')
 @permission_required({'users.view_newuser','users.delete_newuser'},raise_exception=True)
 def delete_user(request,id):
 	u = NewUser.objects.get(id=id)
 	u.delete()
 	messages.success(request, "User deleted successfully") 
-	return redirect('mophy:users')
+	return redirect('aurora:users')
 
-@login_required(login_url='mophy:login')
+@login_required(login_url='aurora:login')
 @permission_required({'users.view_newuser','users.add_newuser'},raise_exception=True)
 def add_user(request):
 	if request.method == 'POST':
@@ -95,10 +95,10 @@ def add_user(request):
 			for i in form.cleaned_data.get('groups'):
 				user_obj.groups.add(i)
 			messages.success(request,f'{user_obj.first_name} {user_obj.last_name} is created successfully')
-			return redirect('mophy:users')
+			return redirect('aurora:users')
 	else:
 		form = NewUserForm()
-	return render(request, 'mophy/modules/add-user.html', {'form': form})
+	return render(request, 'aurora/modules/add-user.html', {'form': form})
 
 
 def signup(request):
@@ -123,7 +123,7 @@ def signup(request):
 			# Default Group assign End-----------------------------------------------------------
 			current_site = get_current_site(request)
 			subject = 'Activate Your Zenix Account'
-			message = render_to_string('mophy/modules/account_activation/account_activation_email.html', {
+			message = render_to_string('aurora/modules/account_activation/account_activation_email.html', {
 					'user': user_obj,
 					'domain': current_site.domain,
 					'uid': urlsafe_base64_encode(force_bytes(user_obj.pk)),
@@ -137,7 +137,7 @@ def signup(request):
 				send_mail(subject, message, EmailSender, ReceiversList, fail_silently=False)
 				if user_obj.is_active == False:
 					messages.warning(request,'Please confirm your email address to complete the registration.')
-				return redirect('mophy:signup')
+				return redirect('aurora:signup')
 			except:
 				messages.warning(request,'Email Not valid')
 				user_obj.delete()
@@ -146,9 +146,9 @@ def signup(request):
 			messages.warning(request,'Form is not valid')
 	else:
 		if request.user.is_authenticated:
-			return redirect('mophy:index')
+			return redirect('aurora:index')
 		form = SignupForm()
-	return render(request, 'mophy/modules/signup.html', {'form': form})
+	return render(request, 'aurora/modules/signup.html', {'form': form})
 
 
 def activate(request, uidb64, token):
@@ -162,13 +162,13 @@ def activate(request, uidb64, token):
 		user.is_active = True
 		user.save()
 		login(request, user)
-		return redirect('mophy:index')
+		return redirect('aurora:index')
 	else:
-		# return render(request, 'mophy/modules/account_activation/account_activation_invalid.html')
+		# return render(request, 'aurora/modules/account_activation/account_activation_invalid.html')
 		return HttpResponse('Invalid')
 
 
-@login_required(login_url='mophy:login')
+@login_required(login_url='aurora:login')
 @permission_required({'users.view_newuser','users.change_newuser'}, raise_exception=True)
 def edit_user(request,id):
 	user_obj = get_object_or_404(NewUser,id=id)
@@ -179,11 +179,11 @@ def edit_user(request,id):
 			user_obj.groups.clear()
 			for i in form.cleaned_data['groups']:
 				user_obj.groups.add(i)
-			return redirect('mophy:users')
+			return redirect('aurora:users')
 	else:
 		form = EditUserForm(instance=user_obj)
 		print(form)
-	return render(request, 'mophy/modules/add-user.html', {'form': form})
+	return render(request, 'aurora/modules/add-user.html', {'form': form})
 
 def login_user(request):
 	message=''
@@ -199,36 +199,36 @@ def login_user(request):
 				if next_url:
 					return HttpResponseRedirect(next_url)
 				else:
-					return redirect('mophy:index')
+					return redirect('aurora:index')
 			else:
 				messages.warning(request,'User is Not Active')	
 				
 		else:
 			messages.warning(request,'Form is Not valid! Please Check The Email and Password')
-			return render(request, 'mophy/modules/login.html', context={'form': form})
+			return render(request, 'aurora/modules/login.html', context={'form': form})
 	else:
 		if request.user.is_authenticated:
-			return redirect('mophy:index')
+			return redirect('aurora:index')
 		form = LoginForm()
-	return render(request, 'mophy/modules/login.html', context={'form': form})
+	return render(request, 'aurora/modules/login.html', context={'form': form})
 
 
 def logout_user(request):
 	logout(request)
 	messages.success(request,'Logout Successfully')	
-	return redirect('mophy:login')
+	return redirect('aurora:login')
 
 
-@login_required(login_url='mophy:login')
+@login_required(login_url='aurora:login')
 @permission_required({'auth.view_group'}, raise_exception=True)
 def groups_list(request):
 	context={
 		"groups":Group.objects.annotate(user_count=Count('newuser',distinct=True)).annotate(perms_count=Count('permissions',distinct=True)),
 		"colors":{'primary':'primary','success':'success','dark':'dark'}
 	}
-	return render(request, 'mophy/modules/group-list.html', context)
+	return render(request, 'aurora/modules/group-list.html', context)
 
-@login_required(login_url='mophy:login')
+@login_required(login_url='aurora:login')
 @permission_required({'auth.view_group','auth.change_group'}, raise_exception=True)
 def group_edit(request,id):
 	group_obj = get_object_or_404(Group,id=id)
@@ -258,9 +258,9 @@ def group_edit(request,id):
 
 	else:
 		form = GroupForm(instance=group_obj)
-	return render(request, 'mophy/modules/group-edit.html',{'form': form})
+	return render(request, 'aurora/modules/group-edit.html',{'form': form})
 
-@login_required(login_url='mophy:login')
+@login_required(login_url='aurora:login')
 @permission_required({'auth.view_group','auth.delete_group'}, raise_exception=True)
 def group_delete(request,id):
 	g=get_object_or_404(Group,id=id)
@@ -268,9 +268,9 @@ def group_delete(request,id):
 	g.delete()
 	messages.success(request,'Group Deleted Sucessfully')
 	
-	return redirect('mophy:groups')
+	return redirect('aurora:groups')
 
-@login_required(login_url='mophy:login')
+@login_required(login_url='aurora:login')
 @permission_required({'auth.view_group','auth.add_group'}, raise_exception=True)
 def group_add(request):
 	if request.method == 'POST':
@@ -278,15 +278,15 @@ def group_add(request):
 		if form.is_valid():
 			form.save()
 			messages.success(request,'Group Created Successfully')
-			return redirect('mophy:groups')
+			return redirect('aurora:groups')
 		else:
 			messages.warning(request,'Name Already Exist')
-			return render(request, 'mophy/modules/group-add.html',{'form': form})
+			return render(request, 'aurora/modules/group-add.html',{'form': form})
 	else:
 		form = GroupForm()
-		return render(request, 'mophy/modules/group-add.html',{'form': form})
+		return render(request, 'aurora/modules/group-add.html',{'form': form})
 
-@login_required(login_url='mophy:login')
+@login_required(login_url='aurora:login')
 @permission_required({'auth.view_permission'}, raise_exception=True)
 def permissions(request):
 
@@ -297,9 +297,9 @@ def permissions(request):
 		"permissions_obj" : paginator.get_page(request.GET.get('page')),
 	}
 	
-	return render(request, 'mophy/modules/permissions.html',context)
+	return render(request, 'aurora/modules/permissions.html',context)
 
-@login_required(login_url='mophy:login')
+@login_required(login_url='aurora:login')
 @permission_required({'auth.view_permission','auth.change_permission'}, raise_exception=True)
 def edit_permissions(request,id):
 	perm_obj = get_object_or_404(Permission,id=id)
@@ -308,20 +308,20 @@ def edit_permissions(request,id):
 
 		if form.is_valid():
 			form.save()
-			return redirect('mophy:permissions')
+			return redirect('aurora:permissions')
 	else:
 		form = PermissionsForm(instance=perm_obj)
-		return render(request, 'mophy/modules/edit-permissions.html',{'form': form})
+		return render(request, 'aurora/modules/edit-permissions.html',{'form': form})
 
-@login_required(login_url='mophy:login')
+@login_required(login_url='aurora:login')
 @permission_required({'auth.view_permission','auth.delete_permission'}, raise_exception=True)
 def delete_permissions(request,id):
 	perm_obj = get_object_or_404(Permission,id=id)
 	perm_obj.delete()
 	messages.success(request,'Permission Delete Successfully')
-	return redirect('mophy:permissions')
+	return redirect('aurora:permissions')
 
-@login_required(login_url='mophy:login')
+@login_required(login_url='aurora:login')
 @permission_required({'auth.view_permission','auth.add_permission','auth.change_permission'}, raise_exception=True)
 def assign_permissions_to_user(request,id):
 	user_obj = get_object_or_404(NewUser,id=id)
@@ -341,7 +341,7 @@ def assign_permissions_to_user(request,id):
 
 	else:
 		form = UserPermissionsForm(instance=user_obj)
-	return render(request, 'mophy/modules/assign_permissions_to_user.html',{'form':form})
+	return render(request, 'aurora/modules/assign_permissions_to_user.html',{'form':form})
 
 
 

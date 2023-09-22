@@ -1,4 +1,4 @@
-{% extends 'mophy/elements/layouts/admin.html' %}
+{% extends 'aurora/elements/layouts/admin.html' %}
 {% load static %}
 
 
@@ -8,7 +8,7 @@
 
 
 {% block message %}
-{% include 'mophy/elements/alert.html' %}
+{% include 'aurora/elements/alert.html' %}
 {% endblock %}
 
 
@@ -83,7 +83,7 @@
 
 
                             {% if perms.auth.change_group %}
-                            <span class="badge badge-dark"><a class="text-light" href="{% url 'mophy:groups' %}"><i class="fas fa-pencil-alt"></i></a></span>
+                            <span class="badge badge-dark"><a class="text-light" href="{% url 'aurora:groups' %}"><i class="fas fa-pencil-alt"></i></a></span>
                             {% endif %}
                         </div>
 
@@ -112,7 +112,7 @@
                     <div class="card-header">
                         <h4 class="card-title">{{ user_obj.first_name }} {{ user_obj.last_name }} Permissions</h4>
                         {% if perms.auth.change_permission %}
-                        <span class="badge badge-dark"><a class="text-light" href="{% url 'mophy:assign-permissions-to-user' id=user_obj.id %}"><i class="fas fa-pencil-alt"></i></a></span>
+                        <span class="badge badge-dark"><a class="text-light" href="{% url 'aurora:assign-permissions-to-user' id=user_obj.id %}"><i class="fas fa-pencil-alt"></i></a></span>
                         {% endif %}
                     </div>
                     <div class="card-body">

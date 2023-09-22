@@ -1,4 +1,4 @@
-{% extends 'mophy/elements/layouts/admin.html' %}
+{% extends 'aurora/elements/layouts/admin.html' %}
 {% load static widget_tweaks %}
 
 
@@ -8,7 +8,7 @@
 
 
 {% block message %}
-{% include 'mophy/elements/alert.html' %}
+{% include 'aurora/elements/alert.html' %}
 {% endblock %}
 
 
@@ -19,7 +19,7 @@
             <div class="card-header">
                 <h4 class="card-title">Manage Groups </h4>
                 {% if perms.auth.add_group %}
-                <a href="{% url 'mophy:group-add' %}" class="btn btn-primary btn-xs content-justify-right">ADD GROUP  <span class="btn-icon-end">
+                <a href="{% url 'aurora:group-add' %}" class="btn btn-primary btn-xs content-justify-right">ADD GROUP  <span class="btn-icon-end">
                     <i class="fa fa-plus"></i></span>
                 </a>
                 {% endif %}
@@ -90,13 +90,13 @@
 
                                         {% if perms.auth.change_group %}
 
-                                        <a href="{% url 'mophy:group-edit' id=group.id %}"class="btn btn-primary shadow btn-xs sharp me-1" data-bs-toggle="tooltip"
+                                        <a href="{% url 'aurora:group-edit' id=group.id %}"class="btn btn-primary shadow btn-xs sharp me-1" data-bs-toggle="tooltip"
                                             data-placement="top" title="Edit">
                                             <i class="fas fa-pencil-alt"></i>
                                         </a>
                                         {% endif %}
                                         {% if perms.auth.delete_group %}
-                                        <a href="{% url 'mophy:group-delete' id=group.id %}" class="btn btn-danger shadow btn-xs sharp sweet-success-cancel" data-bs-toggle="tooltip"
+                                        <a href="{% url 'aurora:group-delete' id=group.id %}" class="btn btn-danger shadow btn-xs sharp sweet-success-cancel" data-bs-toggle="tooltip"
                                             data-placement="top" title="Delete"><i class="fa fa-trash"></i>
                                         </a>
                                         {% endif %}

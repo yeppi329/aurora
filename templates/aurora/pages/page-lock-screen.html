@@ -21,7 +21,7 @@
 	<!-- FAVICONS ICON -->
 	<link rel="shortcut icon" type="image/png" href="{% static dz_array.public.favicon  %}" />
 
-    {% for cssurl in dz_array.pagelevel.mophy.mophy_views.css|getdata:request.path %}
+    {% for cssurl in dz_array.pagelevel.aurora.aurora_views.css|getdata:request.path %}
     <link rel="stylesheet" href="{% static cssurl %}" >
 	{% endfor %}
     {% for cssurl in dz_array.global.css %}
@@ -43,10 +43,10 @@
                             <div class="col-xl-12">
                                 <div class="auth-form">
 									<div class="text-center mb-3">
-										<a href="{% url 'mophy:index' %}"><img src="{% static 'mophy/images/logo-full.png' %}" alt=""></a>
+										<a href="{% url 'aurora:index' %}"><img src="{% static 'aurora/images/logo-full.png' %}" alt=""></a>
 									</div>
                                     <h4 class="text-center mb-4">Account Locked</h4>
-                                    <form action="{% url 'mophy:index' %}">{% csrf_token %}
+                                    <form action="{% url 'aurora:index' %}">{% csrf_token %}
                                         <div class="mb-3">
                                             <label><strong>Password</strong></label>
                                             <input type="password" class="form-control" value="Password">
@@ -69,7 +69,7 @@
     <script src="{% static jsurl %}"></script>
     {% endfor %}
     
-    {% for jsurl in dz_array.pagelevel.mophy.mophy_views.js|getdata:request.path %}
+    {% for jsurl in dz_array.pagelevel.aurora.aurora_views.js|getdata:request.path %}
     <script src="{% static jsurl %}"></script>
     {% endfor %}
     

@@ -1,14 +1,14 @@
 #Static Folder Name
-foldername = "mophy" 
+foldername = "aurora"
 
 dz_array = {
         "public":{
             "favicon":f"{foldername}/images/favicon.png",
-            "description":"MOPHY : Payment Admin Dashboard  Bootstrap 5 Template",
-            "og_title":"MOPHY : Payment Admin Dashboard  Bootstrap 5 Template",
-            "og_description":"MOPHY : Payment Admin Dashboard  Bootstrap 5 Template",
-            "og_image":"  https://mophy.dexignzone.com/django/social-image.png",
-            "title":"MOPHY : Payment Admin Dashboard  Bootstrap 5 Template",
+            "description":"aurora : Payment Admin Dashboard  Bootstrap 5 Template",
+            "og_title":"aurora : Payment Admin Dashboard  Bootstrap 5 Template",
+            "og_description":"aurora : Payment Admin Dashboard  Bootstrap 5 Template",
+            "og_image":"  https://aurora.dexignzone.com/django/social-image.png",
+            "title":"aurora : Payment Admin Dashboard  Bootstrap 5 Template",
         },
         "global":{
             "css":[
@@ -31,8 +31,8 @@ dz_array = {
 
         },
         "pagelevel":{
-            "mophy":{#AppName
-                "mophy_views":{
+            "aurora":{#AppName
+                "aurora_views":{
                     "css":{
                         "index":[
                             f"{foldername}/vendor/jqvmap/css/jqvmap.min.css",
