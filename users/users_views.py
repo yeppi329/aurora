@@ -125,6 +125,7 @@ def signup(request):
                 user_obj.groups.add(Customer_group)
             # Default Group assign End-----------------------------------------------------------
             return redirect("aurora:index")
+    form = SignupForm()
     return render(request, "aurora/modules/signup.html", {"form": form})
 
 
