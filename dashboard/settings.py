@@ -14,14 +14,14 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 
-load_dotenv('.env')
+load_dotenv(".env")
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = ''  # Add email address
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')  # check .env file
-EMAIL_PORT = '587'
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_HOST_USER = ""  # Add email address
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")  # check .env file
+EMAIL_PORT = "587"
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 
@@ -32,58 +32,58 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-#ox5_p+)c%uc0m4ckrd!1&210@^w&%xd$cy7-1(x^#b(7ah--y'
+SECRET_KEY = "django-insecure-#ox5_p+)c%uc0m4ckrd!1&210@^w&%xd$cy7-1(x^#b(7ah--y"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ["*"]
 
 # Application definition
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'widget_tweaks',
-    'users',
-    'data',
-    #'aurora',
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "widget_tweaks",
+    "users",
+    "data",
+    "aurora",
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = 'dashboard.urls'
+ROOT_URLCONF = "dashboard.urls"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [Path(BASE_DIR, 'templates')],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-                'custom_context_processor.dz_static',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [Path(BASE_DIR, "templates")],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
+                "custom_context_processor.dz_static",
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'dashboard.wsgi.application'
+WSGI_APPLICATION = "dashboard.wsgi.application"
 
 
 # Database
@@ -105,16 +105,16 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
@@ -122,9 +122,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = 'Asia/Kolkata'
+TIME_ZONE = "Asia/Seoul"
 
 DATE_FORMAT = "d-m-Y"
 
@@ -139,29 +139,26 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 
-
 STATIC_URL = "static/"
 if DEBUG:
-    STATICFILES_DIRS = [BASE_DIR / "static"]  
+    STATICFILES_DIRS = [BASE_DIR / "static"]
 else:
-    STATIC_ROOT = STATIC_ROOT = BASE_DIR / "static" 
+    STATIC_ROOT = STATIC_ROOT = BASE_DIR / "static"
 
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = Path(BASE_DIR, 'media')
+MEDIA_URL = "/media/"
+MEDIA_ROOT = Path(BASE_DIR, "media")
 
-#It's create another staticfiles folder on collectstatic command
+# It's create another staticfiles folder on collectstatic command
 # which consume more space
 
 # STATIC_URL = "static/"
-# STATICFILES_DIRS = [BASE_DIR / "static"]  
-# STATIC_ROOT = STATIC_ROOT = BASE_DIR / "staticfiles" 
-
-
+# STATICFILES_DIRS = [BASE_DIR / "static"]
+# STATIC_ROOT = STATIC_ROOT = BASE_DIR / "staticfiles"
 
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-AUTH_USER_MODEL = 'users.NewUser'
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+AUTH_USER_MODEL = "users.NewUser"
