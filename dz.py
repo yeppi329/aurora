@@ -1,114 +1,138 @@
-#Static Folder Name
-foldername = "aurora"
+# Static Folder Name
+folderName = "aurora"
 
 dz_array = {
-        "public":{
-            "favicon":f"{foldername}/images/favicon.png",
-            "description":"aurora : Payment Admin Dashboard  Bootstrap 5 Template",
-            "og_title":"aurora : Payment Admin Dashboard  Bootstrap 5 Template",
-            "og_description":"aurora : Payment Admin Dashboard  Bootstrap 5 Template",
-            "og_image":"  https://aurora.dexignzone.com/django/social-image.png",
-            "title":"aurora : Payment Admin Dashboard  Bootstrap 5 Template",
+        "public": {
+            "favicon": f"{folderName}/images/favicon.png",
+            "description": "aurora : Payment Admin Dashboard  Bootstrap 5 Template",
+            "og_title": "aurora : Payment Admin Dashboard  Bootstrap 5 Template",
+            "og_description": "aurora : Payment Admin Dashboard  Bootstrap 5 Template",
+            "og_image": "https://aurora.dexignzone.com/django/social-image.png",
+            "title": "aurora : Payment Admin Dashboard  Bootstrap 5 Template",
         },
-        "global":{
-            "css":[
-                    f"{foldername}/vendor/bootstrap-select/dist/css/bootstrap-select.min.css",
-                    f"{foldername}/css/style.css"
+        "global": {
+            "css": [
+                    f"{folderName}/vendor/bootstrap-select/dist/css/bootstrap-select.min.css",
+                    f"{folderName}/css/style.css"
                 ],
-
-            "js":{
-                "top":[
-                    f"{foldername}/vendor/global/global.min.js",
-                    f"{foldername}/vendor/bootstrap-select/dist/js/bootstrap-select.min.js",
+            "js": {
+                "top": [
+                    f"{folderName}/vendor/global/global.min.js",
+                    f"{folderName}/vendor/bootstrap-select/dist/js/bootstrap-select.min.js",
                 ],
-                "bottom":[
-                    f"{foldername}/js/custom.min.js",
-                    f"{foldername}/js/deznav-init.js",
-
-
+                "bottom": [
+                    f"{folderName}/js/custom.min.js",
+                    f"{folderName}/js/deznav-init.js",
                 ]
             },
 
         },
-        "pagelevel":{
-            "aurora":{#AppName
-                "aurora_views":{
-                    "css":{
-                        "index":[
-                            f"{foldername}/vendor/jqvmap/css/jqvmap.min.css",
-                            f"{foldername}/vendor/chartist/css/chartist.min.css",
-                            f"{foldername}/vendor/jqvmap/css/jqvmap.min.css",
-                            f"{foldername}/vendor/owl-carousel/owl.carousel.css",
+        "pagelevel": {
+            "aurora": {
+                "aurora_views": {
+                    "css": {
+                        "index": [
+                            f"{folderName}/vendor/jqvmap/css/jqvmap.min.css",
+                            f"{folderName}/vendor/chartist/css/chartist.min.css",
+                            f"{folderName}/vendor/jqvmap/css/jqvmap.min.css",
+                            f"{folderName}/vendor/owl-carousel/owl.carousel.css",
                         ],
+                        "svc_user_status": [
+                            f"{folderName}/vendor/jqvmap/css/jqvmap.min.css",
+                            f"{folderName}/vendor/chartist/css/chartist.min.css",
+                            f"{folderName}/vendor/datatables/css/jquery.dataTables.min.css",
+                        ],
+                        "scan_status": [
+                            f"{folderName}/vendor/jqvmap/css/jqvmap.min.css",
+                            f"{folderName}/vendor/chartist/css/chartist.min.css",
+                            f"{folderName}/vendor/datatables/css/jquery.dataTables.min.css",
+                        ],
+
+                        "permissions": [
+                            f"{folderName}/vendor/sweetalert2/dist/sweetalert2.min.css",
+                        ],
+                        "users": [
+                            f"{folderName}/vendor/datatables/css/jquery.dataTables.min.css",
+                            f"{folderName}/vendor/sweetalert2/dist/sweetalert2.min.css",
+                        ],
+                        "add_user": [
+                            f"{folderName}/vendor/bootstrap-daterangepicker/daterangepicker.css",
+                            f"{folderName}/vendor/select2/css/select2.min.css",
+                        ],
+                        "edit_user": [
+                            f"{folderName}/vendor/bootstrap-daterangepicker/daterangepicker.css",
+                            f"{folderName}/vendor/select2/css/select2.min.css",
+                        ],
+                        "groups_list": [
+                            f"{folderName}/vendor/sweetalert2/dist/sweetalert2.min.css",
+                        ],
+
+                        "assign_permissions_to_user": [
+                            f"{folderName}/vendor/bootstrap-duallistbox/ajax/libs/prettify/r298/prettify.min.css",
+                            f"{folderName}/vendor/bootstrap-duallistbox/src/bootstrap-duallistbox.css",
+                            f"{folderName}/vendor/bootstrap-duallistbox/dist/bootstrap-duallistbox.css",
+                        ],
+
+                        "group_add": [
+                            f"{folderName}/vendor/bootstrap-duallistbox/ajax/libs/prettify/r298/prettify.min.css",
+                            f"{folderName}/vendor/bootstrap-duallistbox/src/bootstrap-duallistbox.css",
+                            f"{folderName}/vendor/bootstrap-duallistbox/dist/bootstrap-duallistbox.css",
+                        ],
+
+                        "group_edit": [
+                            f"{folderName}/vendor/bootstrap-duallistbox/ajax/libs/prettify/r298/prettify.min.css",
+                            f"{folderName}/vendor/bootstrap-duallistbox/src/bootstrap-duallistbox.css",
+                            f"{folderName}/vendor/bootstrap-duallistbox/dist/bootstrap-duallistbox.css",
+                        ],
+
+                        "app_profile": [
+                            f"{folderName}/vendor/lightgallery/css/lightgallery.min.css",
+                            f"{folderName}/vendor/magnific-popup/magnific-popup.css"
+                        ],
+
+                        "svc_user_list": [
+                            f"{folderName}/vendor/datatables/css/jquery.dataTables.min.css",
+                        ],
+
+                        "object_list": [
+                            f"{folderName}/vendor/datatables/css/jquery.dataTables.min.css",
+                        ],
+
+                        "content_list": [
+                            f"{folderName}/vendor/datatables/css/jquery.dataTables.min.css",
+                        ],
+
+                        "report_list": [
+                            f"{folderName}/vendor/datatables/css/jquery.dataTables.min.css",
+                        ],
+
                         "index2":[
-                            f"{foldername}/vendor/jqvmap/css/jqvmap.min.css",
-                            f"{foldername}/vendor/chartist/css/chartist.min.css",
-                            f"{foldername}/vendor/jqvmap/css/jqvmap.min.css",
-                            f"{foldername}/vendor/owl-carousel/owl.carousel.css",
+                            f"{folderName}/vendor/jqvmap/css/jqvmap.min.css",
+                            f"{folderName}/vendor/chartist/css/chartist.min.css",
+                            f"{folderName}/vendor/jqvmap/css/jqvmap.min.css",
+                            f"{folderName}/vendor/owl-carousel/owl.carousel.css",
                         ],
                         "my_wallet":[
-                            f"{foldername}/vendor/jqvmap/css/jqvmap.min.css",
-                            f"{foldername}/vendor/chartist/css/chartist.min.css"
-                        ],
-                        "invoices":[
-                            f"{foldername}/vendor/jqvmap/css/jqvmap.min.css",
-                            f"{foldername}/vendor/chartist/css/chartist.min.css",
-                            f"{foldername}/vendor/datatables/css/jquery.dataTables.min.css",
+                            f"{folderName}/vendor/jqvmap/css/jqvmap.min.css",
+                            f"{folderName}/vendor/chartist/css/chartist.min.css"
                         ],
                         "cards_center":[
-                            f"{foldername}/vendor/chartist/css/chartist.min.css",
-                            f"{foldername}/vendor/owl-carousel/owl.carousel.css",
+                            f"{folderName}/vendor/chartist/css/chartist.min.css",
+                            f"{folderName}/vendor/owl-carousel/owl.carousel.css",
 
                         ],
                         "transactions":[
-                            f"{foldername}/vendor/jqvmap/css/jqvmap.min.css",
-                            f"{foldername}/vendor/chartist/css/chartist.min.css",
-                            f"{foldername}/vendor/datatables/css/jquery.dataTables.min.css",
+                            f"{folderName}/vendor/jqvmap/css/jqvmap.min.css",
+                            f"{folderName}/vendor/chartist/css/chartist.min.css",
+                            f"{folderName}/vendor/datatables/css/jquery.dataTables.min.css",
                         ],
                         "transactions_details":[
-                            f"{foldername}/vendor/jqvmap/css/jqvmap.min.css",
-                            f"{foldername}/vendor/chartist/css/chartist.min.css",
+                            f"{folderName}/vendor/jqvmap/css/jqvmap.min.css",
+                            f"{folderName}/vendor/chartist/css/chartist.min.css",
 
                         ],
 
 
-                    "permissions":[
-                        f"{foldername}/vendor/sweetalert2/dist/sweetalert2.min.css", 
-                    ],
-                    "users":[
-                        f"{foldername}/vendor/datatables/css/jquery.dataTables.min.css",
-                        f"{foldername}/vendor/sweetalert2/dist/sweetalert2.min.css",    
-                    ],
-                    "add_user":[
-                        f"{foldername}/vendor/bootstrap-daterangepicker/daterangepicker.css",
-                        f"{foldername}/vendor/select2/css/select2.min.css",
-                    ],
-                    "edit_user":[
-                        f"{foldername}/vendor/bootstrap-daterangepicker/daterangepicker.css",
-                        f"{foldername}/vendor/select2/css/select2.min.css",
-                    ],
-                    "groups_list":[
-                        f"{foldername}/vendor/sweetalert2/dist/sweetalert2.min.css",
-                    ],
-                    "assign_permissions_to_user":[
-
-                        f"{foldername}/vendor/bootstrap-duallistbox/ajax/libs/prettify/r298/prettify.min.css",
-                        f"{foldername}/vendor/bootstrap-duallistbox/src/bootstrap-duallistbox.css",
-                        f"{foldername}/vendor/bootstrap-duallistbox/dist/bootstrap-duallistbox.css",
-                    ],
-
-                    "group_add":[
-                        f"{foldername}/vendor/bootstrap-duallistbox/ajax/libs/prettify/r298/prettify.min.css",
-                        f"{foldername}/vendor/bootstrap-duallistbox/src/bootstrap-duallistbox.css",
-                        f"{foldername}/vendor/bootstrap-duallistbox/dist/bootstrap-duallistbox.css",
-                    ],
-
-
-                    "group_edit":[
-                        f"{foldername}/vendor/bootstrap-duallistbox/ajax/libs/prettify/r298/prettify.min.css",
-                        f"{foldername}/vendor/bootstrap-duallistbox/src/bootstrap-duallistbox.css",
-                        f"{foldername}/vendor/bootstrap-duallistbox/dist/bootstrap-duallistbox.css",
-                    ],
 
 
 
@@ -120,35 +144,31 @@ dz_array = {
 
 
 
-                        "app_profile":[
-                            f"{foldername}/vendor/lightgallery/css/lightgallery.min.css",
-                            f"{foldername}/vendor/magnific-popup/magnific-popup.css"
-                        ],
                         "post_details":[
-                            f"{foldername}/vendor/lightgallery/css/lightgallery.min.css",
-                            f"{foldername}/vendor/magnific-popup/magnific-popup.css"
+                            f"{folderName}/vendor/lightgallery/css/lightgallery.min.css",
+                            f"{folderName}/vendor/magnific-popup/magnific-popup.css"
                         ],
                         "email_compose":[
-                            f"{foldername}/vendor/dropzone/dist/dropzone.css",
+                            f"{folderName}/vendor/dropzone/dist/dropzone.css",
                         ],
                         "email_inbox":[],
                         "email_read":[],
                         "app_calender":[
-                            f"{foldername}/vendor/fullcalendar/css/main.min.css",
+                            f"{folderName}/vendor/fullcalendar/css/main.min.css",
                         ],
 
                         "ecom_product_grid":[],
                         "ecom_product_list":[
-                            f"{foldername}/vendor/star-rating/star-rating-svg.css",
+                            f"{folderName}/vendor/star-rating/star-rating-svg.css",
                         ],
                         "ecom_product_detail":[
-                            f"{foldername}/vendor/star-rating/star-rating-svg.css",
-                            f"{foldername}/vendor/owl-carousel/owl.carousel.css",
+                            f"{folderName}/vendor/star-rating/star-rating-svg.css",
+                            f"{folderName}/vendor/owl-carousel/owl.carousel.css",
                         ],
                         "ecom_product_order":[],
                         "ecom_checkout":[],
                         "ecom_invoice":[
-                            f"{foldername}/vendor/bootstrap-select/dist/css/bootstrap-select.min.css",
+                            f"{folderName}/vendor/bootstrap-select/dist/css/bootstrap-select.min.css",
                         ],
                         "ecom_customers":[],
 
@@ -156,52 +176,52 @@ dz_array = {
                         "chart_morris":[],
                         "chart_chartjs":[],
                         "chart_chartist":[
-                            f"{foldername}/vendor/chartist/css/chartist.min.css"
+                            f"{folderName}/vendor/chartist/css/chartist.min.css"
                         ],
                         "chart_sparkline":[],
                         "chart_peity":[],
                         "uc_select2":[
-                            f"{foldername}/vendor/select2/css/select2.min.css",
+                            f"{folderName}/vendor/select2/css/select2.min.css",
                         ],
                         "uc_nestable":[
-                            f"{foldername}/vendor/nestable2/css/jquery.nestable.min.css"
+                            f"{folderName}/vendor/nestable2/css/jquery.nestable.min.css"
                         ],
                         "uc_noui_slider":[
-                            f"{foldername}/vendor/nouislider/nouislider.min.css"
+                            f"{folderName}/vendor/nouislider/nouislider.min.css"
                         ],
                         "uc_sweetalert":[
-                            f"{foldername}/vendor/sweetalert2/dist/sweetalert2.min.css"
+                            f"{folderName}/vendor/sweetalert2/dist/sweetalert2.min.css"
                         ],
                         "uc_toastr":[
-                            f"{foldername}/vendor/toastr/css/toastr.min.css"
+                            f"{folderName}/vendor/toastr/css/toastr.min.css"
                         ],
                         "map_jqvmap":[
-                            f"{foldername}/vendor/jqvmap/css/jqvmap.min.css"
+                            f"{folderName}/vendor/jqvmap/css/jqvmap.min.css"
                         ],
                         "uc_lightgallery":[
-                            f"{foldername}/vendor/lightgallery/css/lightgallery.min.css"
+                            f"{folderName}/vendor/lightgallery/css/lightgallery.min.css"
                         ],
                         "widget_basic":[
-                            f"{foldername}/vendor/chartist/css/chartist.min.css",
-                            f"{foldername}/vendor/bootstrap-select/dist/css/bootstrap-select.min.css",
+                            f"{folderName}/vendor/chartist/css/chartist.min.css",
+                            f"{folderName}/vendor/bootstrap-select/dist/css/bootstrap-select.min.css",
                         ],
                         "form_element":[],
                         "form_wizard":[
-                            f"{foldername}/vendor/jquery-smartwizard/dist/css/smart_wizard.min.css"
+                            f"{folderName}/vendor/jquery-smartwizard/dist/css/smart_wizard.min.css"
                         ],
                         "form_ckeditor":[],
                         "form_pickers":[
-                            f"{foldername}/vendor/bootstrap-daterangepicker/daterangepicker.css",
-                            f"{foldername}/vendor/clockpicker/css/bootstrap-clockpicker.min.css",
-                            f"{foldername}/vendor/jquery-asColorPicker/css/asColorPicker.min.css",
-                            f"{foldername}/vendor/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css",
-                            f"{foldername}/vendor/pickadate/themes/default.css",
-                            f"{foldername}/vendor/pickadate/themes/default.date.css",
+                            f"{folderName}/vendor/bootstrap-daterangepicker/daterangepicker.css",
+                            f"{folderName}/vendor/clockpicker/css/bootstrap-clockpicker.min.css",
+                            f"{folderName}/vendor/jquery-asColorPicker/css/asColorPicker.min.css",
+                            f"{folderName}/vendor/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css",
+                            f"{folderName}/vendor/pickadate/themes/default.css",
+                            f"{folderName}/vendor/pickadate/themes/default.date.css",
                         ],
                         "form_validation":[],
                         "table_bootstrap_basic":[],
                         "table_datatable_basic":[
-                            f"{foldername}/vendor/datatables/css/jquery.dataTables.min.css",
+                            f"{folderName}/vendor/datatables/css/jquery.dataTables.min.css",
                         ],
                         "page_login":[],
                         "page_register":[],
@@ -214,90 +234,117 @@ dz_array = {
                         "page_error_503":[],
                      
                     },
-                    "js":{
-                        "index":[
-                            f"{foldername}/vendor/chart.js/Chart.bundle.min.js",
-                            f"{foldername}/vendor/owl-carousel/owl.carousel.js",
-                            f"{foldername}/vendor/peity/jquery.peity.min.js",
-                            f"{foldername}/vendor/apexchart/apexchart.js",
-                            f"{foldername}/js/dashboard/dashboard-1.js",
+                    "js": {
+                        "index": [
+                            f"{folderName}/vendor/chart.js/Chart.bundle.min.js",
+                            f"{folderName}/vendor/owl-carousel/owl.carousel.js",
+                            f"{folderName}/vendor/peity/jquery.peity.min.js",
+                            f"{folderName}/vendor/apexchart/apexchart.js",
+                            f"{folderName}/js/dashboard/dashboard-1.js",
                         ],
 
                         "permissions":[
-                            f"{foldername}/vendor/sweetalert2/dist/sweetalert2.min.js",
+                            f"{folderName}/vendor/sweetalert2/dist/sweetalert2.min.js",
                         ],
                         "users":[
-                            f"{foldername}/vendor/sweetalert2/dist/sweetalert2.min.js",
-                            f"{foldername}/vendor/datatables/js/jquery.dataTables.min.js",
-                            f"{foldername}/js/plugins-init/datatables.init.js",
+                            f"{folderName}/vendor/sweetalert2/dist/sweetalert2.min.js",
+                            f"{folderName}/vendor/datatables/js/jquery.dataTables.min.js",
+                            f"{folderName}/js/plugins-init/datatables.init.js",
                         ],
                         "add_user":[
-                            f"{foldername}/vendor/moment/moment.min.js",
-                            f"{foldername}/vendor/bootstrap-daterangepicker/daterangepicker.js",
-                            f"{foldername}/vendor/select2/js/select2.full.min.js",
-                            f"{foldername}/js/plugins-init/select2-init.js"
+                            f"{folderName}/vendor/moment/moment.min.js",
+                            f"{folderName}/vendor/bootstrap-daterangepicker/daterangepicker.js",
+                            f"{folderName}/vendor/select2/js/select2.full.min.js",
+                            f"{folderName}/js/plugins-init/select2-init.js"
                         ],
                         "edit_user":[
-                            f"{foldername}/vendor/moment/moment.min.js",
-                            f"{foldername}/vendor/bootstrap-daterangepicker/daterangepicker.js",
-                            f"{foldername}/vendor/select2/js/select2.full.min.js",
-                            f"{foldername}/js/plugins-init/select2-init.js"
+                            f"{folderName}/vendor/moment/moment.min.js",
+                            f"{folderName}/vendor/bootstrap-daterangepicker/daterangepicker.js",
+                            f"{folderName}/vendor/select2/js/select2.full.min.js",
+                            f"{folderName}/js/plugins-init/select2-init.js"
                         ],
                         "groups_list":[
-                            f"{foldername}/vendor/sweetalert2/dist/sweetalert2.min.js",
+                            f"{folderName}/vendor/sweetalert2/dist/sweetalert2.min.js",
                         ],
                         "assign_permissions_to_user":[
-                            f"{foldername}/vendor/bootstrap-duallistbox/ajax/libs/popper.js/1.12.9/umd/popper.min.js",
-                            f"{foldername}/vendor/bootstrap-duallistbox/ajax/libs/prettify/r298/run_prettify.js",
-                            f"{foldername}/vendor/bootstrap-duallistbox/dist/jquery.bootstrap-duallistbox.js",
+                            f"{folderName}/vendor/bootstrap-duallistbox/ajax/libs/popper.js/1.12.9/umd/popper.min.js",
+                            f"{folderName}/vendor/bootstrap-duallistbox/ajax/libs/prettify/r298/run_prettify.js",
+                            f"{folderName}/vendor/bootstrap-duallistbox/dist/jquery.bootstrap-duallistbox.js",
                         ],
                         "group_add":[
-                            f"{foldername}/vendor/bootstrap-duallistbox/ajax/libs/popper.js/1.12.9/umd/popper.min.js",
-                            f"{foldername}/vendor/bootstrap-duallistbox/ajax/libs/prettify/r298/run_prettify.js",
-                            f"{foldername}/vendor/bootstrap-duallistbox/dist/jquery.bootstrap-duallistbox.js",
+                            f"{folderName}/vendor/bootstrap-duallistbox/ajax/libs/popper.js/1.12.9/umd/popper.min.js",
+                            f"{folderName}/vendor/bootstrap-duallistbox/ajax/libs/prettify/r298/run_prettify.js",
+                            f"{folderName}/vendor/bootstrap-duallistbox/dist/jquery.bootstrap-duallistbox.js",
                         ],
 
                         "group_edit":[
-                            f"{foldername}/vendor/bootstrap-duallistbox/ajax/libs/popper.js/1.12.9/umd/popper.min.js",
-                            f"{foldername}/vendor/bootstrap-duallistbox/ajax/libs/prettify/r298/run_prettify.js",
-                            f"{foldername}/vendor/bootstrap-duallistbox/dist/jquery.bootstrap-duallistbox.js",
+                            f"{folderName}/vendor/bootstrap-duallistbox/ajax/libs/popper.js/1.12.9/umd/popper.min.js",
+                            f"{folderName}/vendor/bootstrap-duallistbox/ajax/libs/prettify/r298/run_prettify.js",
+                            f"{folderName}/vendor/bootstrap-duallistbox/dist/jquery.bootstrap-duallistbox.js",
                         ],
 
+                        "svc_user_list": [
+                            f"{folderName}/vendor/chart.js/Chart.bundle.min.js",
+                            f"{folderName}/vendor/apexchart/apexchart.js",
+                            f"{folderName}/vendor/datatables/js/jquery.dataTables.min.js",
+                            f"{folderName}/js/plugins-init/datatables.init.js",
+                        ],
+
+                        "object_list": [
+                            f"{folderName}/vendor/chart.js/Chart.bundle.min.js",
+                            f"{folderName}/vendor/apexchart/apexchart.js",
+                            f"{folderName}/vendor/datatables/js/jquery.dataTables.min.js",
+                            f"{folderName}/js/plugins-init/datatables.init.js",
+                        ],
+
+                        "content_list": [
+                            f"{folderName}/vendor/chart.js/Chart.bundle.min.js",
+                            f"{folderName}/vendor/apexchart/apexchart.js",
+                            f"{folderName}/vendor/datatables/js/jquery.dataTables.min.js",
+                            f"{folderName}/js/plugins-init/datatables.init.js",
+                        ],
+
+                        "report_list": [
+                            f"{folderName}/vendor/chart.js/Chart.bundle.min.js",
+                            f"{folderName}/vendor/apexchart/apexchart.js",
+                            f"{folderName}/vendor/datatables/js/jquery.dataTables.min.js",
+                            f"{folderName}/js/plugins-init/datatables.init.js",
+                        ],
 
                         "index2":[
-                            f"{foldername}/vendor/chart.js/Chart.bundle.min.js",
-                            f"{foldername}/vendor/owl-carousel/owl.carousel.js",
-                            f"{foldername}/vendor/peity/jquery.peity.min.js",
-                            f"{foldername}/vendor/apexchart/apexchart.js",
-                            f"{foldername}/js/dashboard/dashboard-1.js",
+                            f"{folderName}/vendor/chart.js/Chart.bundle.min.js",
+                            f"{folderName}/vendor/owl-carousel/owl.carousel.js",
+                            f"{folderName}/vendor/peity/jquery.peity.min.js",
+                            f"{folderName}/vendor/apexchart/apexchart.js",
+                            f"{folderName}/js/dashboard/dashboard-1.js",
                         ],
 
                         "my_wallet":[
-                           f"{foldername}/vendor/chart.js/Chart.bundle.min.js",
-                           f"{foldername}/vendor/peity/jquery.peity.min.js",
-                           f"{foldername}/vendor/apexchart/apexchart.js",
-                           f"{foldername}/js/dashboard/my-wallet.js",
+                           f"{folderName}/vendor/chart.js/Chart.bundle.min.js",
+                           f"{folderName}/vendor/peity/jquery.peity.min.js",
+                           f"{folderName}/vendor/apexchart/apexchart.js",
+                           f"{folderName}/js/dashboard/my-wallet.js",
                         ],
                         "invoices":[
-                           f"{foldername}/vendor/chart.js/Chart.bundle.min.js",
-                           f"{foldername}/vendor/datatables/js/jquery.dataTables.min.js"
+                           f"{folderName}/vendor/chart.js/Chart.bundle.min.js",
+                           f"{folderName}/vendor/datatables/js/jquery.dataTables.min.js"
                         ],
                         "cards_center":[
-                            f"{foldername}/vendor/chart.js/Chart.bundle.min.js",
-                            f"{foldername}/vendor/owl-carousel/owl.carousel.js",
-                            f"{foldername}/vendor/peity/jquery.peity.min.js",
-                            f"{foldername}/vendor/apexchart/apexchart.js",
-                            f"{foldername}/js/dashboard/cards-center.js",
+                            f"{folderName}/vendor/chart.js/Chart.bundle.min.js",
+                            f"{folderName}/vendor/owl-carousel/owl.carousel.js",
+                            f"{folderName}/vendor/peity/jquery.peity.min.js",
+                            f"{folderName}/vendor/apexchart/apexchart.js",
+                            f"{folderName}/js/dashboard/cards-center.js",
                         ],
                         "transactions":[
-                            f"{foldername}/vendor/chart.js/Chart.bundle.min.js",
-                            f"{foldername}/vendor/datatables/js/jquery.dataTables.min.js",
+                            f"{folderName}/vendor/chart.js/Chart.bundle.min.js",
+                            f"{folderName}/vendor/datatables/js/jquery.dataTables.min.js",
                         ],
                         "transactions_details":[
-                            f"{foldername}/vendor/chart.js/Chart.bundle.min.js",
-                            f"{foldername}/vendor/peity/jquery.peity.min.js",
-                            f"{foldername}/vendor/apexchart/apexchart.js",
-                            f"{foldername}/js/dashboard/transactions-details.js"
+                            f"{folderName}/vendor/chart.js/Chart.bundle.min.js",
+                            f"{folderName}/vendor/peity/jquery.peity.min.js",
+                            f"{folderName}/vendor/apexchart/apexchart.js",
+                            f"{folderName}/js/dashboard/transactions-details.js"
                           ],
                        
 
@@ -307,165 +354,165 @@ dz_array = {
 
 
                         "app_profile":[
-                             f"{foldername}/vendor/lightgallery/js/lightgallery-all.min.js",
-                             f"{foldername}/vendor/magnific-popup/magnific-popup.js"
+                             f"{folderName}/vendor/lightgallery/js/lightgallery-all.min.js",
+                             f"{folderName}/vendor/magnific-popup/magnific-popup.js"
                         ],
                         "post_details":[
-                            f"{foldername}/vendor/lightgallery/js/lightgallery-all.min.js",
-                            f"{foldername}/vendor/magnific-popup/magnific-popup.js"
+                            f"{folderName}/vendor/lightgallery/js/lightgallery-all.min.js",
+                            f"{folderName}/vendor/magnific-popup/magnific-popup.js"
                         ],
                         "email_compose":[
-                            f"{foldername}/vendor/dropzone/dist/dropzone.js",
+                            f"{folderName}/vendor/dropzone/dist/dropzone.js",
                         ],
                         "email_inbox":[],
                         "email_read":[],
                         "app_calender":[
-                            f"{foldername}/vendor/moment/moment.min.js",
-                            f"{foldername}/vendor/fullcalendar/js/main.min.js",
-                            f"{foldername}/js/plugins-init/fullcalendar-init.js",
+                            f"{folderName}/vendor/moment/moment.min.js",
+                            f"{folderName}/vendor/fullcalendar/js/main.min.js",
+                            f"{folderName}/js/plugins-init/fullcalendar-init.js",
                         ],
                         "ecom_product_grid":[],
                         "ecom_product_list":[
-                            f"{foldername}/vendor/star-rating/jquery.star-rating-svg.js", 
+                            f"{folderName}/vendor/star-rating/jquery.star-rating-svg.js", 
                         ],
                         "ecom_product_detail":[
-                            f"{foldername}/vendor/owl-carousel/owl.carousel.js",
-                            f"{foldername}/vendor/star-rating/jquery.star-rating-svg.js",
+                            f"{folderName}/vendor/owl-carousel/owl.carousel.js",
+                            f"{folderName}/vendor/star-rating/jquery.star-rating-svg.js",
                         ],
                         "ecom_product_order":[],
                         "ecom_checkout":[
-                            f"{foldername}/vendor/highlightjs/highlight.pack.min.js"
+                            f"{folderName}/vendor/highlightjs/highlight.pack.min.js"
                         ],
                         "ecom_invoice":[],
                         "ecom_customers":[],
 
                         "chart_flot":[
-                            f"{foldername}/vendor/chart.js/Chart.bundle.min.js",
-                            f"{foldername}/vendor/apexchart/apexchart.js",
-                            f"{foldername}/vendor/flot/jquery.flot.js",
-                            f"{foldername}/vendor/flot/jquery.flot.pie.js",
-                            f"{foldername}/vendor/flot/jquery.flot.resize.js",
-                            f"{foldername}/vendor/flot-spline/jquery.flot.spline.min.js",
-                            f"{foldername}/js/plugins-init/flot-init.js",
+                            f"{folderName}/vendor/chart.js/Chart.bundle.min.js",
+                            f"{folderName}/vendor/apexchart/apexchart.js",
+                            f"{folderName}/vendor/flot/jquery.flot.js",
+                            f"{folderName}/vendor/flot/jquery.flot.pie.js",
+                            f"{folderName}/vendor/flot/jquery.flot.resize.js",
+                            f"{folderName}/vendor/flot-spline/jquery.flot.spline.min.js",
+                            f"{folderName}/js/plugins-init/flot-init.js",
                         ],
                         "chart_morris":[
-                            f"{foldername}/vendor/chart.js/Chart.bundle.min.js",
-                            f"{foldername}/vendor/apexchart/apexchart.js",
-                            f"{foldername}/vendor/raphael/raphael.min.js",
-                            f"{foldername}/vendor/morris/morris.min.js",
-                            f"{foldername}/js/plugins-init/morris-init.js",
+                            f"{folderName}/vendor/chart.js/Chart.bundle.min.js",
+                            f"{folderName}/vendor/apexchart/apexchart.js",
+                            f"{folderName}/vendor/raphael/raphael.min.js",
+                            f"{folderName}/vendor/morris/morris.min.js",
+                            f"{folderName}/js/plugins-init/morris-init.js",
                         ],
                         "chart_chartjs":[
-                            f"{foldername}/vendor/chart.js/Chart.bundle.min.js",
-                            f"{foldername}/js/plugins-init/chartjs-init.js",
+                            f"{folderName}/vendor/chart.js/Chart.bundle.min.js",
+                            f"{folderName}/js/plugins-init/chartjs-init.js",
                         ],
                         "chart_chartist":[
-                            f"{foldername}/vendor/chart.js/Chart.bundle.min.js",
-                            f"{foldername}/vendor/apexchart/apexchart.js",
-                            f"{foldername}/vendor/chartist/js/chartist.min.js",
-                            f"{foldername}/vendor/chartist-plugin-tooltips/js/chartist-plugin-tooltip.min.js",
-                            f"{foldername}/js/plugins-init/chartist-init.js",
+                            f"{folderName}/vendor/chart.js/Chart.bundle.min.js",
+                            f"{folderName}/vendor/apexchart/apexchart.js",
+                            f"{folderName}/vendor/chartist/js/chartist.min.js",
+                            f"{folderName}/vendor/chartist-plugin-tooltips/js/chartist-plugin-tooltip.min.js",
+                            f"{folderName}/js/plugins-init/chartist-init.js",
                         ],
                         "chart_sparkline":[
-                            f"{foldername}/vendor/chart.js/Chart.bundle.min.js",
-                            f"{foldername}/vendor/apexchart/apexchart.js",
-                            f"{foldername}/vendor/jquery-sparkline/jquery.sparkline.min.js",
-                            f"{foldername}/js/plugins-init/sparkline-init.js",
-                            f"{foldername}/vendor/svganimation/vivus.min.js",
-                            f"{foldername}/vendor/svganimation/svg.animation.js"
+                            f"{folderName}/vendor/chart.js/Chart.bundle.min.js",
+                            f"{folderName}/vendor/apexchart/apexchart.js",
+                            f"{folderName}/vendor/jquery-sparkline/jquery.sparkline.min.js",
+                            f"{folderName}/js/plugins-init/sparkline-init.js",
+                            f"{folderName}/vendor/svganimation/vivus.min.js",
+                            f"{folderName}/vendor/svganimation/svg.animation.js"
                         ],
                         "chart_peity":[
-                            f"{foldername}/vendor/chart.js/Chart.bundle.min.js",
-                            f"{foldername}/vendor/peity/jquery.peity.min.js",
-                            f"{foldername}/js/plugins-init/piety-init.js",
+                            f"{folderName}/vendor/chart.js/Chart.bundle.min.js",
+                            f"{folderName}/vendor/peity/jquery.peity.min.js",
+                            f"{folderName}/js/plugins-init/piety-init.js",
                         ],
 
                         "uc_select2":[
-                            f"{foldername}/vendor/select2/js/select2.full.min.js",
-                            f"{foldername}/js/plugins-init/select2-init.js"
+                            f"{folderName}/vendor/select2/js/select2.full.min.js",
+                            f"{folderName}/js/plugins-init/select2-init.js"
                         ],
                         "uc_nestable":[
-                            f"{foldername}/vendor/nestable2/js/jquery.nestable.min.js",
-                            f"{foldername}/js/plugins-init/nestable-init.js"
+                            f"{folderName}/vendor/nestable2/js/jquery.nestable.min.js",
+                            f"{folderName}/js/plugins-init/nestable-init.js"
 
                         ],
                         "uc_noui_slider":[
-                            f"{foldername}/vendor/nouislider/nouislider.min.js",
-                            f"{foldername}/vendor/wnumb/wNumb.js",
-                            f"{foldername}/js/plugins-init/nouislider-init.js"
+                            f"{folderName}/vendor/nouislider/nouislider.min.js",
+                            f"{folderName}/vendor/wnumb/wNumb.js",
+                            f"{folderName}/js/plugins-init/nouislider-init.js"
                         ],
                         "uc_sweetalert":[
-                            f"{foldername}/vendor/sweetalert2/dist/sweetalert2.min.js",
-                            f"{foldername}/js/plugins-init/sweetalert.init.js",
+                            f"{folderName}/vendor/sweetalert2/dist/sweetalert2.min.js",
+                            f"{folderName}/js/plugins-init/sweetalert.init.js",
 
                         ],
                         "uc_toastr":[
-                            f"{foldername}/vendor/toastr/js/toastr.min.js",
-                            f"{foldername}/js/plugins-init/toastr-init.js"
+                            f"{folderName}/vendor/toastr/js/toastr.min.js",
+                            f"{folderName}/js/plugins-init/toastr-init.js"
                         ],
                         "map_jqvmap":[
-                            f"{foldername}/vendor/jqvmap/js/jquery.vmap.min.js",
-                            f"{foldername}/vendor/jqvmap/js/jquery.vmap.world.js",
-                            f"{foldername}/vendor/jqvmap/js/jquery.vmap.usa.js",
-                            f"{foldername}/js/plugins-init/jqvmap-init.js"
+                            f"{folderName}/vendor/jqvmap/js/jquery.vmap.min.js",
+                            f"{folderName}/vendor/jqvmap/js/jquery.vmap.world.js",
+                            f"{folderName}/vendor/jqvmap/js/jquery.vmap.usa.js",
+                            f"{folderName}/js/plugins-init/jqvmap-init.js"
 
                         ],
                         "uc_lightgallery":[
-                            f"{foldername}/vendor/lightgallery/js/lightgallery-all.min.js"
+                            f"{folderName}/vendor/lightgallery/js/lightgallery-all.min.js"
 
                         ],
                         "widget_basic":[
-                            f"{foldername}/vendor/chart.js/Chart.bundle.min.js",
-                            f"{foldername}/vendor/apexchart/apexchart.js",
-                            f"{foldername}/vendor/chartist/js/chartist.min.js",
-                            f"{foldername}/vendor/chartist-plugin-tooltips/js/chartist-plugin-tooltip.min.js",
-                            f"{foldername}/vendor/flot/jquery.flot.js",
-                            f"{foldername}/vendor/flot/jquery.flot.pie.js",
-                            f"{foldername}/vendor/flot/jquery.flot.resize.js",
-                            f"{foldername}/vendor/flot-spline/jquery.flot.spline.min.js",
-                            f"{foldername}/vendor/jquery-sparkline/jquery.sparkline.min.js",
-                            f"{foldername}/js/plugins-init/sparkline-init.js",
-                            f"{foldername}/vendor/peity/jquery.peity.min.js",
-                            f"{foldername}/js/plugins-init/piety-init.js",
-                            f"{foldername}/js/plugins-init/widgets-script-init.js",
+                            f"{folderName}/vendor/chart.js/Chart.bundle.min.js",
+                            f"{folderName}/vendor/apexchart/apexchart.js",
+                            f"{folderName}/vendor/chartist/js/chartist.min.js",
+                            f"{folderName}/vendor/chartist-plugin-tooltips/js/chartist-plugin-tooltip.min.js",
+                            f"{folderName}/vendor/flot/jquery.flot.js",
+                            f"{folderName}/vendor/flot/jquery.flot.pie.js",
+                            f"{folderName}/vendor/flot/jquery.flot.resize.js",
+                            f"{folderName}/vendor/flot-spline/jquery.flot.spline.min.js",
+                            f"{folderName}/vendor/jquery-sparkline/jquery.sparkline.min.js",
+                            f"{folderName}/js/plugins-init/sparkline-init.js",
+                            f"{folderName}/vendor/peity/jquery.peity.min.js",
+                            f"{folderName}/js/plugins-init/piety-init.js",
+                            f"{folderName}/js/plugins-init/widgets-script-init.js",
                         ],
                     "form_element":[],
                     "form_wizard":[
-                        f"{foldername}/vendor/jquery-steps/build/jquery.steps.min.js",
-                        f"{foldername}/vendor/jquery-validation/jquery.validate.min.js",
-                        f"{foldername}/js/plugins-init/jquery.validate-init.js",
-                        f"{foldername}/vendor/jquery-smartwizard/dist/js/jquery.smartWizard.js",
+                        f"{folderName}/vendor/jquery-steps/build/jquery.steps.min.js",
+                        f"{folderName}/vendor/jquery-validation/jquery.validate.min.js",
+                        f"{folderName}/js/plugins-init/jquery.validate-init.js",
+                        f"{folderName}/vendor/jquery-smartwizard/dist/js/jquery.smartWizard.js",
                     ],
                     "form_ckeditor":[
-                        f"{foldername}/vendor/ckeditor/ckeditor.js"
+                        f"{folderName}/vendor/ckeditor/ckeditor.js"
                     ],
                     "form_pickers":[
-                         f"{foldername}/vendor/bootstrap-select/dist/js/bootstrap-select.min.js",
-                         f"{foldername}/vendor/chart.js/Chart.bundle.min.js",
-                         f"{foldername}/vendor/apexchart/apexchart.js",
-                         f"{foldername}/vendor/moment/moment.min.js",
-                         f"{foldername}/vendor/bootstrap-daterangepicker/daterangepicker.js",
-                         f"{foldername}/vendor/clockpicker/js/bootstrap-clockpicker.min.js",
-                         f"{foldername}/vendor/jquery-asColor/jquery-asColor.min.js",
-                         f"{foldername}/vendor/jquery-asGradient/jquery-asGradient.min.js",
-                         f"{foldername}/vendor/jquery-asColorPicker/js/jquery-asColorPicker.min.js",
-                         f"{foldername}/vendor/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js",
-                         f"{foldername}/vendor/pickadate/picker.js",
-                         f"{foldername}/vendor/pickadate/picker.time.js",
-                         f"{foldername}/vendor/pickadate/picker.date.js",
-                         f"{foldername}/js/plugins-init/bs-daterange-picker-init.js",
-                         f"{foldername}/js/plugins-init/clock-picker-init.js",
-                         f"{foldername}/js/plugins-init/jquery-asColorPicker.init.js",
-                         f"{foldername}/js/plugins-init/material-date-picker-init.js",
-                         f"{foldername}/js/plugins-init/pickadate-init.js",
+                         f"{folderName}/vendor/bootstrap-select/dist/js/bootstrap-select.min.js",
+                         f"{folderName}/vendor/chart.js/Chart.bundle.min.js",
+                         f"{folderName}/vendor/apexchart/apexchart.js",
+                         f"{folderName}/vendor/moment/moment.min.js",
+                         f"{folderName}/vendor/bootstrap-daterangepicker/daterangepicker.js",
+                         f"{folderName}/vendor/clockpicker/js/bootstrap-clockpicker.min.js",
+                         f"{folderName}/vendor/jquery-asColor/jquery-asColor.min.js",
+                         f"{folderName}/vendor/jquery-asGradient/jquery-asGradient.min.js",
+                         f"{folderName}/vendor/jquery-asColorPicker/js/jquery-asColorPicker.min.js",
+                         f"{folderName}/vendor/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js",
+                         f"{folderName}/vendor/pickadate/picker.js",
+                         f"{folderName}/vendor/pickadate/picker.time.js",
+                         f"{folderName}/vendor/pickadate/picker.date.js",
+                         f"{folderName}/js/plugins-init/bs-daterange-picker-init.js",
+                         f"{folderName}/js/plugins-init/clock-picker-init.js",
+                         f"{folderName}/js/plugins-init/jquery-asColorPicker.init.js",
+                         f"{folderName}/js/plugins-init/material-date-picker-init.js",
+                         f"{folderName}/js/plugins-init/pickadate-init.js",
                     ],
                     "form_validation":[],
                     "table_bootstrap_basic":[],
                     "table_datatable_basic":[
-                        f"{foldername}/vendor/chart.js/Chart.bundle.min.js",
-                        f"{foldername}/vendor/apexchart/apexchart.js",
-                        f"{foldername}/vendor/datatables/js/jquery.dataTables.min.js",
-                        f"{foldername}/js/plugins-init/datatables.init.js",
+                        f"{folderName}/vendor/chart.js/Chart.bundle.min.js",
+                        f"{folderName}/vendor/apexchart/apexchart.js",
+                        f"{folderName}/vendor/datatables/js/jquery.dataTables.min.js",
+                        f"{folderName}/js/plugins-init/datatables.init.js",
                     ],
                     "page_login":[],
                     "page_register":[],

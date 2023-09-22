@@ -3,181 +3,60 @@
 <div class="deznav">
     <div class="deznav-scroll">
         <ul class="metismenu" id="menu">
-
-
-    <!--Modules Demo Start -->
-{% if perms.users.view_newuser or perms.auth.view_group or perms.auth.view_permission %} 
-            <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
-                <i class="flaticon-381-controls-3"></i>
-                <span class="nav-text">Modules</span>
-				<span class="badge badge-xs bg-danger ms-3">New</span>
-                
-            </a>
-                <ul aria-expanded="false">
-                    {% if perms.users.view_newuser or perms.users.change_newuser or perms.users.add_newuser or perms.users.delete_newuser %}
-                    <li>
-                        <a  {% if '/users/' in request.path %}class="mm-active"{% endif %} href="{% url 'aurora:users' %}">Users</a>
-                    </li>
-                    {% endif %}
-            
-                    {% if perms.auth.view_group or perms.auth.change_group or perms.auth.add_group or perms.auth.delete_group %}
-                    <li>
-                        <a {% if '/groups/' in request.path %} class="mm-active"{% endif %} href="{% url 'aurora:groups' %}">Groups</a>
-                    </li>
-                    {% endif %}
-            
-                    {% if perms.auth.view_permission or perms.auth.change_permission or perms.auth.add_permission or  perms.auth.delete_permission%}
-                    <li>
-                        <a {% if '/permissions/' in request.path %}class="mm-active"{% endif %} href="{% url 'aurora:permissions' %}">Permissions</a>
-                    </li>
-                    {% endif %}
-                </ul>
-    
-            </li>
-{% endif %} 
-
-<!--Modules Demo End -->
-
-
-
-            <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+            <li>
+                <a href="{% url 'aurora:index' %}" class="ai-icon" aria-expanded="false">
                     <i class="flaticon-381-networking"></i>
                     <span class="nav-text">Dashboard</span>
                 </a>
-                <ul aria-expanded="false">
-                    <li><a href="{% url 'aurora:index' %}">Dashboard Light</a></li>
-                    <li><a href="{% url 'aurora:index-2' %}">Dashboard Dark</a></li>
-                    <li><a href="{% url 'aurora:my-wallet' %}">My Wallet</a></li>
-                    <li><a href="{% url 'aurora:invoices' %}">Invoices</a></li>
-                    <li><a href="{% url 'aurora:cards-center' %}">Cards Center</a></li>
-                    <li><a href="{% url 'aurora:transactions' %}">Transactions</a></li>
-                    <li><a href="{% url 'aurora:transactions-details' %}">Transactions Details</a></li>
-                </ul>
             </li>
-            <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
-                    <i class="flaticon-381-television"></i>
-                    <span class="nav-text">Apps</span>
+            <li>
+                <a class="has-arrow ai-icon" href="{% url 'aurora:svc-user-status' %}" aria-expanded="false">
+                    <i class="flaticon-381-database"></i><span class="nav-text">Data (지표)</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="{% url 'aurora:app-profile' %}">Profile</a></li>
-                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false">Email</a>
-                        <ul aria-expanded="false">
-                            <li><a href="{% url 'aurora:email-compose' %}">Compose</a></li>
-                            <li><a href="{% url 'aurora:email-inbox' %}">Inbox</a></li>
-                            <li><a href="{% url 'aurora:email-read' %}">Read</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="{% url 'aurora:app-calender' %}">Calendar</a></li>
-                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false">Shop</a>
-                        <ul aria-expanded="false">
-                            <li><a href="{% url 'aurora:ecom-product-grid' %}">Product Grid</a></li>
-                            <li><a href="{% url 'aurora:ecom-product-list' %}">Product List</a></li>
-                            <li><a href="{% url 'aurora:ecom-product-detail' %}">Product Details</a></li>
-                            <li><a href="{% url 'aurora:ecom-product-order' %}">Order</a></li>
-                            <li><a href="{% url 'aurora:ecom-checkout' %}">Checkout</a></li>
-                            <li><a href="{% url 'aurora:ecom-invoice' %}">Invoice</a></li>
-                            <li><a href="{% url 'aurora:ecom-customers' %}">Customers</a></li>
-                        </ul>
-                    </li>
+                    <li><a href="{% url 'aurora:svc-user-status' %}">이용자 현황</a></li>
+                    <li><a href="{% url 'aurora:scan-status' %}">스캔 현황</a></li>
                 </ul>
             </li>
-            <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
-                    <i class="flaticon-381-controls-3"></i>
-                    <span class="nav-text">Charts</span>
-                </a>
-                <ul aria-expanded="false">
-                    <li><a href="{% url 'aurora:chart-flot' %}">Flot</a></li>
-                    <li><a href="{% url 'aurora:chart-morris' %}">Morris</a></li>
-                    <li><a href="{% url 'aurora:chart-chartjs' %}">Chartjs</a></li>
-                    <li><a href="{% url 'aurora:chart-chartist' %}">Chartist</a></li>
-                    <li><a href="{% url 'aurora:chart-sparkline' %}">Sparkline</a></li>
-                    <li><a href="{% url 'aurora:chart-peity' %}">Peity</a></li>
-                </ul>
-            </li>
-            <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
-                    <i class="flaticon-381-internet"></i>
-                    <span class="nav-text">Bootstrap</span>
-                </a>
-                <ul aria-expanded="false">
-                    <li><a href="{% url 'aurora:ui-accordion' %}">Accordion</a></li>
-                    <li><a href="{% url 'aurora:ui-alert' %}">Alert</a></li>
-                    <li><a href="{% url 'aurora:ui-badge' %}">Badge</a></li>
-                    <li><a href="{% url 'aurora:ui-button' %}">Button</a></li>
-                    <li><a href="{% url 'aurora:ui-modal' %}">Modal</a></li>
-                    <li><a href="{% url 'aurora:ui-button-group' %}">Button Group</a></li>
-                    <li><a href="{% url 'aurora:ui-list-group' %}">List Group</a></li>
-                    <li><a href="{% url 'aurora:ui-media-object' %}">Media Object</a></li>
-                    <li><a href="{% url 'aurora:ui-card' %}">Cards</a></li>
-                    <li><a href="{% url 'aurora:ui-carousel' %}">Carousel</a></li>
-                    <li><a href="{% url 'aurora:ui-dropdown' %}">Dropdown</a></li>
-                    <li><a href="{% url 'aurora:ui-popover' %}">Popover</a></li>
-                    <li><a href="{% url 'aurora:ui-progressbar' %}">Progressbar</a></li>
-                    <li><a href="{% url 'aurora:ui-tab' %}">Tab</a></li>
-                    <li><a href="{% url 'aurora:ui-typography' %}">Typography</a></li>
-                    <li><a href="{% url 'aurora:ui-pagination' %}">Pagination</a></li>
-                    <li><a href="{% url 'aurora:ui-grid' %}">Grid</a></li>
 
-                </ul>
-            </li>
-            <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
-                    <i class="flaticon-381-heart"></i>
-                    <span class="nav-text">Plugins</span>
+            <li>
+                <a class="has-arrow ai-icon" href="javascript:void(0)" aria-expanded="false">
+                    <i class="flaticon-381-television"></i><span class="nav-text">Operation (Admin)</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="{% url 'aurora:uc-select2' %}">Select 2</a></li>
-                    <li><a href="{% url 'aurora:uc-nestable' %}">Nestedable</a></li>
-                    <li><a href="{% url 'aurora:uc-noui-slider' %}">Noui Slider</a></li>
-                    <li><a href="{% url 'aurora:uc-sweetalert' %}">Sweet Alert</a></li>
-                    <li><a href="{% url 'aurora:uc-toastr' %}">Toastr</a></li>
-                    <li><a href="{% url 'aurora:map-jqvmap' %}">Jqv Map</a></li>
-                    <li><a href="{% url 'aurora:uc-lightgallery' %}">Light Gallery</a></li>
+                    <li><a href="{% url 'aurora:svc-user-list' %}">이용자 관리</a></li>
+                    <li><a href="{% url 'aurora:object-list' %}">사물 관리</a></li>
+                    <li><a href="{% url 'aurora:content-list' %}">콘텐츠 관리</a></li>
+                    <li><a href="{% url 'aurora:report-list' %}">신고·차단 관리</a></li>
                 </ul>
             </li>
-            <li><a href="{% url 'aurora:widget-basic' %}" class="ai-icon" aria-expanded="false">
-                    <i class="flaticon-381-settings-2"></i>
-                    <span class="nav-text">Widget</span>
+
+            {% if perms.users.view_newuser or perms.auth.view_group or perms.auth.view_permission %}
+                <li>
+                    <a class="has-arrow ai-icon" href="javascript:void(0)" aria-expanded="false">
+                        <i class="flaticon-381-user-7"></i><span class="nav-text">관리자</span>
                 </a>
-            </li>
-            <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
-                    <i class="flaticon-381-notepad"></i>
-                    <span class="nav-text">Forms</span>
-                </a>
-                <ul aria-expanded="false">
-                    <li><a href="{% url 'aurora:form-element' %}">Form Elements</a></li>
-                    <li><a href="{% url 'aurora:form-wizard' %}">Wizard</a></li>
-                    <li><a href="{% url 'aurora:form-ckeditor' %}">Ckeditor</a></li>
-                    <li><a href="{% url 'aurora:form-pickers' %}">Pickers</a></li>
-                    <li><a href="{% url 'aurora:form-validation-jquery' %}">Jquery Validate</a></li>
-                </ul>
-            </li>
-            <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
-                    <i class="flaticon-381-network"></i>
-                    <span class="nav-text">Table</span>
-                </a>
-                <ul aria-expanded="false">
-                    <li><a href="{% url 'aurora:table-bootstrap-basic' %}">Bootstrap</a></li>
-                    <li><a href="{% url 'aurora:table-datatable-basic' %}">Datatable</a></li>
-                </ul>
-            </li>
-            <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
-                    <i class="flaticon-381-layer-1"></i>
-                    <span class="nav-text">Pages</span>
-                </a>
-                <ul aria-expanded="false">
-                    <li><a href="{% url 'aurora:page-register' %}">Register</a></li>
-                    <li><a href="{% url 'aurora:page-login' %}">Login</a></li>
-                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false">Error</a>
-                        <ul aria-expanded="false">
-                            <li><a href="{% url 'aurora:page-error-400' %}">Error 400</a></li>
-                            <li><a href="{% url 'aurora:page-error-403' %}">Error 403</a></li>
-                            <li><a href="{% url 'aurora:page-error-404' %}">Error 404</a></li>
-                            <li><a href="{% url 'aurora:page-error-500' %}">Error 500</a></li>
-                            <li><a href="{% url 'aurora:page-error-503' %}">Error 503</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="{% url 'aurora:page-lock-screen' %}">Lock Screen</a></li>
-                </ul>
-            </li>
+                    <ul aria-expanded="false">
+                        {% if perms.users.view_newuser or perms.users.change_newuser or perms.users.add_newuser or perms.users.delete_newuser %}
+                            <li>
+                                <a  {% if '/users/' in request.path %}class="mm-active"{% endif %} href="{% url 'aurora:users' %}">Users</a>
+                            </li>
+                        {% endif %}
+
+                        {% if perms.auth.view_group or perms.auth.change_group or perms.auth.add_group or perms.auth.delete_group %}
+                            <li>
+                                <a {% if '/groups/' in request.path %} class="mm-active"{% endif %} href="{% url 'aurora:groups' %}">Groups</a>
+                            </li>
+                        {% endif %}
+
+                        {% if perms.auth.view_permission or perms.auth.change_permission or perms.auth.add_permission or  perms.auth.delete_permission%}
+                            <li>
+                                <a {% if '/permissions/' in request.path %}class="mm-active"{% endif %} href="{% url 'aurora:permissions' %}">Permissions</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </li>
+            {% endif %}
         </ul>
         
         <div class="copyright">
