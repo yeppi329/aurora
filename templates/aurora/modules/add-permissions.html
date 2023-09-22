@@ -1,4 +1,4 @@
-{% extends 'mophy/elements/layouts/admin.html' %}
+{% extends 'aurora/elements/layouts/admin.html' %}
 {% load static widget_tweaks %}
 
 
@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block message %}
-{% include 'mophy/elements/alert.html' %}
+{% include 'aurora/elements/alert.html' %}
 {% endblock %}
 
 {% block content %}
@@ -51,7 +51,7 @@
                     </div>
 
                     <button type="submit" class="btn btn-primary">Save</button>
-                    <a href="{% url 'mophy:index' %}" class="btn btn-primary">Cancel</a>
+                    <a href="{% url 'aurora:index' %}" class="btn btn-primary">Cancel</a>
                 </form>
             </div>
         </div>

@@ -21,7 +21,7 @@
 	{% load custom_tags %}
 
 
-    {% for cssurl in dz_array.pagelevel.mophy.mophy_views.css|getdata:request.path %}
+    {% for cssurl in dz_array.pagelevel.aurora.aurora_views.css|getdata:request.path %}
     <link rel="stylesheet" href="{% static cssurl %}" >
 	{% endfor %}
   
@@ -41,12 +41,12 @@
 
 <body class="h-100">
 
-    <div class="login-main-page" style="background-image: url({% static 'mophy/images/bg-login.jpg' %});">
+    <div class="login-main-page" style="background-image: url({% static 'aurora/images/bg-login.jpg' %});">
         <div class="login-wrapper">
-            <div class="login-aside-left" style="background-image: url({% static 'mophy/images/bg-login2.png' %});">
+            <div class="login-aside-left" style="background-image: url({% static 'aurora/images/bg-login2.png' %});">
                 <a href="#" class="login-logo">
-                    <img src="{% static 'mophy/images/logo.png' %}" alt="" class="mr-2"/>
-                    <img src="{% static 'mophy/images/logo-text.png' %}" alt="" class="ml-1"/>
+                    <img src="{% static 'aurora/images/logo.png' %}" alt="" class="mr-2"/>
+                    <img src="{% static 'aurora/images/logo-text.png' %}" alt="" class="ml-1"/>
                 </a>
                 <div class="login-description">
                     <h2 class="text-black  mb-2">Check the Status</h2>
@@ -137,7 +137,7 @@
                             <div class="new-account mt-2">
                               <p class="text-white">
                                Already have an account?
-                                <a class="text-black" href="{% url 'mophy:login' %}">
+                                <a class="text-black" href="{% url 'aurora:login' %}">
                                   Sign in
                                 </a>
                               </p>
@@ -172,7 +172,7 @@
 <script src="{% static jsurl %}"></script>
 {% endfor %}
 
-    {% for jsurl in dz_array.pagelevel.mophy.mophy_views.js|getdata:request.path %}
+    {% for jsurl in dz_array.pagelevel.aurora.aurora_views.js|getdata:request.path %}
     <script src="{% static jsurl %}"></script>
     {% endfor %}
 

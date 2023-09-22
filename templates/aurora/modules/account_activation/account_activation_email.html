@@ -3,5 +3,5 @@ Hi {{ user.first_name }} {{ user.last_name }},
 
 Please click on the link below to confirm your registration:
 
-http://{{ domain }}{% url 'mophy:activate' uidb64=uid token=token %}
+http://{{ domain }}{% url 'aurora:activate' uidb64=uid token=token %}
 {% endautoescape %}

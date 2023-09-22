@@ -23,7 +23,7 @@
 	<!-- FAVICONS ICON -->
 	<link rel="shortcut icon" type="image/png" href="{% static dz_array.public.favicon  %}" />
 
-    {% for cssurl in dz_array.pagelevel.mophy.mophy_views.css|getdata:request.path %}
+    {% for cssurl in dz_array.pagelevel.aurora.aurora_views.css|getdata:request.path %}
     <link rel="stylesheet" href="{% static cssurl %}" >
 	{% endfor %}
     {% for cssurl in dz_array.global.css %}
@@ -46,7 +46,7 @@
                         <h4 class="text-nowrap"><i class="fa fa-times-circle text-danger"></i> Internal Server Error</h4>
                         <p>You do not have permission to view this resource</p> 
 						<div>
-                            <a class="btn btn-primary" href="{% url 'mophy:index' %}">Back to Home</a>
+                            <a class="btn btn-primary" href="{% url 'aurora:index' %}">Back to Home</a>
                         </div>	
                     </div>
                 </div>
@@ -62,7 +62,7 @@
 <script src="{% static jsurl %}"></script>
 {% endfor %}
 
-{% for jsurl in dz_array.pagelevel.mophy.mophy_views.js|getdata:request.path %}
+{% for jsurl in dz_array.pagelevel.aurora.aurora_views.js|getdata:request.path %}
 <script src="{% static jsurl %}"></script>
 {% endfor %}
 

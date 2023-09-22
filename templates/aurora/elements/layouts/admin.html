@@ -25,7 +25,7 @@
 	<!-- FAVICONS ICON -->
 	<link rel="icon" type="image/png" sizes="16x16" href="{% static dz_array.public.favicon  %}" />
 
-    {% for cssurl in dz_array.pagelevel.mophy.mophy_views.css|getdata:request.path %}
+    {% for cssurl in dz_array.pagelevel.aurora.aurora_views.css|getdata:request.path %}
     <link rel="stylesheet" href="{% static cssurl %}" >
 	{% endfor %}
     {% for cssurl in dz_array.global.css %}
@@ -60,7 +60,7 @@
         <!--**********************************
             Nav header start
         ***********************************-->
-		{% include 'mophy/elements/nav-header.html' %}
+		{% include 'aurora/elements/nav-header.html' %}
         <!--**********************************
             Nav header end
         ***********************************-->
@@ -68,7 +68,7 @@
 		<!--**********************************
             Chat box start
         ***********************************-->
-		{% include 'mophy/elements/chatbox.html' %}
+		{% include 'aurora/elements/chatbox.html' %}
 		<!--**********************************
             Chat box End
         ***********************************-->
@@ -76,7 +76,7 @@
 		<!--**********************************
             Header start
         ***********************************-->
-		{% include 'mophy/elements/header.html' %}
+		{% include 'aurora/elements/header.html' %}
 
         <!--**********************************
             Header end ti-comment-alt
@@ -85,7 +85,7 @@
         <!--**********************************
             Sidebar start
         ***********************************-->
-		{% include 'mophy/elements/sidebar.html' %}
+		{% include 'aurora/elements/sidebar.html' %}
 
         <!--**********************************
             Sidebar end
@@ -96,7 +96,7 @@
         ***********************************-->
         <div class="content-body">
             <div class="container-fluid">
-		    {% include 'mophy/elements/alert.html' %}
+		    {% include 'aurora/elements/alert.html' %}
 
             {% block content %}
             {% endblock %}
@@ -111,7 +111,7 @@
         <!--**********************************
             Footer start
         ***********************************-->
-		{% include 'mophy/elements/footer.html' %}
+		{% include 'aurora/elements/footer.html' %}
 
         <!--**********************************
             Footer end
@@ -140,7 +140,7 @@
     <script src="{% static jsurl %}"></script>
     {% endfor %}
     
-    {% for jsurl in dz_array.pagelevel.mophy.mophy_views.js|getdata:request.path %}
+    {% for jsurl in dz_array.pagelevel.aurora.aurora_views.js|getdata:request.path %}
     <script src="{% static jsurl %}"></script>
     {% endfor %}
     

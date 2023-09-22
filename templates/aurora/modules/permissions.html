@@ -1,4 +1,4 @@
-{% extends 'mophy/elements/layouts/admin.html' %}
+{% extends 'aurora/elements/layouts/admin.html' %}
 {% load static widget_tweaks %}
 
 
@@ -8,7 +8,7 @@
 
 
 {% block message %}
-{% include 'mophy/elements/alert.html' %}
+{% include 'aurora/elements/alert.html' %}
 {% endblock %}
 
 {% block content %}
@@ -18,7 +18,7 @@
                 <div class="card-header">
                     <h4 class="card-title">Permissions</h4>
                     {% comment %} {% if perms.auth.add_permission %}
-                    <span class="badge badge-primary"><a class="text-light" href="{% url 'mophy:add-permissions' %}">ADD PERMISSIONS &nbsp;<i class="fa fa-plus" aria-hidden="true"></i></a></span>
+                    <span class="badge badge-primary"><a class="text-light" href="{% url 'aurora:add-permissions' %}">ADD PERMISSIONS &nbsp;<i class="fa fa-plus" aria-hidden="true"></i></a></span>
                     {% endif %} {% endcomment %}
                 </div>
                 <div class="card-body">
@@ -59,10 +59,10 @@
                                     <td>
                                         <span class="sweetalert">
                                             {% if perms.auth.change_permission %}
-                                            <a href="{% url 'mophy:edit-permissions' id=per.id %}" class="btn btn-primary shadow btn-xs sharp me-2" data-bs-toggle="tooltip" data-placement="top" title="Edit"><i class="fas fa-pencil-alt color-muted"></i> </a>
+                                            <a href="{% url 'aurora:edit-permissions' id=per.id %}" class="btn btn-primary shadow btn-xs sharp me-2" data-bs-toggle="tooltip" data-placement="top" title="Edit"><i class="fas fa-pencil-alt color-muted"></i> </a>
                                             {% endif %}
                                             {% if perms.auth.delete_permission %}
-                                            <a href="{% url 'mophy:delete-permissions' id=per.id %}" class="sweet-success-cancel btn btn-danger shadow btn-xs sharp me-2" data-bs-toggle="tooltip" data-placement="top" title="Close"><i class="fa fa-trash"></i></a> 
+                                            <a href="{% url 'aurora:delete-permissions' id=per.id %}" class="sweet-success-cancel btn btn-danger shadow btn-xs sharp me-2" data-bs-toggle="tooltip" data-placement="top" title="Close"><i class="fa fa-trash"></i></a>
                                             {% endif %}
                                         </span>
                                     </td>

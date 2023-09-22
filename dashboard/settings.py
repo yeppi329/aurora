@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'users',
     'data',
-    #'mophy',
+    #'aurora',
 ]
 
 MIDDLEWARE = [

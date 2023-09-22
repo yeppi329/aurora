@@ -1,4 +1,4 @@
-{% extends 'mophy/elements/layouts/admin.html' %}
+{% extends 'aurora/elements/layouts/admin.html' %}
 
 {% load static %}
 
@@ -14,12 +14,12 @@
                 <div class="row">
                     <div class="col-xl-8 col-lg-6 col-md-7 col-sm-8">
                         <div class="card-bx stacked">
-                            <img src="{% static 'mophy/images/card/card.png' %}" alt="" class="mw-100">
+                            <img src="{% static 'aurora/images/card/card.png' %}" alt="" class="mw-100">
                             <div class="card-info text-white">
                                 <p class="mb-1">Main Balance</p>
                                 <h2 class="fs-36 text-white mb-sm-4 mb-3">$673,412.66</h2>
                                 <div class="d-flex align-items-center justify-content-between mb-sm-5 mb-3">
-                                    <img src="{% static 'mophy/images/dual-dot.png' %}" alt="" class="dot-img">
+                                    <img src="{% static 'aurora/images/dual-dot.png' %}" alt="" class="dot-img">
                                     <h4 class="fs-20 text-white mb-0">**** **** **** 1234</h4>
                                 </div>
                                 <div class="d-flex">
@@ -33,7 +33,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <a href="{% url 'mophy:cards-center' %}"><i class="fa fa-caret-down" aria-hidden="true"></i></a>
+                            <a href="{% url 'aurora:cards-center' %}"><i class="fa fa-caret-down" aria-hidden="true"></i></a>
                         </div>
                     </div>
                     <div class="col-xl-4 col-lg-6 col-md-5 col-sm-4">
@@ -113,42 +113,42 @@
                                 <div class="owl-carousel testimonial-one mb-5">
                                     <div class="item">
                                         <div class="image-bx mb-2">
-                                            <img src="{% static 'mophy/images/avatar/1.jpg' %}" alt="">
+                                            <img src="{% static 'aurora/images/avatar/1.jpg' %}" alt="">
                                             <i class="las la-check-circle"></i>
                                         </div>
-                                        <h6 class="fs-16 mb-0"><a href="{% url 'mophy:transactions-details' %}" class="text-black">David</a></h6>
+                                        <h6 class="fs-16 mb-0"><a href="{% url 'aurora:transactions-details' %}" class="text-black">David</a></h6>
                                         <span class="fs-12">@davidxc</span>
                                     </div>
                                     <div class="item">
                                         <div class="image-bx mb-2">
-                                            <img src="{% static 'mophy/images/avatar/2.jpg' %}" alt="">
+                                            <img src="{% static 'aurora/images/avatar/2.jpg' %}" alt="">
                                             <i class="las la-check-circle"></i>
                                         </div>
-                                        <h6 class="fs-16 mb-0"><a href="{% url 'mophy:transactions-details' %}" class="text-black">Cindy</a></h6>
+                                        <h6 class="fs-16 mb-0"><a href="{% url 'aurora:transactions-details' %}" class="text-black">Cindy</a></h6>
                                         <span class="fs-12">@cindyss</span>
                                     </div>
                                     <div class="item">
                                         <div class="image-bx mb-2">
-                                            <img src="{% static 'mophy/images/avatar/3.jpg' %}" alt="">
+                                            <img src="{% static 'aurora/images/avatar/3.jpg' %}" alt="">
                                             <i class="las la-check-circle"></i>
                                         </div>
-                                        <h6 class="fs-16 mb-0"><a href="{% url 'mophy:transactions-details' %}" class="text-black">Samuel</a></h6>
+                                        <h6 class="fs-16 mb-0"><a href="{% url 'aurora:transactions-details' %}" class="text-black">Samuel</a></h6>
                                         <span class="fs-12">@sam224</span>
                                     </div>
                                     <div class="item">
                                         <div class="image-bx mb-2">
-                                            <img src="{% static 'mophy/images/avatar/4.jpg' %}" alt="">
+                                            <img src="{% static 'aurora/images/avatar/4.jpg' %}" alt="">
                                             <i class="las la-check-circle"></i>
                                         </div>
-                                        <h6 class="fs-16 mb-0"><a href="{% url 'mophy:transactions-details' %}" class="text-black">Olivia</a></h6>
+                                        <h6 class="fs-16 mb-0"><a href="{% url 'aurora:transactions-details' %}" class="text-black">Olivia</a></h6>
                                         <span class="fs-12">@oliv62</span>
                                     </div>
                                     <div class="item">
                                         <div class="image-bx mb-2">
-                                            <img src="{% static 'mophy/images/avatar/5.jpg' %}" alt="">
+                                            <img src="{% static 'aurora/images/avatar/5.jpg' %}" alt="">
                                             <i class="las la-check-circle"></i>
                                         </div>
-                                        <h6 class="fs-16 mb-0"><a href="{% url 'mophy:transactions-details' %}" class="text-black">Martha</a></h6>
+                                        <h6 class="fs-16 mb-0"><a href="{% url 'aurora:transactions-details' %}" class="text-black">Martha</a></h6>
                                         <span class="fs-12">@marthaa</span>
                                     </div>
                                 </div>
@@ -384,7 +384,7 @@
                                                         </svg>
                                                     </td>
                                                     <td>
-                                                        <h6 class="fs-16 font-w600 mb-0"><a href="{% url 'mophy:transactions-details' %}" class="text-black">XYZ Store ID</a></h6>
+                                                        <h6 class="fs-16 font-w600 mb-0"><a href="{% url 'aurora:transactions-details' %}" class="text-black">XYZ Store ID</a></h6>
                                                         <span class="fs-14">Cashback</span>
                                                     </td>
                                                     <td>
@@ -410,7 +410,7 @@
                                                         </svg>
                                                     </td>
                                                     <td>
-                                                        <h6 class="fs-16 font-w600 mb-0"><a href="{% url 'mophy:transactions-details' %}" class="text-black">Chef Renata</a></h6>
+                                                        <h6 class="fs-16 font-w600 mb-0"><a href="{% url 'aurora:transactions-details' %}" class="text-black">Chef Renata</a></h6>
                                                         <span class="fs-14">Transfer</span>
                                                     </td>
                                                     <td>
@@ -436,7 +436,7 @@
                                                         </svg>
                                                     </td>
                                                     <td>
-                                                        <h6 class="fs-16 font-w600 mb-0"><a href="{% url 'mophy:transactions-details' %}" class="text-black">Cindy Alexandro</a></h6>
+                                                        <h6 class="fs-16 font-w600 mb-0"><a href="{% url 'aurora:transactions-details' %}" class="text-black">Cindy Alexandro</a></h6>
                                                         <span class="fs-14">Transfer</span>
                                                     </td>
                                                     <td>
@@ -462,7 +462,7 @@
                                                         </svg>
                                                     </td>
                                                     <td>
-                                                        <h6 class="fs-16 font-w600 mb-0"><a href="{% url 'mophy:transactions-details' %}" class="text-black">Paipal</a></h6>
+                                                        <h6 class="fs-16 font-w600 mb-0"><a href="{% url 'aurora:transactions-details' %}" class="text-black">Paipal</a></h6>
                                                         <span class="fs-14">Transfer</span>
                                                     </td>
                                                     <td>
@@ -488,7 +488,7 @@
                                                         </svg>
                                                     </td>
                                                     <td>
-                                                        <h6 class="fs-16 font-w600 mb-0"><a href="{% url 'mophy:transactions-details' %}" class="text-black">Hawkins Jr.</a></h6>
+                                                        <h6 class="fs-16 font-w600 mb-0"><a href="{% url 'aurora:transactions-details' %}" class="text-black">Hawkins Jr.</a></h6>
                                                         <span class="fs-14">Transfer</span>
                                                     </td>
                                                     <td>
@@ -522,7 +522,7 @@
                                                         </svg>
                                                     </td>
                                                     <td>
-                                                        <h6 class="fs-16 font-w600 mb-0"><a href="{% url 'mophy:transactions-details' %}" class="text-black">XYZ Store ID</a></h6>
+                                                        <h6 class="fs-16 font-w600 mb-0"><a href="{% url 'aurora:transactions-details' %}" class="text-black">XYZ Store ID</a></h6>
                                                         <span class="fs-14">Cashback</span>
                                                     </td>
                                                     <td>
@@ -548,7 +548,7 @@
                                                         </svg>
                                                     </td>
                                                     <td>
-                                                        <h6 class="fs-16 font-w600 mb-0"><a href="{% url 'mophy:transactions-details' %}" class="text-black">Chef Renata</a></h6>
+                                                        <h6 class="fs-16 font-w600 mb-0"><a href="{% url 'aurora:transactions-details' %}" class="text-black">Chef Renata</a></h6>
                                                         <span class="fs-14">Transfer</span>
                                                     </td>
                                                     <td>
@@ -574,7 +574,7 @@
                                                         </svg>
                                                     </td>
                                                     <td>
-                                                        <h6 class="fs-16 font-w600 mb-0"><a href="{% url 'mophy:transactions-details' %}" class="text-black">Cindy Alexandro</a></h6>
+                                                        <h6 class="fs-16 font-w600 mb-0"><a href="{% url 'aurora:transactions-details' %}" class="text-black">Cindy Alexandro</a></h6>
                                                         <span class="fs-14">Transfer</span>
                                                     </td>
                                                     <td>
@@ -608,7 +608,7 @@
                                                         </svg>
                                                     </td>
                                                     <td>
-                                                        <h6 class="fs-16 font-w600 mb-0"><a href="{% url 'mophy:transactions-details' %}" class="text-black">Paipal</a></h6>
+                                                        <h6 class="fs-16 font-w600 mb-0"><a href="{% url 'aurora:transactions-details' %}" class="text-black">Paipal</a></h6>
                                                         <span class="fs-14">Transfer</span>
                                                     </td>
                                                     <td>
@@ -634,7 +634,7 @@
                                                         </svg>
                                                     </td>
                                                     <td>
-                                                        <h6 class="fs-16 font-w600 mb-0"><a href="{% url 'mophy:transactions-details' %}" class="text-black">Hawkins Jr.</a></h6>
+                                                        <h6 class="fs-16 font-w600 mb-0"><a href="{% url 'aurora:transactions-details' %}" class="text-black">Hawkins Jr.</a></h6>
                                                         <span class="fs-14">Transfer</span>
                                                     </td>
                                                     <td>
