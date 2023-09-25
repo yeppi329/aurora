@@ -30,34 +30,15 @@
       <div class="login-wrapper">
         <div class="login-aside-left" style="background-image: url({% static 'aurora/images/bg-login2.png' %});">
           <a to="#" class="login-logo">
-            <img src="{% static 'aurora/images/logo.png' %}" alt="" class="mr-2" />
-            <img src="{% static 'aurora/images/logo-text.png' %}" alt="" class="ml-1" />
+            <img src="{% static 'aurora/images/logo-text.png' %}" alt="" style="width: 130px; height: 60px;" class="ml-1" />
           </a>
           <div class="login-description">
-            <h2 class="text-black  mb-2">Check the Status</h2>
-            <p class="fs-12">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters,</p>
-            <ul class="social-icons mt-4">
-              <li>
-                <a href="#">
-                  <i class="fa-brands fa-facebook-f"></i>
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <i class="fa-brands fa-twitter"></i>
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <i class="fa-brands fa-linkedin-in"></i>
-                </a>
-              </li>
-            </ul>
-            <div class="mt-5">
+            <img src="{% static 'aurora/images/logo.png' %}" style="max-width: 100%; height: auto;" alt="" class="mr-2" />
+            <div>
               <a href="#" class="text-black mr-4">Privacy Policy</a>
               <a href="#" class="text-black mr-4">Contact</a>
-              <a href="#" class="text-black">© 2022 DexignZone</a>
-            </div>
+              <a href="#" class="text-black">© 2023 arbeon</a>
+            </div>            
           </div>
         </div>
         <div class="login-aside-right">
@@ -68,7 +49,7 @@
                   <div class="col-xl-12">
                     <div class="auth-form-1">
                       <div class="mb-4">
-                        <h2 class="text-white mb-1">Welcome to Mohpy</h2>
+                        <h2 class="text-white mb-1">Welcome to aurora</h2>
                         <p class="text-white">Sign in by entering information below</p>
                       </div> {% include 'aurora/elements/alert.html' %} <form method='post'>{% csrf_token %} <div class="form-group">
                           <label class="mb-2 ">
