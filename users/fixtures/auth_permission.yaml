@@ -1,0 +1,53 @@
+- model: auth.permission
+  fields:
+    name: Can view dashboard
+    content_type_id: 10
+    codename: view_dashboard
+
+- model: auth.permission
+  fields:
+    name: Can view data
+    content_type_id: 11
+    codename: view_data
+
+- model: auth.permission
+  fields:
+    name: Can add data
+    content_type_id: 11
+    codename: add_data
+
+- model: auth.permission
+  fields:
+    name: Can change data
+    content_type_id: 11
+    codename: change_data
+
+- model: auth.permission
+  fields:
+    name: Can delete data
+    content_type_id: 11
+    codename: delete_data
+
+- model: auth.permission
+  fields:
+    name: Can view operation
+    content_type_id: 12
+    codename: view_operation
+
+- model: auth.permission
+  fields:
+    name: Can add operation
+    content_type_id: 12
+    codename: add_operation
+
+- model: auth.permission
+  fields:
+    name: Can change operation
+    content_type_id: 12
+    codename: change_operation
+
+- model: auth.permission
+  fields:
+    name: Can delete operation
+    content_type_id: 12
+    codename: delete_operation

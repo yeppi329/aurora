@@ -3,12 +3,17 @@
 <div class="deznav">
     <div class="deznav-scroll">
         <ul class="metismenu" id="menu">
+
+        {% if perms.dashboard.view_dashboard %}
             <li>
                 <a href="{% url 'aurora:index' %}" class="ai-icon" aria-expanded="false">
                     <i class="flaticon-381-networking"></i>
                     <span class="nav-text">Dashboard</span>
                 </a>
             </li>
+        {% endif %}
+
+        {% if perms.data.view_data %}
             <li>
                 <a class="has-arrow ai-icon" href="{% url 'aurora:svc-user-status' %}" aria-expanded="false">
                     <i class="flaticon-381-database"></i><span class="nav-text">Data (지표)</span>
@@ -18,7 +23,9 @@
                     <li><a href="{% url 'aurora:scan-status' %}">스캔 현황</a></li>
                 </ul>
             </li>
+        {% endif %}
 
+        {% if perms.operation.view_operation %}
             <li>
                 <a class="has-arrow ai-icon" href="javascript:void(0)" aria-expanded="false">
                     <i class="flaticon-381-television"></i><span class="nav-text">Operation (Admin)</span>
@@ -30,6 +37,7 @@
                     <li><a href="{% url 'aurora:report-list' %}">신고·차단 관리</a></li>
                 </ul>
             </li>
+        {% endif %}
 
             {% if perms.users.view_newuser or perms.auth.view_group or perms.auth.view_permission %}
                 <li>

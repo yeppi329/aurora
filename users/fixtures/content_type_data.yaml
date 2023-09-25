@@ -1,0 +1,17 @@
+- model: contenttypes.contenttype
+  pk: 10
+  fields:
+    app_label: dashboard
+    model: dashboard
+
+- model: contenttypes.contenttype
+  pk: 11
+  fields:
+    app_label: data
+    model: data
+
+- model: contenttypes.contenttype
+  pk: 12
+  fields:
+    app_label: operation
+    model: operation
