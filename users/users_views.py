@@ -124,8 +124,22 @@ def signup(request):
                         Customer_group.permissions.add(perm)
                 user_obj.groups.add(Customer_group)
             # Default Group assign End-----------------------------------------------------------
+            try:
+                if user_obj.is_active == False:
+                    messages.warning(
+                        request,
+                        "Please confirm your email address to complete the registration.",
+                    )
+                return redirect("aurora:signup")
+            except:
+                messages.warning(request, "Email Not valid")
+                user_obj.delete()
+        else:
+            messages.warning(request, "Form is not valid")
+    else:
+        if request.user.is_authenticated:
             return redirect("aurora:index")
-    form = SignupForm()
+        form = SignupForm()
     return render(request, "aurora/modules/signup.html", {"form": form})
 
 
