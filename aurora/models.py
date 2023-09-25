@@ -66,6 +66,25 @@ class SummaryUserMonthInfo(models.Model):
         return f'Summary ID: {self.summary_id}, Date: {self.summary_dt}'
     
 #이용자현황_일별현황 + 대시보드 이용자 현황
+class SummaryUserHourInfo(models.Model):
+    summary_id = models.BigAutoField(primary_key=True)
+    summary_dt = models.CharField('통계일자',max_length=255,blank=True)
+    total_user = models.BigIntegerField(default=0,blank=True)
+    new_user = models.BigIntegerField(default=0,blank=True)
+    suspended_user = models.BigIntegerField(default=0,blank=True)
+    deleted_user = models.BigIntegerField(default=0,blank=True)
+    return_user = models.BigIntegerField(default=0,blank=True)
+    inactive_user = models.BigIntegerField(default=0,blank=True)
+    dau = models.BigIntegerField(default=0,blank=True)
+    created_at = models.DateTimeField(auto_now=True,blank=True)
+
+    class Meta:
+        db_table = 'summary_user_hour_info'  
+
+    def __str__(self):
+        return f'Summary ID: {self.summary_id}, Date: {self.summary_dt}'
+
+#이용자현황_시간별현황 + 대시보드 이용자 현황
 class SummaryUserDailyInfo(models.Model):
     summary_id = models.BigAutoField(primary_key=True)
     summary_dt = models.CharField('통계일자',max_length=255,blank=True)
