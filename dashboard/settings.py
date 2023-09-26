@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "users",
     "data",
     "aurora",
+    "drf_api_logger",  # drf
 ]
 
 MIDDLEWARE = [
@@ -62,6 +63,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "drf_api_logger.middleware.api_logger_middleware.APILoggerMiddleware",  # Add here
 ]
 
 ROOT_URLCONF = "dashboard.urls"
@@ -162,3 +164,4 @@ MEDIA_ROOT = Path(BASE_DIR, "media")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "users.NewUser"
+DRF_API_LOGGER_DATABASE = True  # Default to False
