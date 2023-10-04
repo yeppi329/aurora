@@ -15,12 +15,12 @@
 
         {% if perms.data.view_data %}
             <li>
-                <a class="has-arrow ai-icon" href="{% url 'aurora:svc-user-status' %}" aria-expanded="false">
+                <a class="has-arrow ai-icon" href="{% url 'data:svc-user-status' %}" aria-expanded="false">
                     <i class="flaticon-381-database"></i><span class="nav-text">Data (지표)</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="{% url 'aurora:svc-user-status' %}">이용자 현황</a></li>
-                    <li><a href="{% url 'aurora:scan-status' %}">스캔 현황</a></li>
+                    <li><a href="{% url 'data:svc-user-status' %}">이용자 현황</a></li>
+                    <li><a href="{% url 'data:scan-status' %}">스캔 현황</a></li>
                 </ul>
             </li>
         {% endif %}
@@ -31,10 +31,10 @@
                     <i class="flaticon-381-television"></i><span class="nav-text">Operation (Admin)</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="{% url 'aurora:svc-user-list' %}">이용자 관리</a></li>
-                    <li><a href="{% url 'aurora:object-list' %}">사물 관리</a></li>
-                    <li><a href="{% url 'aurora:content-list' %}">콘텐츠 관리</a></li>
-                    <li><a href="{% url 'aurora:report-list' %}">신고·차단 관리</a></li>
+                    <li><a href="{% url 'operation:svc-user-list' %}">이용자 관리</a></li>
+                    <li><a href="{% url 'operation:object-list' %}">사물 관리</a></li>
+                    <li><a href="{% url 'operation:content-list' %}">콘텐츠 관리</a></li>
+                    <li><a href="{% url 'operation:report-list' %}">신고·차단 관리</a></li>
                 </ul>
             </li>
         {% endif %}

@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "users",
     "data",
     "aurora",
+    "operation",
     "drf_api_logger",  # drf
 ]
 

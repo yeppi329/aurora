@@ -19,7 +19,10 @@ from django.contrib import admin
 from django.urls import path, include
 from users.forms import EmailValidationOnForgotPassword
 from django.contrib.auth import views as auth_views
+from aurora import aurora_views
 from users import users_views
+from data import data_views
+from operation import operation_views
 
 urlpatterns = [
 
@@ -37,6 +40,12 @@ urlpatterns = [
     #     name='change-password'
     # ),
     path('password/', users_views.change_password, name='change_password'),
+
+    # data
+    path('data/', include('data.urls', namespace='data')),
+
+    # operation
+    path("operation/", include('operation.urls', namespace='operation')),
 
 ]
 if settings.DEBUG == True or settings.DEBUG == False:

@@ -4,5 +4,6 @@ from django.urls import path
 app_name = 'data'
 
 urlpatterns = [
-    path('user-status/', data_views.user_status, name="user-status"),
+    path("svc-user-status/", data_views.svc_user_status, name="svc-user-status"),
+    path("scan-status/", data_views.scan_status, name="scan-status"),
 ]
