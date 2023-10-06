@@ -15,11 +15,11 @@
 
         {% if perms.data.view_data %}
             <li>
-                <a class="has-arrow ai-icon" href="{% url 'data:svc-user-status' %}" aria-expanded="false">
+                <a class="has-arrow ai-icon" href="{% url 'data:svc-user-status-daily' %}" aria-expanded="false">
                     <i class="flaticon-381-database"></i><span class="nav-text">Data (지표)</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="{% url 'data:svc-user-status' %}">이용자 현황</a></li>
+                    <li><a href="{% url 'data:svc-user-status-daily' %}">이용자 현황</a></li>
                     <li><a href="{% url 'data:scan-status' %}">스캔 현황</a></li>
                 </ul>
             </li>
