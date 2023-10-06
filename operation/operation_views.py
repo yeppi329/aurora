@@ -1,10 +1,11 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from .models import ScanInfo, ImageRecognition
-from django.db.models import OuterRef, Subquery
+from django.db.models import OuterRef, Subquery, Count, Max, F, Min
 from django.db import connections
-
+from django.core.paginator import Paginator
 import time
+from .utils import *
 
 
 @login_required(login_url="aurora:login")
@@ -20,141 +21,105 @@ def svc_user_list(request):
 
 
 @login_required(login_url="aurora:login")
-def object_list(request):
+def object_list(request, object_type="mg_id"):
     context = {"page_title": "사물 관리"}
-    # # 1번 방법
-    # # ImageRecognition 테이블에서 각 mg_id에 대한 like_cnt를 서브쿼리로 가져옵니다.
-    # start_time = time.time()
-    # image_recognition_subquery = (
-    #     ImageRecognition.objects.using("hippo_db")
-    #     .filter(mg_id=OuterRef("mg_id"))
-    #     .values("like_cnt", "first_scan_id")
-    # )
+    print(object_type)
+    # header data
+    # count mg_id
+    unique_count_mg_id = (
+        ScanInfo.objects.using("hippo_db").values("mg_id").distinct().count()
+    )
+    # count total scan_id
+    total_count_sacn_id = ScanInfo.objects.using("hippo_db").count()
 
-    # # ScanInfo 모델에 서브쿼리 결과를 병합합니다.
-    # scan_info_query = (
-    #     ScanInfo.objects.using("hippo_db")
-    #     .annotate(
-    #         like_cnt=Subquery(image_recognition_subquery.values("like_cnt")),
-    #         first_scan_id=Subquery(image_recognition_subquery.values("first_scan_id")),
-    #     )
-    #     .order_by("-created_at")
-    #     .values(
-    #         "scan_id",
-    #         "mg_id",
-    #         "img_url",
-    #         "crop_img_url",
-    #         "meta_data",
-    #         "user_id",
-    #         "geohash",
-    #         "created_at",
-    #         "updated_at",
-    #         "deleted_at",
-    #         "status_flag",
-    #         "img_name",
-    #         "enc_geo",
-    #         "like_cnt",  # ImageRecognition의 like_cnt 필드
-    #         "first_scan_id",
-    #     )
-    # )
+    # count unique user
+    unique_count_user_id = (
+        ScanInfo.objects.using("hippo_db").values("user_id").distinct().count()
+    )
 
-    # # 결과를 리스트로 변환하거나 다른 형태로 처리할 수 있습니다.
-    # data = list(scan_info_query)
-    # for item in data:
-    #     first_scan_id = item.get("first_scan_id")
-    #     if first_scan_id:
-    #         first_scan_info = ScanInfo.objects.using("hippo_db").get(
-    #             scan_id=first_scan_id
-    #         )
-    #         item["first_scan_img_url"] = first_scan_info.img_url
-    # end_time = time.time()
-    # execution_time = end_time - start_time
-    # print(f"실행 시간: {execution_time:.5f} 초")
+    if object_type == "mg_id":
+        # mg_id 별로 레코드 수와 img_url을 가져오는 서브쿼리
+        record_count_subquery = (
+            ScanInfo.objects.using("hippo_db")
+            .values("mg_id")
+            .annotate(mg_id_count=Count("mg_id"))
+        )
 
-    #############################################
-    # 2번방법
-    # ImageRecognition 테이블에서 각 mg_id에 대한 like_cnt와 first_scan_id를 서브쿼리로 가져옵니다.
-    start_time = time.time()
-    image_recognition_subquery = (
+        # ImageRecognition 모델에서 first_scan_id를 통해 mg_id_count와 img_url을 가져옵니다.
+        data = ImageRecognition.objects.using("hippo_db").annotate(
+            mg_id_count=Subquery(
+                record_count_subquery.filter(mg_id=OuterRef("mg_id")).values(
+                    "mg_id_count"
+                )
+            ),
+            img_url=Subquery(
+                ScanInfo.objects.using("hippo_db")
+                .filter(scan_id=OuterRef("first_scan_id"))
+                .values("img_url")
+            ),
+        )
+    else:
+        # ScanInfo 모델을 사용하여 쿼리 생성
+        data = ScanInfo.objects.using("hippo_db").values().order_by("-created_at")
+    return render(
+        request,
+        "aurora/pages/operation/object-list.html",
+        {
+            "context": context,
+            "object_type": object_type,
+            "unique_count_mg_id": unique_count_mg_id,
+            "total_count_sacn_id": total_count_sacn_id,
+            "unique_count_user_id": unique_count_user_id,
+            "data": data,
+        },
+    )
+
+
+@login_required(login_url="aurora:login")
+def mgid_detail(request, mg_id):
+    context = {"page_title": "mg ID 디테일 페이지"}
+    # ScanInfo 모델을 사용하여 쿼리 생성
+    mg_id_like_cnt = (
         ImageRecognition.objects.using("hippo_db")
-        .filter(mg_id=OuterRef("mg_id"))
-        .values("like_cnt", "first_scan_id")
+        .filter(mg_id=mg_id)
+        .values("like_cnt")
+    )
+    # ScanInfo 모델을 사용하여 쿼리 생성
+    queryset = (
+        ScanInfo.objects.using("hippo_db").filter(mg_id=mg_id).order_by("created_at")
+    )
+    # 원하는 페이지당 항목 수 설정
+    items_per_page = 15  # 페이지당 15개 항목을 표시하도록 설정
+
+    # Paginator를 사용하여 페이지네이션 객체 생성
+    paginator = Paginator(queryset, items_per_page)
+    # 페이지 번호 지정
+    page_number = request.GET.get("page")  # URL 매개변수에서 페이지 번호를 가져옴
+
+    # 페이지 번호가 없는 경우 기본값을 설정할 수 있습니다.
+    if not page_number:
+        page_number = 1
+    # 페이지 번호에 해당하는 Page 객체 가져오기
+    page = paginator.get_page(page_number)
+    return render(
+        request,
+        "aurora/pages/operation/object-list-mg-id-detail.html",
+        {
+            "context": context,
+            "mg_id": mg_id,
+            "page": page,
+            "mg_id_like_cnt": mg_id_like_cnt,
+        },
     )
 
-    # ScanInfo 모델에 서브쿼리 결과를 병합합니다.
-    scan_info_query = (
-        ScanInfo.objects.using("hippo_db")
-        .annotate(
-            like_cnt=Subquery(image_recognition_subquery.values("like_cnt")),
-            first_scan_id=Subquery(image_recognition_subquery.values("first_scan_id")),
-        )
-        .order_by("-created_at")
-        .values(
-            "scan_id",
-            "mg_id",
-            "img_url",
-            "crop_img_url",
-            "meta_data",
-            "user_id",
-            "geohash",
-            "created_at",
-            "updated_at",
-            "deleted_at",
-            "status_flag",
-            "img_name",
-            "enc_geo",
-            "like_cnt",  # ImageRecognition의 like_cnt 필드
-            "first_scan_id",  # ImageRecognition의 first_scan_id 필드
-        )
-    )
 
-    # first_scan_id를 사용하여 first_scan_img_url을 가져옵니다.
-    first_scan_img_url_subquery = (
-        ScanInfo.objects.using("hippo_db")
-        .filter(scan_id=OuterRef("first_scan_id"))
-        .values("img_url")[:1]
-    )
-
-    scan_info_query = scan_info_query.annotate(
-        first_scan_img_url=Subquery(first_scan_img_url_subquery)
-    )
-
-    # 결과를 리스트로 변환하거나 다른 형태로 처리할 수 있습니다.
-    data = list(scan_info_query)
-    end_time = time.time()
-    execution_time = end_time - start_time
-    print(f"실행 시간: {execution_time:.5f} 초")
-
-    ##############################################
-    # # 3번방법 원시쿼리 -> 이건 다시 객체화해줘야됨... (귀찬)
-    # # 데이터베이스 연결을 가져옵니다.
-    # start_time = time.time()
-    # with connections["hippo_db"].cursor() as cursor:
-    #     # 실행할 SQL 쿼리를 작성합니다.
-    #     sql_query = """
-    #         SELECT scan_info.*,
-    #             image_recognition.like_cnt,
-    #             (
-    #                 SELECT img_url
-    #                 FROM scan_info AS si
-    #                 WHERE si.scan_id = image_recognition.first_scan_id
-    #             ) AS first_scan_img_url
-    #         FROM scan_info
-    #         LEFT JOIN image_recognition ON scan_info.mg_id = image_recognition.mg_id
-    #         ORDER BY scan_info.created_at DESC;
-    #     """
-
-    #     # SQL 쿼리를 실행합니다.
-    #     cursor.execute(sql_query)
-
-    #     # 결과를 가져옵니다.
-    #     data = cursor.fetchall()
-    # print(data[0])
-    # # 결과를 처리하거나 반환합니다.
-    # end_time = time.time()
-    # execution_time = end_time - start_time
-    # print(f"실행 시간: {execution_time:.5f} 초")
-    return render(request, "aurora/pages/operation/object-list.html", {"data": data})
+@login_required(login_url="aurora:login")
+def scanid_detail(request, scan_id):
+    context = {"page_title": "mg ID 디테일 페이지"}
+    # uuid_obj를 사용하여 원하는 작업을 수행할 수 있습니다.
+    response = f"scan_id 값: {scan_id}"
+    print(response)
+    return render(request, "aurora/pages/operation/object-list.html", context)
 
 
 @login_required(login_url="aurora:login")

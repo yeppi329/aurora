@@ -97,5 +97,44 @@ let dataSet = [
 	});
    
 	jQuery('.dataTables_wrapper select').selectpicker();
-   
+    
+    // woody - Custom
+    var table_woody = $('#example-woody').DataTable({
+        createdRow: function ( row, data, index ) {
+           $(row).addClass('selected')
+        },
+        initComplete: function () {
+            this.api()
+                .columns()
+                .every(function () {
+                    var column = this;
+                    var title = column.footer().textContent;
+
+                    // Create input element and add event listener
+                    $('<input type="text" placeholder="Search ' + title + '" />')
+                        .appendTo($(column.footer()).empty())
+                        .on('keyup change clear', function () {
+                            if (column.search() !== this.value) {
+                                column.search(this.value).draw();
+                            }
+                        });
+                });
+        }         
+    });
+      
+    table_woody.on('click', 'tbody tr', function() {
+    var $row = table_woody.row(this).nodes().to$();
+    var hasClass = $row.hasClass('selected');
+    if (hasClass) {
+        $row.removeClass('selected')
+    } else {
+        $row.addClass('selected')
+    }
+    })
+    
+    table_woody.rows().every(function() {
+    this.nodes().to$().removeClass('selected')
+    });
+
+
 })(jQuery);

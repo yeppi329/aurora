@@ -1,0 +1,126 @@
+{% extends 'aurora/elements/layouts/admin.html' %} {% load static %} {% block additional_css %} {% endblock %} {% block content %}
+<div class="page-titles">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/index">Home</a></li>
+    <li class="breadcrumb-item"><a href="javascript:void(0)">Operation</a></li>
+    <li class="breadcrumb-item">
+      <a href="{% url 'operation:object-list'%}">사물 관리</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="{% url 'operation:object-list-dynamic' object_type='mg_id' %}">mg_id 사물 관리</a>
+    </li>
+    <li class="breadcrumb-item active">
+      <a href="/operation/object-list/mg-id-detail/{{ mg_id }}">mg_id detail</a>
+    </li>
+  </ol>
+</div>
+<!-- test -->
+<!-- row -->
+
+<div class="row">
+  {% for item in page %}
+  <div class="col-lg-12 col-xl-6 col-xxl-4">
+    <div class="card">
+      <div class="card-body">
+        <div class="row m-b-30">
+          <div class="col-md-5 col-xxl-12">
+            <div class="new-arrival-product mb-4 mb-xxl-4 mb-md-0">
+              <div class="new-arrivals-img-contnent">
+                <img class="img-fluid" src="{{ item.img_url }}" alt="" />
+              </div>
+            </div>
+          </div>
+          <div class="col-md-7 col-xxl-12">
+            <div class="new-arrival-content position-relative">
+              <h4>
+                <a href="javascript:void(0)">{{ item.scan_id }}</a>
+              </h4>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex px-0 justify-content-between">
+                  <strong>User</strong>
+                  <span class="mb-0" style="font-size: 14px;">{{ item.user_id }}</span>
+                </li>
+                <li class="list-group-item d-flex px-0 justify-content-between">
+                  <strong>Created</strong>
+                  <span class="mb-0">{{ item.created_at| date:"y-m-d H:m:s" }}</span>
+                </li>
+                <li class="list-group-item d-flex px-0 justify-content-between">
+                  <strong>Geohash</strong>
+                  <span class="mb-0">{{ item.geohash }}</span>
+                </li>
+              </ul>
+
+              <div
+                class="accordion accordion-primary"
+                id="accordion-{{ item.scan_id }}"
+              >
+                <div class="accordion-item">
+                  <div
+                    class="accordion-header rounded-lg collapsed"
+                    id="heading{{ item.scan_id }}"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapse{{ item.scan_id }}"
+                    aria-controls="collapse{{ item.scan_id }}"
+                    aria-expanded="false"
+                    role="button"
+                  >
+                    <span class="accordion-header-icon"></span>
+                    <span class="accordion-header-text">META DATA</span>
+                    <span class="accordion-header-indicator"></span>
+                  </div>
+                  <div
+                    id="collapse{{ item.scan_id }}"
+                    class="collapse"
+                    aria-labelledby="heading{{ item.scan_id }}"
+                    data-bs-parent="#accordion-{{ item.scan_id }}"
+                    style=""
+                  >
+                    <div class="accordion-body">
+                      <div
+                        id="meta-table-{{ item.scan_id }}"
+                        class="dz-scroll height370"
+                      >
+                      <ul class="list-group list-group-flush">
+                        {% for key, value in item.meta_data.items %}
+
+                        <li class="list-group-item d-flex px-0 justify-content-between">
+                          <strong>{{ key }}</strong>
+                          <span class="mb-0">{{ value }}</span>
+                        </li>
+                        {% endfor %}
+                      </ul>                      
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+  <ul class="pagination">
+    {% if page.has_previous %}
+    <li class="page-item page-indicator">
+      <a class="page-link" href="?page={{ page.previous_page_number }}">
+        <i class="la la-angle-left"></i>
+      </a>
+    </li>
+    {% endif %} {% for page_num in page.paginator.page_range %}
+    <li class="page-item{% if page_num == page.number %} active{% endif %}">
+      <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+    </li>
+    {% endfor %} {% if page.has_next %}
+    <li class="page-item page-indicator">
+      <a class="page-link" href="?page={{ page.paginator.num_pages }}">
+        <i class="la la-angle-right"></i>
+      </a>
+    </li>
+    {% endif %}
+  </ul>
+
+  {% endblock %} {% block additional_js %} {% endblock %}
+</div>

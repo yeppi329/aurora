@@ -187,6 +187,19 @@
 			});
 		}	
 	}	
+
+	var sparkLineCategory = function(){
+		if(jQuery('#sparklinecategory').length > 0 ){
+			var dataValues = $("#sparklinecategory").data("values").split(",").map(Number);
+			//Pie
+			$("#sparklinecategory").sparkline(dataValues, {
+				type: "pie",
+				height: "100",
+				resize: !0
+			});
+		}	
+	}	
+
 	var bulletChart = function(){
 		if(jQuery('#bullet-chart').length > 0 ){
 			// Bullet
@@ -234,6 +247,7 @@
 				bulletChart();
 				sparkLine11();
 				sparkLine12();
+				sparkLineCategory();
 				boxPlot(); 
 			},
 			
@@ -250,6 +264,7 @@
 				bulletChart();
 				sparkLine11();
 				sparkLine12();
+				sparkLineCategory();
 				boxPlot();
 			}
 		}

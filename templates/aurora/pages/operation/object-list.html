@@ -1,81 +1,396 @@
-{% extends 'aurora/elements/layouts/admin.html' %}
+{% extends 'aurora/elements/layouts/admin.html' %} {% load static %} {% block additional_css %} {% endblock %} {% block content %}
+<style>
+    a:hover {
+        color: white; /* 마우스 오버시 텍스트 색상을 빨간색으로 변경 */
+        background-color: #ed0b4c; /* 마우스 오버시 배경색 변경 */
+        /* 기타 스타일 변경 가능 */
+    }
+</style>
+<div class="page-titles">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/index">Home</a></li>
+    <li class="breadcrumb-item"><a href="javascript:void(0)">Operation</a></li>
+    <li class="breadcrumb-item">
+      <a href="{% url 'operation:object-list'%}">사물 관리</a>
+    </li>
+    {% if object_type == "mg_id" %}
+    <li class="breadcrumb-item active">
+      <a href="{% url 'operation:object-list-dynamic' object_type='mg_id' %}"
+        >mg_id 사물 관리</a
+      >
+    </li>
+    {% else %}
+    <li class="breadcrumb-item active">
+      <a href="{% url 'operation:object-list-dynamic' object_type='scan_id' %}"
+        >scan_id 사물 관리</a
+      >
+    </li>
+    {% endif %}
+  </ol>
+</div>
 
-{% load static %}
+<!-- row -->
 
-{% block additional_css %}
-{% endblock %}
-
-{% block content %}
-
-        <div class="page-titles">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="javascript:void(0)">Table</a></li>
-                <li class="breadcrumb-item active"><a href="javascript:void(0)">Datatable</a></li>
-            </ol>
+<div class="row">
+  <div class="col-xl-3 col-sm-6">
+    <div class="card">
+      <div class="card-body">
+        <div class="media align-items-center invoice-card">
+          <div class="media-body">
+            <h2 class="fs-38 text-black font-w600">{{ unique_count_mg_id }}</h2>
+            <span class="fs-18">Total mg_id</span>
+          </div>
+          <span class="p-3 border ms-3 rounded-circle">
+            <svg
+              width="34"
+              height="34"
+              viewBox="0 0 34 34"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M26.9165 1.41669H7.08317C5.58028 1.41669 4.13894 2.01371 3.07623 3.07642C2.01353 4.13912 1.4165 5.58046 1.4165 7.08335V17C1.4165 17.3757 1.56576 17.7361 1.83144 18.0018C2.09711 18.2674 2.45745 18.4167 2.83317 18.4167H9.9165V31.1667C9.91583 31.4376 9.99289 31.7031 10.1385 31.9316C10.2842 32.1601 10.4923 32.342 10.7382 32.4559C10.9847 32.5693 11.2585 32.6096 11.5273 32.5719C11.796 32.5343 12.0482 32.4202 12.254 32.2434L16.2915 28.7867L20.329 32.2434C20.5856 32.4628 20.9122 32.5834 21.2498 32.5834C21.5875 32.5834 21.9141 32.4628 22.1707 32.2434L26.2082 28.7867L30.2457 32.2434C30.5023 32.4628 30.8289 32.5834 31.1665 32.5834C31.3715 32.5819 31.574 32.5385 31.7615 32.4559C32.0074 32.342 32.2155 32.1601 32.3612 31.9316C32.5068 31.7031 32.5838 31.4376 32.5832 31.1667V7.08335C32.5832 5.58046 31.9862 4.13912 30.9234 3.07642C29.8607 2.01371 28.4194 1.41669 26.9165 1.41669ZM4.24984 15.5834V7.08335C4.24984 6.33191 4.54835 5.61124 5.0797 5.07988C5.61105 4.54853 6.33172 4.25002 7.08317 4.25002C7.83462 4.25002 8.55529 4.54853 9.08664 5.07988C9.61799 5.61124 9.9165 6.33191 9.9165 7.08335V15.5834H4.24984ZM29.7498 28.0925L27.129 25.84C26.8724 25.6205 26.5458 25.4999 26.2082 25.4999C25.8705 25.4999 25.5439 25.6205 25.2873 25.84L21.2498 29.2967L17.2123 25.84C16.9557 25.6205 16.6292 25.4999 16.2915 25.4999C15.9538 25.4999 15.6273 25.6205 15.3707 25.84L12.7498 28.0925V7.08335C12.7481 6.08812 12.4842 5.1109 11.9848 4.25002H26.9165C27.668 4.25002 28.3886 4.54853 28.92 5.07988C29.4513 5.61124 29.7498 6.33191 29.7498 7.08335V28.0925ZM26.9165 8.50002C26.9165 8.87574 26.7673 9.23608 26.5016 9.50175C26.2359 9.76743 25.8756 9.91669 25.4998 9.91669H16.9998C16.6241 9.91669 16.2638 9.76743 15.9981 9.50175C15.7324 9.23608 15.5832 8.87574 15.5832 8.50002C15.5832 8.1243 15.7324 7.76396 15.9981 7.49829C16.2638 7.23261 16.6241 7.08335 16.9998 7.08335H25.4998C25.8756 7.08335 26.2359 7.23261 26.5016 7.49829C26.7673 7.76396 26.9165 8.1243 26.9165 8.50002ZM26.9165 14.1667C26.9165 14.5424 26.7673 14.9027 26.5016 15.1684C26.2359 15.4341 25.8756 15.5834 25.4998 15.5834H16.9998C16.6241 15.5834 16.2638 15.4341 15.9981 15.1684C15.7324 14.9027 15.5832 14.5424 15.5832 14.1667C15.5832 13.791 15.7324 13.4306 15.9981 13.165C16.2638 12.8993 16.6241 12.75 16.9998 12.75H25.4998C25.8756 12.75 26.2359 12.8993 26.5016 13.165C26.7673 13.4306 26.9165 13.791 26.9165 14.1667ZM26.9165 19.8334C26.9165 20.2091 26.7673 20.5694 26.5016 20.8351C26.2359 21.1008 25.8756 21.25 25.4998 21.25H16.9998C16.6241 21.25 16.2638 21.1008 15.9981 20.8351C15.7324 20.5694 15.5832 20.2091 15.5832 19.8334C15.5832 19.4576 15.7324 19.0973 15.9981 18.8316C16.2638 18.5659 16.6241 18.4167 16.9998 18.4167H25.4998C25.8756 18.4167 26.2359 18.5659 26.5016 18.8316C26.7673 19.0973 26.9165 19.4576 26.9165 19.8334Z"
+                fill="#858585"
+              />
+            </svg>
+          </span>
         </div>
-        <!-- row -->
-
-
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-title">Basic Datatable</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table id="example" class="display min-w850">
-                                <thead>
-                                    <tr>
-                                        <th>사물이미지</th>
-                                        <th>매칭이미지</th>
-                                        <th>mg_id</th>
-                                        <th>scan_id</th>
-                                        <th>위치</th>
-                                        <th>좋아요</th>
-                                        <th>생성일</th>
-                                        <th>생성자</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for item in data %}
-                                    <tr>
-                                        <td>
-                                            <img src="{{ item.img_url }}" alt="Image" width="120"
-                                            height="160"></td>
-                                        <td><img src="{{ item.first_scan_img_url }}" alt="Image" width="120"
-                                            height="160"></td>
-                                        <td>{{ item.mg_id }}</td>
-                                        <td>{{ item.scan_id }}</td>
-                                        <td>{{ item.enc_geo }}</td>
-                                        <td>{{ item.like_cnt }}</td>
-                                        <td>{{ item.created_at }}</td>
-                                        <td>{{ item.user_id }}</td>
-                                    </tr>
-                                    <!-- 필요한 다른 필드 추가 -->
-                                {% endfor %}
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <th>사물이미지</th>
-                                        <th>매칭이미지</th>
-                                        <th>mg_id</th>
-                                        <th>scan_id</th>
-                                        <th>위치</th>
-                                        <th>좋아요</th>
-                                        <th>생성일</th>
-                                        <th>생성자</th>
-                                    </tr>
-                                </tfoot>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-sm-6">
+    <div class="card">
+      <div class="card-body">
+        <div class="media align-items-center invoice-card">
+          <div class="media-body">
+            <h2 class="fs-38 text-black font-w600">{{total_count_sacn_id}}</h2>
+            <span class="fs-18">total scan_id</span>
+          </div>
+          <span class="p-3 border ms-3 rounded-circle">
+            <svg
+              height="34px"
+              width="34px"
+              version="1.1"
+              id="_x32_"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+              viewBox="0 0 512 512"
+              xml:space="preserve"
+            >
+              <style type="text/css">
+                .st0 {
+                  fill: #000000;
+                }
+              </style>
+              <g>
+                <path
+                  class="st0"
+                  d="M378.413,0H208.297h-13.168l-9.314,9.314L57.02,138.102l-9.314,9.314v13.176v265.514
+                                            c0,47.36,38.527,85.895,85.895,85.895h244.812c47.353,0,85.881-38.535,85.881-85.895V85.896C464.294,38.528,425.766,0,378.413,0z
+                                            M432.497,426.105c0,29.877-24.214,54.091-54.084,54.091H133.601c-29.87,0-54.084-24.214-54.084-54.091V160.591h83.717
+                                            c24.884,0,45.063-20.178,45.063-45.07V31.804h170.116c29.87,0,54.084,24.214,54.084,54.092V426.105z"
+                />
+                <path
+                  class="st0"
+                  d="M162.94,251.968c-5.851,0-10.054,4.21-10.054,10.592v72.804c0,6.388,4.203,10.599,10.054,10.599
+                                            c5.698,0,9.915-4.21,9.915-10.599V262.56C172.855,256.178,168.638,251.968,162.94,251.968z"
+                />
+                <path
+                  class="st0"
+                  d="M265.621,251.968c-5.977,0-9.244,3.261-12.219,10.326l-19.299,44.547h-0.545l-19.69-44.547
+                                            c-3.114-7.066-6.382-10.326-12.358-10.326c-6.647,0-11.004,4.622-11.004,11.954v72.398c0,6.109,3.812,9.643,9.245,9.643
+                                            c5.153,0,8.965-3.534,8.965-9.643v-44.554h0.67l14.398,33.138c2.848,6.522,5.167,8.428,9.775,8.428
+                                            c4.622,0,6.926-1.906,9.789-8.428l14.258-33.138h0.684v44.554c0,6.109,3.658,9.643,9.091,9.643c5.432,0,9.105-3.534,9.105-9.643
+                                            v-72.398C276.486,256.59,272.269,251.968,265.621,251.968z"
+                />
+                <path
+                  class="st0"
+                  d="M356.363,293.806h-19.02c-5.153,0-8.42,3.121-8.42,7.876c0,4.755,3.268,7.876,8.42,7.876h6.256
+                                            c0.545,0,0.81,0.272,0.81,0.816c0,3.533-0.266,6.654-1.089,9.098c-1.9,5.844-7.737,9.51-14.803,9.51
+                                            c-8.015,0-13.043-3.938-15.068-10.187c-1.089-3.393-1.494-7.876-1.494-19.83c0-11.953,0.406-16.296,1.494-19.696
+                                            c2.025-6.382,6.927-10.32,14.802-10.32c5.977,0,10.459,1.899,13.993,6.786c2.709,3.805,5.432,4.895,8.825,4.895
+                                            c5.028,0,9.091-3.666,9.091-8.965c0-2.171-0.67-4.078-1.76-5.977c-4.888-8.287-15.207-14.397-30.149-14.397
+                                            c-16.436,0-29.199,7.471-33.962,22.412c-2.038,6.515-2.583,11.682-2.583,25.262c0,13.581,0.545,18.74,2.583,25.262
+                                            c4.762,14.942,17.526,22.413,33.962,22.413c16.436,0,28.921-8.288,33.683-23.09c1.634-5.16,2.304-12.77,2.304-20.919v-0.95
+                                            C364.238,296.654,361.39,293.806,356.363,293.806z"
+                />
+              </g>
+            </svg>
+          </span>
         </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-sm-6">
+    <div class="card">
+      <div class="card-body">
+        <div class="media align-items-center invoice-card">
+          <div class="media-body">
+            <h2 class="fs-38 text-black font-w600">
+              {{ unique_count_user_id }}
+            </h2>
+            <span class="fs-18">User</span>
+          </div>
+          <span class="p-3 border ms-3 rounded-circle">
+            <svg
+              width="34"
+              height="34"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M10.5 21H4C4 17.4735 6.60771 14.5561 10 14.0709M16.4976 16.2119C15.7978 15.4328 14.6309 15.2232 13.7541 15.9367C12.8774 16.6501 12.7539 17.843 13.4425 18.6868C13.8312 19.1632 14.7548 19.9983 15.4854 20.6353C15.8319 20.9374 16.0051 21.0885 16.2147 21.1503C16.3934 21.203 16.6018 21.203 16.7805 21.1503C16.9901 21.0885 17.1633 20.9374 17.5098 20.6353C18.2404 19.9983 19.164 19.1632 19.5527 18.6868C20.2413 17.843 20.1329 16.6426 19.2411 15.9367C18.3492 15.2307 17.1974 15.4328 16.4976 16.2119ZM15 7C15 9.20914 13.2091 11 11 11C8.79086 11 7 9.20914 7 7C7 4.79086 8.79086 3 11 3C13.2091 3 15 4.79086 15 7Z"
+                stroke="#000000"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
 
-{% endblock %}
+  <div class="col-xl-3 col-sm-6">
+    <div class="card">
+      <div class="card-body">
+        <div class="chartjs-size-monitor">
+          <div class="chartjs-size-monitor-expand"><div class=""></div></div>
+          <div class="chartjs-size-monitor-shrink"><div class=""></div></div>
+        </div>
+        <canvas
+          id="pie_chart_category"
+          width="796"
+          height="300"
+          style="display: block; height: 57px; width: 398px"
+          class="chartjs-render-monitor"
+          data-values="1000,400,200,300,10,2"
+          data-labels="Homegoods,Place,Food,Plant,Person,Other"
+        ></canvas>
+      </div>
+    </div>
+  </div>
 
-{% block additional_js %}
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <div>
+          {% if object_type == "mg_id" %}
+          <a
+            href="{% url 'operation:object-list-dynamic' object_type='mg_id' %}"
+            type="button"
+            class="btn btn-rounded btn-danger"
+            >MG_ID</a
+          >
+          <a
+            href="{% url 'operation:object-list-dynamic' object_type='scan_id' %}"
+            type="button"
+            class="btn btn-rounded btn-outline-danger"
+            >scan_id</a
+          >
+          {% else %}
+          <a
+            href="{% url 'operation:object-list-dynamic' object_type='mg_id' %}"
+            type="button"
+            class="btn btn-rounded btn-outline-danger"
+            >MG_ID</a
+          >
+          <a
+            href="{% url 'operation:object-list-dynamic' object_type='scan_id' %}"
+            type="button"
+            class="btn btn-rounded btn-danger"
+            >scan_id</a
+          >
+          {% endif %}
+        </div>
+      </div>
+      {% if object_type == "mg_id" %}
+      <div class="card-body">
+        <div class="table-responsive">
+          <table id="example" class="display min-w850">
+            <thead>
+              <tr>
+                <th>
+                  <div class="custom-control custom-checkbox">
+                    <input
+                      type="checkbox"
+                      class="form-check-input"
+                      id="checkAll"
+                      required=""
+                    />
+                    <label class="custom-control-label" for="checkAll"></label>
+                  </div>
+                </th>
+                <th>사물이미지</th>
+                <th>mg_id</th>
+                <th>Scan 수</th>
+                <th>태그(분류)</th>
+                <th>이름</th>
+                <th>좋아요</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in data %}
+              <tr>
+                <td>
+                  <div class="custom-control custom-checkbox">
+                    <input
+                      type="checkbox"
+                      class="form-check-input"
+                      id="customCheckBox2"
+                      required=""
+                    />
+                    <label
+                      class="custom-control-label"
+                      for="customCheckBox2"
+                    ></label>
+                  </div>
+                </td>
+                <td>
+                  {% if item.img_url %}
+                  <img
+                    src="{{ item.img_url }}"
+                    alt="Image"
+                    width="120"
+                    height="160"
+                  />
+                  {% else %} <img src={% static 'aurora/images/logo.png' %}
+                  alt="Image" width="120" height="auto" /> {% endif %}
+                </td>
+                <td>
+                  <a
+                    href="{% url 'operation:object-list-mg-id-redirect' mg_id=item.mg_id %}"
+                    >{{ item.mg_id }}</a
+                  >
+                </td>
+                <td>{{ item.mg_id_count }}</td>
+                <td>-</td>
+                <td>-</td>
+                <td>{{ item.like_cnt }}</td>
+              </tr>
+              <!-- 필요한 다른 필드 추가 -->
+              {% endfor %}
+            </tbody>
+            <tfoot>
+              <tr>
+                <th>
+                  <div class="custom-control custom-checkbox">
+                    <input
+                      type="checkbox"
+                      class="form-check-input"
+                      id="checkAll"
+                      required=""
+                    />
+                    <label class="custom-control-label" for="checkAll"></label>
+                  </div>
+                </th>
+                <th>사물이미지</th>
+                <th>mg_id</th>
+                <th>Scan 수</th>
+                <th>태그(분류)</th>
+                <th>이름</th>
+                <th>좋아요</th>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+      {% else %}
+      <div class="card-body">
+        <div class="table-responsive">
+          <table id="example" class="display min-w850">
+            <thead>
+              <tr>
+                <th>
+                  <div class="custom-control custom-checkbox">
+                    <input
+                      type="checkbox"
+                      class="form-check-input"
+                      id="checkAll"
+                      required=""
+                    />
+                    <label class="custom-control-label" for="checkAll"></label>
+                  </div>
+                </th>
+                <th>사물이미지</th>
+                <th>매칭이미지</th>
+                <th>Scan_id</th>
+                <th>위치</th>
+                <th>생성일</th>
+                <th>생성자</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in data %}
+              <tr>
+                <td>
+                  <div class="custom-control custom-checkbox">
+                    <input
+                      type="checkbox"
+                      class="form-check-input"
+                      id="customCheckBox2"
+                      required=""
+                    />
+                    <label
+                      class="custom-control-label"
+                      for="customCheckBox2"
+                    ></label>
+                  </div>
+                </td>
+                <td>
+                  {% if item.img_url %}
+                  <img
+                    src="{{ item.img_url }}"
+                    alt="Image"
+                    width="120"
+                    height="160"
+                  />
+                  {% else %} <img src={% static 'aurora/images/logo.png' %}
+                  alt="Image" width="120" height="auto" /> {% endif %}
+                </td>
+                <td>매칭이미지</td>
+                <td>
+                  <a
+                    href="{% url 'operation:object-list-scan-id-redirect' scan_id=item.scan_id %}"
+                    >{{ item.scan_id }}</a
+                  >
+                </td>
 
-{% endblock %}
+                <td>{{ item.geohash }}</td>
+                <td>{{ item.created_at | date:"y-m-d H:m:s"}}</td>
+                <td>{{ item.user_id }}</td>
+              </tr>
+              <!-- 필요한 다른 필드 추가 -->
+              {% endfor %}
+            </tbody>
+            <tfoot>
+              <tr>
+                <th>
+                  <div class="custom-control custom-checkbox">
+                    <input
+                      type="checkbox"
+                      class="form-check-input"
+                      id="checkAll"
+                      required=""
+                    />
+                    <label class="custom-control-label" for="checkAll"></label>
+                  </div>
+                </th>
+                <th>사물이미지</th>
+                <th>매칭이미지</th>
+                <th>Scan_id</th>
+                <th>위치</th>
+                <th>생성일</th>
+                <th>생성자</th>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %} {% block additional_js %} {% endblock %}
