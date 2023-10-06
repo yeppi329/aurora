@@ -65,7 +65,7 @@ class SummaryUserMonthInfo(models.Model):
     def __str__(self):
         return f'Summary ID: {self.summary_id}, Date: {self.summary_dt}'
     
-#이용자현황_일별현황 + 대시보드 이용자 현황
+#이용자현황_시간별현황 + 대시보드 이용자 현황
 class SummaryUserHourInfo(models.Model):
     summary_id = models.BigAutoField(primary_key=True)
     summary_dt = models.CharField('통계일자',max_length=255,blank=True)
@@ -84,7 +84,7 @@ class SummaryUserHourInfo(models.Model):
     def __str__(self):
         return f'Summary ID: {self.summary_id}, Date: {self.summary_dt}'
 
-#이용자현황_시간별현황 + 대시보드 이용자 현황
+#이용자현황_일별현황 + 대시보드 이용자 현황
 class SummaryUserDailyInfo(models.Model):
     summary_id = models.BigAutoField(primary_key=True)
     summary_dt = models.CharField('통계일자',max_length=255,blank=True)
