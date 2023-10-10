@@ -55,9 +55,11 @@ INSTALLED_APPS = [
     "aurora",
     "operation",
     "drf_api_logger",  # drf
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
