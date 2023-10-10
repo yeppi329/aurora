@@ -66,6 +66,8 @@ env:
   - name: DATABASE_HOST
     value: "${DATABASE_HOST}"
 
+  - name: CSRF_TRUSTED_ORIGIN
+    value: "${CSRF_TRUSTED_ORIGIN}"
 
   - name: ENV
     value: "${ENV}"

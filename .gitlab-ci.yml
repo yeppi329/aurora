@@ -37,6 +37,8 @@ workflow:
         # POSTGRESQL
         DATABASE_HOST: "192.168.51.92"
         DATABASE_PASSWORD: "${DB_PG_PW}"
+        # CSRF
+        CSRF_TRUSTED_ORIGIN: "https://aurora-dev.arbeon.com/"
     - if: $CI_COMMIT_BRANCH == "develop"
       variables:
         ENV: "dev"
@@ -45,6 +47,8 @@ workflow:
         # POSTGRESQL
         DATABASE_HOST: "192.168.51.92"
         DATABASE_PASSWORD: "${DB_PG_PW}"
+        # CSRF
+        CSRF_TRUSTED_ORIGIN: "https://aurora-dev.arbeon.com/"
         # INGRESS
         CERT_DNS: "*.arbeon.com"
         INGRESS_HOST: "aurora-dev.arbeon.com"
@@ -56,6 +60,8 @@ workflow:
         # POSTGRESQL
         DATABASE_HOST: "192.168.51.92"
         DATABASE_PASSWORD: "${DB_PG_PW}"
+        # CSRF
+        CSRF_TRUSTED_ORIGIN: "https://aurora-inte.arbeon.com/"
         # INGRESS
         CERT_DNS: "*.arbeon.com"
         INGRESS_HOST: "aurora-dev.arbeon.com"
@@ -67,6 +73,8 @@ workflow:
         # POSTGRESQL
         DATABASE_HOST: "arbeon-staging-db-cls.cluster-czqqo2sfzzru.ap-northeast-2.rds.amazonaws.com"
         DATABASE_PASSWORD: "${AWS_PG_PW}"
+        # CSRF
+        CSRF_TRUSTED_ORIGIN: "https://aurora-staging.arbeon.com/"
         # INGRESS
         ALB_NAME: "aurora-alb"
         ALB_SCHEME: "internet-facing"
@@ -78,6 +86,8 @@ workflow:
         ENV: "production"
         EKS_CLUSTER_NAME: "arbeon-production-cls"
         SERVICE_TYPE: "NodePort"
+        # CSRF
+        CSRF_TRUSTED_ORIGIN: "https://aurora.arbeon.com/"
         # INGRESS
         ALB_NAME: "aurora-alb"
         ALB_SCHEME: "internet-facing"
