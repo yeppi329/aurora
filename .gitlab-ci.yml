@@ -45,6 +45,9 @@ workflow:
         # POSTGRESQL
         DATABASE_HOST: "192.168.51.92"
         DATABASE_PASSWORD: "${DB_PG_PW}"
+        # INGRESS
+        CERT_DNS: "*.arbeon.com"
+        INGRESS_HOST: "aurora-dev.arbeon.com"
     - if: $CI_COMMIT_BRANCH == "integration"
       variables:
         ENV: "inte"
@@ -53,6 +56,9 @@ workflow:
         # POSTGRESQL
         DATABASE_HOST: "192.168.51.92"
         DATABASE_PASSWORD: "${DB_PG_PW}"
+        # INGRESS
+        CERT_DNS: "*.arbeon.com"
+        INGRESS_HOST: "aurora-dev.arbeon.com"
     - if: $CI_COMMIT_BRANCH == "staging"
       variables:
         ENV: "staging"
@@ -61,11 +67,23 @@ workflow:
         # POSTGRESQL
         DATABASE_HOST: "arbeon-staging-db-cls.cluster-czqqo2sfzzru.ap-northeast-2.rds.amazonaws.com"
         DATABASE_PASSWORD: "${AWS_PG_PW}"
+        # INGRESS
+        ALB_NAME: "aurora-alb"
+        ALB_SCHEME: "internet-facing"
+        # "*.arbeon.com" cert-arn
+        ALB_CERT_ARN: "arn:aws:acm:ap-northeast-2:873799242473:certificate/9f247e95-7e34-4921-b07d-90fe76924a44"
+        INGRESS_HOST: "aurora-staging.arbeon.com"
     - if: $CI_COMMIT_BRANCH == "master" && $CI_PIPELINE_SOURCE == "web"
       variables:
         ENV: "production"
         EKS_CLUSTER_NAME: "arbeon-production-cls"
         SERVICE_TYPE: "NodePort"
+        # INGRESS
+        ALB_NAME: "aurora-alb"
+        ALB_SCHEME: "internet-facing"
+        # "*.arbeon.com" cert-arn
+        ALB_CERT_ARN: "arn:aws:acm:ap-northeast-2:873799242473:certificate/9f247e95-7e34-4921-b07d-90fe76924a44"
+        INGRESS_HOST: "aurora-staging.arbeon.com"
         # POSTGRESQL
         DATABASE_HOST: "arbeon-production-db-cls.cluster-czqqo2sfzzru.ap-northeast-2.rds.amazonaws.com"
         DATABASE_PASSWORD: "${AWS_PG_PW}"

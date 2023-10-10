@@ -1,0 +1,119 @@
+# Default values for camel.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+revisionHistoryLimit: 1
+
+namespace: "${NAMESPACE}"
+
+labels:
+  app: "${NAMESPACE}-${APP_NAME}"
+
+selectorLabels:
+  app: "${NAMESPACE}-${APP_NAME}"
+  tags.otel/service: "${NAMESPACE}-${APP_NAME}"
+  tags.otel/version: "${IMAGE_TAG}"
+
+image:
+  repository: "${ECR_REPO_URL}/utils/${APP_NAME}"
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "${IMAGE_TAG}"
+
+imagePullSecrets: [{ name: ecr-secret }]
+imageCredentials:
+  registry: ${ECR_REPO_URL}
+  username: AWS
+  password: ${ECR_TOKEN}
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: "${APP_NAME}"
+
+env:
+  - name: OTEL_EXPORTER_ENDPOINT
+    value: "${OTEL_EXPORTER_ENDPOINT}"
+  - name: OTEL_ENV
+    valueFrom:
+      fieldRef:
+        fieldPath: metadata.labels['tags.otel/env']
+  - name: OTEL_SERVICE
+    valueFrom:
+      fieldRef:
+        fieldPath: metadata.labels['tags.otel/service']
+  - name: OTEL_VERSION
+    valueFrom:
+      fieldRef:
+        fieldPath: metadata.labels['tags.otel/version']
+
+  - name: DATABASE_NAME
+    value: "${DATABASE_NAME}"
+  - name: DATABASE_PORT
+    value: "${DATABASE_PORT}"
+  - name: DATABASE_USER
+    value: "${DATABASE_USER}"
+  - name: DATABASE_PASSWORD
+    value: "${DB_PG_PW}"
+  - name: DATABASE_HOST
+    value: "${DATABASE_HOST}"
+
+  - name: ENV
+    value: "${ENV}"
+  
+service:
+  protocol: TCP
+  port: 80
+  targetPort: "${SERVICE_PORT}"
+  type: "${SERVICE_TYPE}"
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-body-size: "500m"
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "600"
+
+    nginx.ingress.kubernetes.io/proxy-buffering: "on"
+    nginx.ingress.kubernetes.io/proxy-buffers-number: "8"
+    nginx.ingress.kubernetes.io/proxy-buffer-size: "1024k"
+
+    ingress.kubernetes.io/proxy-body-size: "50m"
+    nginx.org/proxy-connect-timeout: "600s"
+    nginx.org/proxy-read-timeout: "600s"
+    nginx.org/client-max-body-size: "500m"
+    cert-manager.io/cluster-issuer: "letsencrypt"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+  tls:
+    - secretName: arbeon-com-tls
+      hosts:
+      - "${CERT_DNS}"
+  rules:
+    - host: "${INGRESS_HOST}"
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: "${NAMESPACE}-${APP_NAME}-service"
+              port:
+                number: 80
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector:
+  node: worker
