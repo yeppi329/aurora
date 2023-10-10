@@ -8,8 +8,6 @@ from .utils import *
 import json
 from .es_models import EsModules
 
-
-import threading  # 멀티스레딩을 위해 추가
 import concurrent.futures
 
 
