@@ -16,7 +16,7 @@ selectorLabels:
   tags.otel/version: "${IMAGE_TAG}"
 
 image:
-  repository: "${ECR_REPO_URL}/utils/${APP_NAME}"
+  repository: "${ECR_REPO_URL}/${APP_NAME}"
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: "${IMAGE_TAG}"
