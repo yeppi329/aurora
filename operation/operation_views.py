@@ -41,11 +41,11 @@ def object_list(request, object_type="mg_id"):
     esmodules = EsModules()
     es_result = esmodules.get_category()
 
-    category_data = []
+    category_data = {}
     for bucket in es_result:
         key = bucket.get("key", "")
         doc_count = bucket.get("doc_count", 0)
-        category_data.append({key: doc_count})
+        category_data[key] = doc_count
     # JSON 데이터를 문자열로 변환
     category_data_json = json.dumps(category_data)
     if object_type == "mg_id":
@@ -97,6 +97,7 @@ def object_list(request, object_type="mg_id"):
             "unique_count_mg_id": unique_count_mg_id,
             "total_count_sacn_id": total_count_sacn_id,
             "unique_count_user_id": unique_count_user_id,
+            "category_data": category_data,
             "category_data_json": category_data_json,
             "data": data,
         },
