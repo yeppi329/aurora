@@ -37,7 +37,7 @@ SECRET_KEY = "django-insecure-#ox5_p+)c%uc0m4ckrd!1&210@^w&%xd$cy7-1(x^#b(7ah--y
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*", os.getenv("CSRF_TRUSTED_ORIGIN")]
+ALLOWED_HOSTS = ["*"]
 
 CSRF_TRUSTED_ORIGINS = [os.getenv("CSRF_TRUSTED_ORIGIN")]
 
@@ -55,11 +55,9 @@ INSTALLED_APPS = [
     "aurora",
     "operation",
     "drf_api_logger",  # drf
-    "corsheaders",
 ]
 
 MIDDLEWARE = [
-    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
