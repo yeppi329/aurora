@@ -111,11 +111,13 @@ DATABASES = {
     },
 }
 
-# ELASTICSEARCH_DSL
-ELASTICSEARCH_DSL = {
+# ELASTICSEARCH
+ELASTICSEARCH = {
     "default": {
-        "hosts": os.getenv("CLOUD_ID"),
+        "cloud_id": os.getenv("CLOUD_ID"),
         "http_auth": (os.getenv("HTTP_AUTH_ID"), os.getenv("ELASTIC_PW")),
+        "index": os.getenv("INDEX_NAME"),
+        "log_index": os.getenv("LOG_INDEX_NAME"),
     }
 }
 

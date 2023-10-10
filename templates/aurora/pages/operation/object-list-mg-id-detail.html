@@ -1,4 +1,4 @@
-{% extends 'aurora/elements/layouts/admin.html' %} {% load static %} {% block additional_css %} {% endblock %} {% block content %}
+{% extends 'aurora/elements/layouts/admin.html' %} {% load static %} {% block additional_css %} {% endblock %} {% block content %}{% load custom_filters %}
 <div class="page-titles">
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="/index">Home</a></li>
@@ -26,7 +26,9 @@
           <div class="col-md-5 col-xxl-12">
             <div class="new-arrival-product mb-4 mb-xxl-4 mb-md-0">
               <div class="new-arrivals-img-contnent">
-                <img class="img-fluid" src="{{ item.img_url }}" alt="" />
+                <a href="{% url 'operation:object-list-scan-id-detail' scan_id=item.scan_id %}">
+                  <img class="img-fluid" src="data:image/png;base64,{{ crop_img_list|get_value_from_dict:item.scan_id }}" alt="" />
+                </a>
               </div>
             </div>
           </div>
@@ -121,6 +123,5 @@
     </li>
     {% endif %}
   </ul>
-
-  {% endblock %} {% block additional_js %} {% endblock %}
 </div>
+{% endblock %}

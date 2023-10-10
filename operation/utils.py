@@ -1,6 +1,9 @@
 from geopy.geocoders import Nominatim
 import requests
 import geohash
+from PIL import Image, ImageDraw, ImageOps
+from io import BytesIO
+import base64
 
 
 # Geohash를 좌표로 변환
@@ -30,3 +33,35 @@ def geocoding_reverse(lat_lng_str):
     address = geolocoder.reverse(lat_lng_str)
 
     return address
+
+
+def arbepoint2polygonpoints(image_size, crop_data):
+    if crop_data:
+        x1 = image_size[0] * crop_data["cropX"]
+        y1 = image_size[1] * crop_data["cropY"]
+        x2 = image_size[0] * (crop_data["cropX"] + crop_data["cropW"])
+        y2 = image_size[1] * (crop_data["cropY"] + crop_data["cropH"])
+        return (x1, y1, x2, y2)
+    else:
+        return None
+
+
+def show_draw_crop(image_url, crop):
+    if image_url:
+        response = requests.get(image_url)
+        image = Image.open(BytesIO(response.content))
+        draw = ImageDraw.Draw(image, "RGBA")
+        image_size = image.size
+        polygon_points = arbepoint2polygonpoints(image_size, crop)
+        fill_color = (255, 0, 0)
+        if polygon_points:
+            draw.rectangle(polygon_points, outline=fill_color, width=3)
+
+        image_byte_array = BytesIO()
+        image.save(image_byte_array, format="PNG")
+        image_byte_array.seek(0)
+        image_data = base64.b64encode(image_byte_array.getvalue()).decode("utf-8")
+
+        return image_data
+    else:
+        return ""

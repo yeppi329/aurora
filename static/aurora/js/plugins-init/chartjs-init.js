@@ -724,8 +724,25 @@
 			//pie chart
 			const pie_chart = document.getElementById("pie_chart_category").getContext('2d');
 			// pie_chart.height = 100;
-			var dataValues = $("#pie_chart_category").data("values").split(",").map(Number);
-			var datalabels = $("#pie_chart_category").data("labels").split(",").map(String);
+			// var dataValues = $("#pie_chart_category").data("values").split(",").map(Number);
+			// var datalabels = $("#pie_chart_category").data("labels").split(",").map(String);
+
+			var dataValues = []; // 데이터 값 배열
+			var datalabels = []; // 라벨 배열
+	
+			// 새로운 데이터 형식 [{"homegoods":300},{"food":100}] 파싱
+			var newData = JSON.parse($("#pie_chart_category").attr("data-values"));
+			console.log(newData)
+			// newData를 순회하며 데이터 값과 라벨 추출
+			newData.forEach(function(item) {
+				for (var key in item) {
+					datalabels.push(key);
+					dataValues.push(item[key]);
+				}
+			});
+	
+			console.log(dataValues)
+			console.log(datalabels)
 			new Chart(pie_chart, {
 				type: 'pie',
 				data: {

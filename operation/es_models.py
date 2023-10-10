@@ -1,20 +1,18 @@
 from elasticsearch import Elasticsearch
-import os
+from django.conf import settings
 
 
 class EsModules:
-    def __init__(self, conf) -> None:
-        self.conf = conf
-
+    def __init__(self) -> None:
         self.es = Elasticsearch(
-            cloud_id=self.conf["CLOUD_ID"],
-            http_auth=(self.conf["HTTP_AUTH_ID"], self.conf["HTTP_AUTH_PW"]),
+            cloud_id=settings.ELASTICSEARCH["default"]["cloud_id"],
+            http_auth=settings.ELASTICSEARCH["default"]["http_auth"],
             timeout=300,
             max_retries=10,
             retry_on_timeout=True,
         )
-        self.search_index = self.conf["INDEX_NAME"]
-        self.log_index = self.conf["LOG_INDEX_NAME"]
+        self.search_index = settings.ELASTICSEARCH["default"]["index"]
+        self.log_index = settings.ELASTICSEARCH["default"]["log_index"]
 
     def recent_log(self, page=0):
         if page > 0:
@@ -136,6 +134,17 @@ class EsModules:
         result = self.es.search(index=self.search_index, body=query)
         return result
 
+    def get_category(self):
+        query = {
+            "aggs": {"shire_terms": {"terms": {"field": "shire", "size": 10}}},
+            "_source": {"excludes": ["t800", "mallorn"]},
+        }
+        result = self.es.search(index=self.search_index, body=query)
+        aggregations = result.get("aggregations", {})
+        shire_terms = aggregations.get("shire_terms", {})
+        buckets = shire_terms.get("buckets", [])
+        return buckets
+
     def get_userId(self, userId, page=0):
         size = 30
         if page > 0:
@@ -148,11 +157,6 @@ class EsModules:
             "_source": {"excludes": ["t800", "mallorn"]},
         }
         result = self.es.search(index=self.search_index, body=query)
-        return result
-
-    def get_key_log(self, key):
-        query = {"query": {"match": {"_id": key}}}
-        result = self.es.search(index=self.log_index, body=query)
         return result
 
     def get_mgId(self, mgId, page=0):
