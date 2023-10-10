@@ -17,11 +17,11 @@ urlpatterns = [
     re_path(
         r"^object-list/mg-id-detail/(?P<mg_id>[\w-]+)/$",
         operation_views.mgid_detail,
-        name="object-list-mg-id-redirect",
+        name="object-list-mg-id-detail",
     ),
     re_path(
         r"^object-list/scan-id-detail/(?P<scan_id>[\w-]+)/$",
         operation_views.scanid_detail,
-        name="object-list-scan-id-redirect",
+        name="object-list-scan-id-detail",
     ),
 ]

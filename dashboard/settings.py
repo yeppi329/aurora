@@ -111,6 +111,15 @@ DATABASES = {
     },
 }
 
+# ELASTICSEARCH_DSL
+ELASTICSEARCH_DSL = {
+    "default": {
+        "hosts": os.getenv("CLOUD_ID"),
+        "http_auth": (os.getenv("HTTP_AUTH_ID"), os.getenv("ELASTIC_PW")),
+    }
+}
+
+
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 

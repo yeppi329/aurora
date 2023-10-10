@@ -10,7 +10,7 @@
       <a href="{% url 'operation:object-list-dynamic' object_type='scan_id' %}">scan_id 사물 관리</a>
     </li>
     <li class="breadcrumb-item active">
-      <a href="/operation/object-list/mg-id-detail/{{ scan_id }}">scan_id detail</a>
+      <a href="{% url 'operation:object-list-scan-id-detail' scan_id=scan_id %}">scan_id detail</a>
     </li>
   </ol>
 </div>

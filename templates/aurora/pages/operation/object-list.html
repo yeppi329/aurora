@@ -1,6 +1,6 @@
 {% extends 'aurora/elements/layouts/admin.html' %} {% load static %} {% block additional_css %} {% endblock %} {% block content %}
 <style>
-    a:hover {
+    td a:hover {
         color: white; /* 마우스 오버시 텍스트 색상을 빨간색으로 변경 */
         background-color: #ed0b4c; /* 마우스 오버시 배경색 변경 */
         /* 기타 스타일 변경 가능 */
@@ -261,7 +261,7 @@
                 </td>
                 <td>
                   <a
-                    href="{% url 'operation:object-list-mg-id-redirect' mg_id=item.mg_id %}"
+                    href="{% url 'operation:object-list-mg-id-detail' mg_id=item.mg_id %}"
                     >{{ item.mg_id }}</a
                   >
                 </td>
@@ -350,10 +350,20 @@
                   {% else %} <img src={% static 'aurora/images/logo.png' %}
                   alt="Image" width="120" height="auto" /> {% endif %}
                 </td>
-                <td>매칭이미지</td>
+                <td>
+                    {% if item.frist_img_url %}
+                    <img
+                      src="{{ item.frist_img_url }}"
+                      alt="Image"
+                      width="120"
+                      height="160"
+                    />
+                    {% else %} <img src={% static 'aurora/images/logo.png' %}
+                    alt="Image" width="120" height="auto" /> {% endif %}
+                  </td>
                 <td>
                   <a
-                    href="{% url 'operation:object-list-scan-id-redirect' scan_id=item.scan_id %}"
+                    href="{% url 'operation:object-list-scan-id-detail' scan_id=item.scan_id %}"
                     >{{ item.scan_id }}</a
                   >
                 </td>

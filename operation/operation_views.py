@@ -59,8 +59,25 @@ def object_list(request, object_type="mg_id"):
             ),
         )
     else:
+        matching_image_url = (
+            ScanInfo.objects.using("hippo_db")
+            .order_by("mg_id", "created_at")
+            .distinct("mg_id")
+            .values("mg_id", "img_url")
+        )
         # ScanInfo 모델을 사용하여 쿼리 생성
-        data = ScanInfo.objects.using("hippo_db").values().order_by("-created_at")
+        data = (
+            ScanInfo.objects.using("hippo_db")
+            .values()
+            .order_by("-created_at")
+            .annotate(
+                frist_img_url=Subquery(
+                    matching_image_url.filter(mg_id=OuterRef("mg_id")).values("img_url")
+                )
+            )
+        )
+        print(data)
+
     return render(
         request,
         "aurora/pages/operation/object-list.html",
@@ -119,7 +136,13 @@ def scanid_detail(request, scan_id):
     # uuid_obj를 사용하여 원하는 작업을 수행할 수 있습니다.
     response = f"scan_id 값: {scan_id}"
     print(response)
-    return render(request, "aurora/pages/operation/object-list.html", context)
+    return render(
+        request,
+        "aurora/pages/operation/object-list-scan-id-detail.html",
+        {
+            "scan_id": scan_id,
+        },
+    )
 
 
 @login_required(login_url="aurora:login")
