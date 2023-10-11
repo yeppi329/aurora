@@ -6,6 +6,12 @@ while ! python manage.py makemigrations  2>&1; do
    echo "Makemigrations is in progress status"
    sleep 3
 done
+
+# Wait for few minute and run db makemigrations
+while ! python manage.py makemigrations  2>&1; do
+   echo "Makemigrations is in progress status"
+   sleep 3
+done
 echo "Migrate the Database at startup of project"
 
 # Wait for few minute and run db migraiton
