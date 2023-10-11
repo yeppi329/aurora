@@ -103,6 +103,21 @@ class SummaryUserDailyInfo(models.Model):
     def __str__(self):
         return f'Summary ID: {self.summary_id}, Date: {self.summary_dt}'
 
+class SummaryUserPeriodInfo(models.Model):
+    summary_id = models.BigAutoField(primary_key=True)
+    summary_dt = models.CharField(max_length=255, unique=True)
+    use_day_7 = models.BigIntegerField(default=0,blank=True)
+    use_day_30 = models.BigIntegerField(default=0,blank=True)
+    use_day_60 = models.BigIntegerField(default=0,blank=True)
+    use_day_90 = models.BigIntegerField(default=0,blank=True)
+    created_at = models.DateTimeField(auto_now_add=True,blank=True)
+
+    class Meta:
+        db_table = 'summary_user_period_info'
+        
+    def __str__(self):
+        return f'Summary ID: {self.summary_id}, Date: {self.summary_dt}'
+
 #대시보드_콘텐츠현황    
 class SummaryContentInfo(models.Model):
     summary_id = models.BigAutoField(primary_key=True)
