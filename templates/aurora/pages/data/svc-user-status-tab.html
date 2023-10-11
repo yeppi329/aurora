@@ -21,17 +21,19 @@
         {% endif %}
     </ol>
 </div>
-<ul class="nav nav-tabs" aria-expanded="false">
-    <li class="nav-item">
-        <a class="nav-link {% if page_title == '이용자 현황(일별)' %}active{% endif %}"
-            href="{% url 'data:svc-user-status-daily'%}">이용자 현황(일별)</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link {% if page_title == '이용자 현황(월별)' %}active{% endif %}"
-            href="{% url 'data:svc-user-status-month'%}">이용자 현황(월별)</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link {% if page_title == '기간별 이용자' %}active{% endif %}"
-            href="{% url 'data:svc-activity-user'%}">기간별 이용자</a>
-    </li>
-</ul>
+<div class="card-action card-tabs mt-3 mt-sm-0">
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link {% if page_title == '이용자 현황(일별)' %}active{% endif %}"
+                href="{% url 'data:svc-user-status-daily'%}">이용자 현황(일별)</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {% if page_title == '이용자 현황(월별)' %}active{% endif %}"
+                href="{% url 'data:svc-user-status-month'%}">이용자 현황(월별)</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {% if page_title == '기간별 이용자' %}active{% endif %}"
+                href="{% url 'data:svc-activity-user'%}">기간별 이용자</a>
+        </li>
+    </ul>
+</div>
