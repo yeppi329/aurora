@@ -7,23 +7,24 @@
       <a href="{% url 'operation:object-list'%}">사물 관리</a>
     </li>
     <li class="breadcrumb-item">
-      <a href="{% url 'operation:object-list-dynamic' object_type='mg_id' %}">mg_id 사물 관리</a>
+      <a href="{% url 'operation:object-list-dynamic' object_type='user_id' %}">user_id 사물 관리</a>
     </li>
     <li class="breadcrumb-item active">
-      <a href="{% url 'operation:object-list-mg-id-detail' mg_id=mg_id %}">mg_id detail</a>
+      <a href="{% url 'operation:object-list-user-id-detail' user_id=user_id %}">user_id detail</a>
     </li>
   </ol>
 </div>
 <!-- test -->
 <!-- row -->
+
 <div class="row">
   <div class="col-xl-3 col-sm-6">
     <div class="card">
       <div class="card-body">
         <div class="media align-items-center invoice-card">
           <div class="media-body">
-            <h2 class="fs-38 text-black font-w600">mg_id</h2>
-            <span class="fs-18">{{  mg_id }}</span>
+            <h2 class="fs-38 text-black font-w600">user_id</h2>
+            <span class="fs-18">{{ user_id }}</span>
           </div>
         </div>
       </div>
@@ -94,6 +95,55 @@
   </div>
 </div>
 <div class="row">
+  {% comment %} <div class="col-xl-3 col-sm-6">
+    <div class="card">
+      <div class="card-body">
+        <div class="media align-items-center invoice-card">
+          <div class="media-body">
+            <h2 class="fs-38 text-black font-w600">
+              {{ unique_count_user_id }}
+            </h2>
+            <span class="fs-18">User</span>
+          </div>
+          <span class="p-3 border ms-3 rounded-circle">
+            <svg
+              width="34"
+              height="34"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M10.5 21H4C4 17.4735 6.60771 14.5561 10 14.0709M16.4976 16.2119C15.7978 15.4328 14.6309 15.2232 13.7541 15.9367C12.8774 16.6501 12.7539 17.843 13.4425 18.6868C13.8312 19.1632 14.7548 19.9983 15.4854 20.6353C15.8319 20.9374 16.0051 21.0885 16.2147 21.1503C16.3934 21.203 16.6018 21.203 16.7805 21.1503C16.9901 21.0885 17.1633 20.9374 17.5098 20.6353C18.2404 19.9983 19.164 19.1632 19.5527 18.6868C20.2413 17.843 20.1329 16.6426 19.2411 15.9367C18.3492 15.2307 17.1974 15.4328 16.4976 16.2119ZM15 7C15 9.20914 13.2091 11 11 11C8.79086 11 7 9.20914 7 7C7 4.79086 8.79086 3 11 3C13.2091 3 15 4.79086 15 7Z"
+                stroke="#000000"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-sm-6">
+    <div class="card">
+      <div class="card-body">
+        <div class="chartjs-size-monitor">
+          <div class="chartjs-size-monitor-expand"><div class=""></div></div>
+          <div class="chartjs-size-monitor-shrink"><div class=""></div></div>
+        </div>
+        <canvas
+          id="pie_chart_category"
+          width="796"
+          height="300"
+          style="display: block; height: 57px; width: 398px"
+          class="chartjs-render-monitor"
+          data-values='{{ category_data_json }}'
+        ></canvas>
+      </div>
+    </div>
+  </div> {% endcomment %}
   {% for item in page %}
   <div class="col-lg-12 col-xl-6 col-xxl-4">
     <div class="card">
@@ -103,7 +153,7 @@
             <div class="new-arrival-product mb-4 mb-xxl-4 mb-md-0">
               <div class="new-arrivals-img-contnent">
                 <a href="{% url 'operation:object-list-scan-id-detail' scan_id=item.scan_id %}">
-                  <img class="img-fluid" src="data:image/png;base64,{{ crop_img_list|get_value_from_dict:item.scan_id }}" alt="" />
+                  <img class="img-fluid" src="{{ item.img_url }}" alt="" />
                 </a>
               </div>
             </div>

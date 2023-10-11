@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from .models import ScanInfo, ImageRecognition
-from django.db.models import OuterRef, Subquery, Count, Q
+from django.db.models import OuterRef, Subquery, Count, Q, F
 from django.core.paginator import Paginator
 import time
 from .utils import *
@@ -69,7 +69,7 @@ def object_list(request, object_type="mg_id"):
                 .values("img_url")
             ),
         )
-    else:
+    elif object_type == "scan_id":
         matching_image_url = (
             ScanInfo.objects.using("hippo_db")
             .order_by("mg_id", "created_at")
@@ -87,7 +87,26 @@ def object_list(request, object_type="mg_id"):
                 )
             )
         )
+    else:
+        # 서브쿼리로서 record_count_subquery를 준비합니다.
+        record_count_subquery = (
+            ScanInfo.objects.using("hippo_db")
+            .filter(user_id=OuterRef("user_id"))
+            .values("user_id")
+            .annotate(user_id_count=Count("user_id"))
+            .values("user_id_count")
+        )
 
+        # user_data를 가져오고 외부 조인합니다.
+        data = (
+            ScanInfo.objects.using("hippo_db")
+            .values()
+            .order_by("user_id", "created_at")
+            .distinct("user_id")
+            .annotate(user_id_count=Subquery(record_count_subquery))
+        )
+
+        print(data)
     return render(
         request,
         "aurora/pages/operation/object-list.html",
@@ -117,6 +136,7 @@ def mgid_detail(request, mg_id):
     queryset = (
         ScanInfo.objects.using("hippo_db").filter(mg_id=mg_id).order_by("created_at")
     )
+    total_count = queryset.count()
     # 원하는 페이지당 항목 수 설정
     items_per_page = 15  # 페이지당 15개 항목을 표시하도록 설정
 
@@ -169,6 +189,7 @@ def mgid_detail(request, mg_id):
         {
             "context": context,
             "mg_id": mg_id,
+            "total_count": total_count,
             "page": page,
             "mg_id_like_cnt": mg_id_like_cnt,
             "crop_img_list": crop_img_list,
@@ -183,7 +204,6 @@ def scanid_detail(request, scan_id):
     response = f"scan_id 값: {scan_id}"
     esmodules = EsModules()
     es_result = esmodules.get_key_log(key=scan_id)
-    print(es_result)
 
     if es_result["hits"]["total"]["value"] > 0:
         query_result = es_result["hits"]["hits"][0]["_source"]["query-analysis-result"]
@@ -235,6 +255,42 @@ def scanid_detail(request, scan_id):
             "query_result": query_result,
             "search_result": search_result,
             "scanIdToImgUrlDict": scanIdToImgUrlDict,
+        },
+    )
+
+
+@login_required(login_url="aurora:login")
+def userid_detail(request, user_id):
+    context = {"page_title": "유저아이디 디테일 페이지"}
+    # ScanInfo 모델을 사용하여 쿼리 생성
+    queryset = (
+        ScanInfo.objects.using("hippo_db")
+        .filter(user_id=user_id)
+        .order_by("created_at")
+    )
+    total_count = queryset.count()
+    # 원하는 페이지당 항목 수 설정
+    items_per_page = 15  # 페이지당 15개 항목을 표시하도록 설정
+
+    # Paginator를 사용하여 페이지네이션 객체 생성
+    paginator = Paginator(queryset, items_per_page)
+    # 페이지 번호 지정
+    page_number = request.GET.get("page")  # URL 매개변수에서 페이지 번호를 가져옴
+
+    # 페이지 번호가 없는 경우 기본값을 설정할 수 있습니다.
+    if not page_number:
+        page_number = 1
+    # 페이지 번호에 해당하는 Page 객체 가져오기
+    page = paginator.get_page(page_number)
+
+    return render(
+        request,
+        "aurora/pages/operation/object-list-user-id-detail.html",
+        {
+            "context": context,
+            "user_id": user_id,
+            "page": page,
+            "total_count": total_count,
         },
     )
 

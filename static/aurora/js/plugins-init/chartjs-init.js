@@ -734,12 +734,10 @@
 			var newData = JSON.parse($("#pie_chart_category").attr("data-values"));
 			console.log(newData)
 			// newData를 순회하며 데이터 값과 라벨 추출
-			newData.forEach(function(item) {
-				for (var key in item) {
-					datalabels.push(key);
-					dataValues.push(item[key]);
-				}
-			});
+			for (var key in newData) {
+				datalabels.push(key);
+				dataValues.push(newData[key]);
+			}
 	
 			console.log(dataValues)
 			console.log(datalabels)

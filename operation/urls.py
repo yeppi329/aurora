@@ -10,7 +10,7 @@ urlpatterns = [
     # 사물관리
     path("object-list/", operation_views.object_list, name="object-list"),
     re_path(
-        r"^object-list/(?P<object_type>mg_id|scan_id)/$",
+        r"^object-list/(?P<object_type>mg_id|scan_id|user_id)/$",
         operation_views.object_list,
         name="object-list-dynamic",
     ),
@@ -23,5 +23,10 @@ urlpatterns = [
         r"^object-list/scan-id-detail/(?P<scan_id>[\w-]+)/$",
         operation_views.scanid_detail,
         name="object-list-scan-id-detail",
+    ),
+    re_path(
+        r"^object-list/user-id-detail/(?P<user_id>[\w-]+)/$",
+        operation_views.userid_detail,
+        name="object-list-user-id-detail",
     ),
 ]
