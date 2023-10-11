@@ -57,6 +57,8 @@ env:
 
   - name: DATABASE_NAME
     value: "${DATABASE_NAME}"
+  - name: HIPPO_DATABASE_NAME
+    value: "${HIPPO_DATABASE_NAME}"  
   - name: DATABASE_PORT
     value: "${DATABASE_PORT}"
   - name: DATABASE_USER
@@ -65,6 +67,17 @@ env:
     value: "${DB_PG_PW}"
   - name: DATABASE_HOST
     value: "${DATABASE_HOST}"
+
+  - name: HTTP_AUTH_ID
+    value: "${HTTP_AUTH_ID}"
+  - name: CLOUD_ID
+    value: "${CLOUD_ID}"
+  - name: ELASTIC_PW
+    value: "${ELASTIC_PW}"
+  - name: INDEX_NAME
+    value: "${INDEX_NAME}"
+  - name: LOG_INDEX_NAME
+    value: "${LOG_INDEX_NAME}"
 
   - name: CSRF_TRUSTED_ORIGIN
     value: "${CSRF_TRUSTED_ORIGIN}"
