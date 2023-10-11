@@ -55,7 +55,7 @@ INSTALLED_APPS = [
     "aurora",
     "operation",
     "drf_api_logger",  # drf
-    "mathfilters",#템플릿 사칙연산
+    "mathfilters",  # 템플릿 사칙연산
 ]
 
 MIDDLEWARE = [

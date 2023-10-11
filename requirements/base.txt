@@ -10,6 +10,7 @@ python-dotenv==0.20.0
 psycopg2-binary==2.9.7
 PyYaml==6.0.1
 elasticsearch==8.10.0
-geopy
-requests
-python-geohash
+geopy==2.4.0
+requests==2.31.0
+python-geohash==0.8.5
+django-mathfilters==1.0.0
