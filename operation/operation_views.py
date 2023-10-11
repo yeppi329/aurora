@@ -69,6 +69,10 @@ def object_list(request, object_type="mg_id"):
                 .values("img_url")
             ),
         )
+
+        # mg_id_count를 정수로 변환하고 None인 경우에 0으로 대체
+        for item in data:
+            item.mg_id_count = int(item.mg_id_count or 0)
     elif object_type == "scan_id":
         matching_image_url = (
             ScanInfo.objects.using("hippo_db")
@@ -105,8 +109,8 @@ def object_list(request, object_type="mg_id"):
             .distinct("user_id")
             .annotate(user_id_count=Subquery(record_count_subquery))
         )
-
-        print(data)
+        for item in data:
+            item["user_id_count"] = int(item["user_id_count"] or 0)
     return render(
         request,
         "aurora/pages/operation/object-list.html",

@@ -191,65 +191,30 @@
   <div class="col-12">
     <div class="card">
       <div class="card-header">
-        <div>
-          {% if object_type == "mg_id" %}
-          <a
-            href="{% url 'operation:object-list-dynamic' object_type='mg_id' %}"
-            type="button"
-            class="btn btn-rounded btn-danger"
-            >mg_id</a
-          >
-          <a
-            href="{% url 'operation:object-list-dynamic' object_type='scan_id' %}"
-            type="button"
-            class="btn btn-rounded btn-outline-danger"
-            >scan_id</a
-          >
-          <a
-            href="{% url 'operation:object-list-dynamic' object_type='user_id' %}"
-            type="button"
-            class="btn btn-rounded btn-outline-danger"
-            >user_id</a
-          >
-          {% elif object_type == "scan_id" %}
-          <a
-            href="{% url 'operation:object-list-dynamic' object_type='mg_id' %}"
-            type="button"
-            class="btn btn-rounded btn-outline-danger"
-            >MG_ID</a
-          >
-          <a
-            href="{% url 'operation:object-list-dynamic' object_type='scan_id' %}"
-            type="button"
-            class="btn btn-rounded btn-danger"
-            >scan_id</a
-          >
-          <a
-            href="{% url 'operation:object-list-dynamic' object_type='user_id' %}"
-            type="button"
-            class="btn btn-rounded btn-outline-danger"
-            >user_id</a
-          >
-          {% else %}
-          <a
-            href="{% url 'operation:object-list-dynamic' object_type='mg_id' %}"
-            type="button"
-            class="btn btn-rounded btn-outline-danger"
-            >MG_ID</a
-          >
-          <a
-            href="{% url 'operation:object-list-dynamic' object_type='scan_id' %}"
-            type="button"
-            class="btn btn-rounded btn-outline-danger"
-            >scan_id</a
-          >
-          <a
-            href="{% url 'operation:object-list-dynamic' object_type='user_id' %}"
-            type="button"
-            class="btn btn-rounded btn-danger"
-            >user_id</a
-          >
-          {% endif %}
+        <div class="card-action card-tabs mt-3 mt-sm-0">
+          <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item">
+              <a
+                class="nav-link {% if object_type == 'mg_id' %}active{% endif %}"
+                href="{% url 'operation:object-list-dynamic' object_type='mg_id' %}"
+                >mg_id</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link {% if object_type == 'scan_id' %}active{% endif %}"
+                href="{% url 'operation:object-list-dynamic' object_type='scan_id' %}"
+                >scan_id</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link {% if object_type == 'user_id' %}active{% endif %}"
+                href="{% url 'operation:object-list-dynamic' object_type='user_id' %}"
+                >user_id</a
+              >
+            </li>
+          </ul>
         </div>
       </div>
       {% if object_type == "mg_id" %}

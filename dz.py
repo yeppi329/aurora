@@ -7,7 +7,7 @@ dz_array = {
         "description": "aurora : Arbeon Admin Dashboard",
         "og_title": "aurora : Arbeon Admin Dashboard",
         "og_description": "aurora : Arbeon Admin Dashboard",
-        "og_image": "https://aurora.dexignzone.com/django/social-image.png",  # TODO 변경필요
+        "og_image": f"{folderName}/images/og_image.png",
         "title": "aurora : Arbeon Admin Dashboard",
     },
     "global": {
