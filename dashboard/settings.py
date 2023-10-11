@@ -39,7 +39,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
-CSRF_TRUSTED_ORIGINS = [os.getenv("CSRF_TRUSTED_ORIGIN")]
+CSRF_TRUSTED_ORIGINS = ["https://*.arbeon.com/"]
 
 # Application definition
 INSTALLED_APPS = [
