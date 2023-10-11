@@ -254,10 +254,12 @@ dz_array = {
                         f"{folderName}/js/plugins-init/datatables.init.js",
                     ],
                     "object_list": [
-                        f"{folderName}/vendor/chart.js/Chart.bundle.min.js",
-                        f"{folderName}/vendor/apexchart/apexchart.js",
                         f"{folderName}/vendor/datatables/js/jquery.dataTables.min.js",
                         f"{folderName}/js/plugins-init/datatables.init.js",
+                        f"{folderName}/vendor/svganimation/vivus.min.js",
+                        f"{folderName}/vendor/svganimation/svg.animation.js",
+                        f"{folderName}/vendor/chart.js/Chart.bundle.min.js",
+                        f"{folderName}/js/plugins-init/chartjs-init.js",
                     ],
                     "content_list": [
                         f"{folderName}/vendor/chart.js/Chart.bundle.min.js",

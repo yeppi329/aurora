@@ -718,6 +718,64 @@
 			});
 		}
 	}
+	var pieChartCategory = function(){
+		//pie chart
+		if(jQuery('#pie_chart_category').length > 0 ){
+			//pie chart
+			const pie_chart = document.getElementById("pie_chart_category").getContext('2d');
+			// pie_chart.height = 100;
+			// var dataValues = $("#pie_chart_category").data("values").split(",").map(Number);
+			// var datalabels = $("#pie_chart_category").data("labels").split(",").map(String);
+
+			var dataValues = []; // 데이터 값 배열
+			var datalabels = []; // 라벨 배열
+	
+			// 새로운 데이터 형식 [{"homegoods":300},{"food":100}] 파싱
+			var newData = JSON.parse($("#pie_chart_category").attr("data-values"));
+			console.log(newData)
+			// newData를 순회하며 데이터 값과 라벨 추출
+			for (var key in newData) {
+				datalabels.push(key);
+				dataValues.push(newData[key]);
+			}
+	
+			console.log(dataValues)
+			console.log(datalabels)
+			new Chart(pie_chart, {
+				type: 'pie',
+				data: {
+					defaultFontFamily: 'Poppins',
+					datasets: [{
+						data: dataValues,
+						borderWidth: 0, 
+						backgroundColor: [
+							"rgba(30, 170, 231, .11)",
+							"rgba(30, 170, 231, .9)",
+							"rgba(30, 170, 231, .7)",
+							"rgba(30, 170, 231, .5)",
+							"rgba(30, 170, 231, .3)",
+							"rgba(0,0,0,0.07)"
+						],
+						hoverBackgroundColor: [
+							"rgba(30, 170, 231, .11)",
+							"rgba(30, 170, 231, .9)",
+							"rgba(30, 170, 231, .7)",
+							"rgba(30, 170, 231, .5)",
+							"rgba(30, 170, 231, .3)",
+							"rgba(0,0,0,0.07)"
+						]
+
+					}],
+					labels: datalabels
+				},
+				options: {
+					responsive: true, 
+					legend: false, 
+					maintainAspectRatio: false
+				}
+			});
+		}
+	}	
     var doughnutChart = function(){
 		if(jQuery('#doughnut_chart').length > 0 ){
 			//doughut chart
@@ -812,6 +870,7 @@
 				areaChart3();
 				radarChart();
 				pieChart();
+				pieChartCategory();
 				doughnutChart(); 
 				polarChart(); 
 			},
@@ -829,6 +888,7 @@
 				areaChart3();
 				radarChart();
 				pieChart();
+				pieChartCategory();
 				doughnutChart(); 
 				polarChart(); 
 			}

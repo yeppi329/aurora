@@ -102,8 +102,27 @@ DATABASES = {
         "PASSWORD": os.getenv("DATABASE_PASSWORD"),
         "HOST": os.getenv("DATABASE_HOST"),
         "PORT": os.getenv("DATABASE_PORT"),
+    },
+    "hippo_db": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv("HIPPO_DATABASE_NAME"),
+        "USER": os.getenv("DATABASE_USER"),
+        "PASSWORD": os.getenv("DATABASE_PASSWORD"),
+        "HOST": os.getenv("DATABASE_HOST"),
+        "PORT": os.getenv("DATABASE_PORT"),
+    },
+}
+
+# ELASTICSEARCH
+ELASTICSEARCH = {
+    "default": {
+        "cloud_id": os.getenv("CLOUD_ID"),
+        "http_auth": (os.getenv("HTTP_AUTH_ID"), os.getenv("ELASTIC_PW")),
+        "index": os.getenv("INDEX_NAME"),
+        "log_index": os.getenv("LOG_INDEX_NAME"),
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators

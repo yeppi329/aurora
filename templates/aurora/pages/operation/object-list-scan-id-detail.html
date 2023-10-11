@@ -1,0 +1,142 @@
+{% extends 'aurora/elements/layouts/admin.html' %} {% load static %} {% block additional_css %} {% endblock %} {% block content %} {% load custom_filters %}
+<style>
+  .green-border {
+    border: 2px solid green;
+  }
+  .blue-border {
+    border: 2px solid blue;
+  }  
+</style>
+<div class="page-titles">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/index">Home</a></li>
+    <li class="breadcrumb-item"><a href="javascript:void(0)">Operation</a></li>
+    <li class="breadcrumb-item">
+      <a href="{% url 'operation:object-list'%}">사물 관리</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="{% url 'operation:object-list-dynamic' object_type='scan_id' %}"
+        >scan_id 사물 관리</a
+      >
+    </li>
+    <li class="breadcrumb-item active">
+      <a href="{% url 'operation:object-list-scan-id-detail' scan_id=scan_id %}"
+        >scan_id detail</a
+      >
+    </li>
+  </ol>
+</div>
+<!-- test -->
+<!-- query result data -->
+<div class="row">
+  <div class="col-lg-12 col-xl-12 col-xxl-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="row m-b-30">
+          <div class="col-md-5 col-xxl-5">
+            <div class="new-arrival-product mb-4 mb-xxl-4 mb-md-0">
+              <div class="new-arrivals-img-contnent">
+                {% if crop_img %}
+                <img
+                  class="img-fluid"
+                  src="data:image/png;base64,{{ crop_img }}"
+                  alt=""
+                />
+                {% else %}
+                <img class="img-fluid" src="{{ scanIdToImgUrlDict|get_value_from_dict:scan_id }}" alt="" />
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="col-md-7 col-xxl-7">
+            <div class="new-arrival-content position-relative">
+              <h4>
+                <a href="javascript:void(0)">{{ scan_id }}</a>
+              </h4>
+              {% if query_result.items %}
+              <ul class="list-group list-group-flush">
+                {% for k, v in query_result.items %}
+                {% if "crop" not in k %}
+                <li class="list-group-item d-flex px-0 justify-content-between">
+                  <strong>{{ k }}</strong>
+                  <span class="mb-0" style="font-size: 14px"
+                    >{{ v }}</span
+                  >
+                </li>               
+                {% endif %}
+                {% endfor %}
+              </ul>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex px-0 justify-content-between">
+                  <strong>crop</strong>
+                  <span class="mb-0" style="font-size: 14px">
+                  <ul>            
+                  {% for k, v in query_result.items %}
+                  {% if "crop" in k %}
+                  <li>{{ k }} : {{v}}</li>
+                  {% endif %}
+                  {% endfor %}
+                  </ul>
+                </span>
+              </ul>
+              {% else %}
+              <p> No Data </p>
+              {% endif %}              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- search result -->
+<div class="row">
+  {% for i in search_result %}
+  <div class="col-lg-12 col-xl-6 col-xxl-4">
+    <div class="card{% if i.source.mgId == query_result.mgId %} green-border {% else %} blue-border {% endif %}">
+      <div class="card-body">
+        <div class="row m-b-30">
+          <div class="col-md-5 col-xxl-12">
+            <div class="new-arrival-product mb-4 mb-xxl-4 mb-md-0">
+              <div class="new-arrivals-img-contnent">
+                <a href="{% url 'operation:object-list-scan-id-detail' scan_id=i.scanId %}">
+                  {% if scanIdToImgUrlDict|get_value_from_dict:i.scanId %}
+                    <img class="img-fluid" src="{{ scanIdToImgUrlDict|get_value_from_dict:i.scanId }}" alt="" />
+                  {% else %}
+                  <img src={% static 'aurora/images/logo.png' %}
+                  alt="Image" width="120" height="auto" />
+                  {% endif %}
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-7 col-xxl-12">
+            <div class="new-arrival-content position-relative">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex px-0 justify-content-between">
+                  <strong>scan_id</strong>
+                  <span class="mb-0"
+                    >{{ i.scanId }}</span
+                  >                
+                <li class="list-group-item d-flex px-0 justify-content-between">
+                  <strong>score</strong>
+                  <span class="mb-0" style="font-size: 14px"
+                    >{{ i.score }}</span
+                  >
+                </li>
+                <li class="list-group-item d-flex px-0 justify-content-between">
+                  <strong>mg_id</strong>
+                  <span class="mb-0"
+                    >{{ i.source.mgId }}</span
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}
