@@ -46,7 +46,7 @@ class SummaryScanHourInfo(models.Model):
 
     class Meta:
         db_table = "summary_scan_hour_info"
-        unique_together = (("summary_dt", "summary_id"),)
+        unique_together = (("summary_dt", "summary_hour"),)
 
 
     def __str__(self):
