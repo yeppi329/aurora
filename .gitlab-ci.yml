@@ -80,7 +80,7 @@ workflow:
         LOG_INDEX_NAME: "sauron-${ENV}log"      
         # INGRESS
         CERT_DNS: "*.arbeon.com"
-        INGRESS_HOST: "aurora-dev.arbeon.com"
+        INGRESS_HOST: "aurora-inte.arbeon.com"
     - if: $CI_COMMIT_BRANCH == "staging"
       variables:
         ENV: "staging"
