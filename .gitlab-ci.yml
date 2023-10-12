@@ -24,7 +24,7 @@ variables:
   ECR_TOKEN: secret-password
   OTEL_EXPORTER_ENDPOINT: "otel-collector.otel-system.svc.cluster.local:4317"
   SERVICE_PORT: 8000
- 
+
   # postgresql
   DATABASE_NAME: "aurora"
   HIPPO_DATABASE_NAME: "hippo"
@@ -32,6 +32,10 @@ variables:
   DATABASE_PORT: "5432"
   # Sauron Elasticsearch
   HTTP_AUTH_ID: "elastic"
+
+  # DB Migration
+  FLYWAY_ENV: -url=jdbc:postgresql://$DATABASE_HOST:$DATABASE_PORT/$DATABASE_NAME -user=$DATABASE_USER -password=$DATABASE_PASSWORD -validateMigrationNaming=true -baselineOnMigrate=true -baselineVersion
+
 workflow:
   rules:
     - if: $CI_COMMIT_BRANCH =~ /feature/
@@ -44,8 +48,6 @@ workflow:
         ELASTIC_PW: "${ES_DEV_ELASTIC_PW}"
         INDEX_NAME: sauron-dev
         LOG_INDEX_NAME: "sauron-devlog"
-        # CSRF
-        CSRF_TRUSTED_ORIGIN: "https://*.arbeon.com/"
     - if: $CI_COMMIT_BRANCH == "develop"
       variables:
         ENV: "dev"
@@ -59,8 +61,6 @@ workflow:
         ELASTIC_PW: "${ES_DEV_ELASTIC_PW}"
         INDEX_NAME: sauron-${ENV}
         LOG_INDEX_NAME: "sauron-${ENV}log"
-        # CSRF
-        CSRF_TRUSTED_ORIGIN: "https://*.arbeon.com/"
         # INGRESS
         CERT_DNS: "*.arbeon.com"
         INGRESS_HOST: "aurora-dev.arbeon.com"
@@ -71,17 +71,16 @@ workflow:
         KUBE_CONFIG: ${INTE_KUBE_CONFIG}
         # POSTGRESQL
         DATABASE_HOST: "192.168.51.92"
+        DATABASE_PORT: "5433"
         DATABASE_PASSWORD: "${DB_PG_PW}"
         # ES
         CLOUD_ID : "${ES_INTE_CLOUD_ID}"
         ELASTIC_PW: "${ES_INTE_ELASTIC_PW}"
         INDEX_NAME: sauron-${ENV}
         LOG_INDEX_NAME: "sauron-${ENV}log"      
-        # CSRF
-        CSRF_TRUSTED_ORIGIN: "https://aurora-inte.arbeon.com/"
         # INGRESS
         CERT_DNS: "*.arbeon.com"
-        INGRESS_HOST: "aurora-dev.arbeon.com"
+        INGRESS_HOST: "aurora-inte.arbeon.com"
     - if: $CI_COMMIT_BRANCH == "staging"
       variables:
         ENV: "staging"
@@ -95,8 +94,6 @@ workflow:
         ELASTIC_PW: "${ES_STAGING_ELASTIC_PW}"
         INDEX_NAME: sauron-${ENV}
         LOG_INDEX_NAME: "sauron-${ENV}log"       
-        # CSRF
-        CSRF_TRUSTED_ORIGIN: "https://aurora-staging.arbeon.com/"
         # INGRESS
         ALB_NAME: "aurora-alb"
         ALB_SCHEME: "internet-facing"
@@ -116,8 +113,6 @@ workflow:
         ELASTIC_PW: "${ES_PRODUCTION_ELASTIC_PW}"
         INDEX_NAME: sauron-${ENV}
         LOG_INDEX_NAME: "sauron-${ENV}log"         
-        # CSRF
-        CSRF_TRUSTED_ORIGIN: "https://aurora.arbeon.com/"
         # INGRESS
         ALB_NAME: "aurora-alb"
         ALB_SCHEME: "internet-facing"
