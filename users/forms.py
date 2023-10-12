@@ -21,6 +21,7 @@ class SignupForm(forms.ModelForm):
             "last_name",
             "password1",
             "password2",
+            "division",
         )
 
     def clean_password2(self):
@@ -95,6 +96,7 @@ class EditUserForm(forms.ModelForm):
             "groups",
             "about",
             "is_active",
+            "division",
         )
 
     def save(self, commit=True):
