@@ -1,19 +1,22 @@
-# Default values for camel.
+# Default values for aurora.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
 revisionHistoryLimit: 1
 
-namespace: "${NAMESPACE}"
-
 minReadySeconds: 30
+
+namespace: "${NAMESPACE}"
 
 labels:
   app: "${NAMESPACE}-${APP_NAME}"
+  env: "${ENV}"
 
 selectorLabels:
   app: "${NAMESPACE}-${APP_NAME}"
+  env: "${ENV}"
+  tags.otel/env: "${ENV}"
   tags.otel/service: "${NAMESPACE}-${APP_NAME}"
   tags.otel/version: "${IMAGE_TAG}"
 
@@ -22,12 +25,6 @@ image:
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: "${IMAGE_TAG}"
-
-imagePullSecrets: [{ name: ecr-secret }]
-imageCredentials:
-  registry: ${ECR_REPO_URL}
-  username: AWS
-  password: ${ECR_TOKEN}
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -86,7 +83,7 @@ env:
 
   - name: ENV
     value: "${ENV}"
-  
+
 service:
   protocol: TCP
   port: 80
@@ -95,28 +92,16 @@ service:
 
 ingress:
   enabled: true
-  className: "nginx"
+  className: "alb"
   annotations:
-    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
-    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
-    nginx.ingress.kubernetes.io/proxy-body-size: "500m"
-    nginx.ingress.kubernetes.io/proxy-connect-timeout: "600"
-
-    nginx.ingress.kubernetes.io/proxy-buffering: "on"
-    nginx.ingress.kubernetes.io/proxy-buffers-number: "8"
-    nginx.ingress.kubernetes.io/proxy-buffer-size: "1024k"
-
-    ingress.kubernetes.io/proxy-body-size: "50m"
-    nginx.org/proxy-connect-timeout: "600s"
-    nginx.org/proxy-read-timeout: "600s"
-    nginx.org/client-max-body-size: "500m"
-    cert-manager.io/cluster-issuer: "letsencrypt"
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
-    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
-  tls:
-    - secretName: arbeon-com-tls
-      hosts:
-      - "${CERT_DNS}"
+    alb.ingress.kubernetes.io/group.name: "arbeon-${ENV}-${ALB_NAME}-group"
+    alb.ingress.kubernetes.io/load-balancer-name: "arbeon-${ENV}-${ALB_NAME}"
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/scheme: "${ALB_SCHEME}"
+    alb.ingress.kubernetes.io/target-type: instance
+    alb.ingress.kubernetes.io/certificate-arn: "${ALB_CERT_ARN}"
+    alb.ingress.kubernetes.io/load-balancer-attributes: access_logs.s3.enabled=true,access_logs.s3.bucket=arbeon-${ENV}-alb-access-logs,access_logs.s3.prefix=${ALB_NAME}
   rules:
     - host: "${INGRESS_HOST}"
       http:
@@ -132,9 +117,10 @@ ingress:
 autoscaling:
   enabled: false
   minReplicas: 1
-  maxReplicas: 100
+  maxReplicas: 10
   targetCPUUtilizationPercentage: 80
-  # targetMemoryUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
 
 nodeSelector:
   node: worker
+  type: "m5.large"
