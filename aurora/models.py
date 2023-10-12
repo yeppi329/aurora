@@ -5,10 +5,10 @@ from django.db import models
 # 스캔현황_월별현황
 class SummaryScanMonthInfo(models.Model):
     summary_id = models.BigAutoField(primary_key=True)
-    summary_dt = models.CharField("통계일자", max_length=255, blank=True)
-    scan_success = models.BigIntegerField("스캔성공", default=0, blank=True)
-    scan_fail = models.BigIntegerField("스캔실패", default=0, blank=True)
-    total_scan_user = models.BigIntegerField("스캔참여회원", default=0, blank=True)
+    summary_dt = models.CharField("통계일자", max_length=255, blank=True, unique=True)
+    scan_success = models.BigIntegerField("스캔성공", default=0, blank=False)
+    scan_fail = models.BigIntegerField("스캔실패", default=0, blank=False)
+    total_scan_user = models.BigIntegerField("스캔참여회원", default=0, blank=False)
     created_at = models.DateTimeField(auto_now=True, blank=True)
 
     class Meta:
@@ -21,10 +21,10 @@ class SummaryScanMonthInfo(models.Model):
 # 스캔현황_일별현황
 class SummaryScanDailyInfo(models.Model):
     summary_id = models.BigAutoField(primary_key=True)
-    summary_dt = models.CharField("통계일자", max_length=255, blank=True)
-    scan_success = models.BigIntegerField("스캔성공", default=0, blank=True)
-    scan_fail = models.BigIntegerField("스캔실패", default=0, blank=True)
-    total_scan_user = models.BigIntegerField("스캔참여회원", default=0, blank=True)
+    summary_dt = models.CharField("통계일자", max_length=255, blank=False, unique=True)
+    scan_success = models.BigIntegerField("스캔성공", default=0, blank=False)
+    scan_fail = models.BigIntegerField("스캔실패", default=0, blank=False)
+    total_scan_user = models.BigIntegerField("스캔참여회원", default=0, blank=False)
     created_at = models.DateTimeField(auto_now=True, blank=True)
 
     class Meta:
@@ -38,6 +38,7 @@ class SummaryScanDailyInfo(models.Model):
 class SummaryScanHourInfo(models.Model):
     summary_id = models.BigAutoField(primary_key=True)
     summary_dt = models.CharField("통계일자", max_length=255, blank=True)
+    summary_hour = models.CharField("통계시간", max_length=255, blank=True)
     scan_success = models.BigIntegerField("스캔성공", default=0, blank=True)
     scan_fail = models.BigIntegerField("스캔실패", default=0, blank=True)
     total_scan_user = models.BigIntegerField("스캔참여회원", default=0, blank=True)
@@ -45,6 +46,8 @@ class SummaryScanHourInfo(models.Model):
 
     class Meta:
         db_table = "summary_scan_hour_info"
+        unique_together = (("summary_dt", "summary_id"),)
+
 
     def __str__(self):
         return f"Scan ID: {self.summary_id}, Date: {self.summary_dt}"
