@@ -8,8 +8,8 @@ include:
   - project: 'ETC/devops/cicd-templates'
     file: 'semantic-versioning.yml'
 
-#  - project: 'ETC/devops/cicd-templates'
-#    file: 'migration.yml'
+  - project: 'ETC/devops/cicd-templates'
+    file: 'migration.yml'
 #  - project: 'ETC/devops/cicd-templates'
 #    file: 'test-coverage.yml'
 #  - project: 'ETC/devops/cicd-templates'
