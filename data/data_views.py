@@ -1,6 +1,10 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required, permission_required
-from aurora.models import SummaryUserMonthInfo, SummaryUserDailyInfo
+from aurora.models import (
+    SummaryUserMonthInfo,
+    SummaryUserDailyInfo,
+    SummaryUserPeriodInfo,
+)
 from aurora.models import (
     SummaryScanDailyInfo,
     SummaryScanMonthInfo,

@@ -4,22 +4,8 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('aurora', '0010_alter_summaryuserperiodinfo_options'),
+        ("aurora", "0010_alter_summaryuserperiodinfo_options"),
     ]
 
-    operations = [
-        migrations.RenameModel(
-            old_name='SummaryUserPeriodInfo',
-            new_name='SummaryUserTermInfo',
-        ),
-        migrations.AlterModelOptions(
-            name='summaryuserterminfo',
-            options={},
-        ),
-        migrations.AlterModelTable(
-            name='summaryuserterminfo',
-            table='summary_user_term_info',
-        ),
-    ]
+    operations = []
