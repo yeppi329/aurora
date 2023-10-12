@@ -19,7 +19,6 @@ from django.contrib.contenttypes.models import ContentType
 
 from django.core.paginator import Paginator
 
-from django.core.mail import send_mail
 from django.conf import settings
 from users.tokens import account_activation_token
 from django.utils.encoding import force_bytes, force_str
@@ -51,10 +50,9 @@ def change_password(request):
 @login_required(login_url="aurora:login")
 @permission_required({"users.view_newuser"}, raise_exception=True)
 def users(request):
-    context = {
-        "user_list": NewUser.objects.filter(is_superuser=False).order_by("groups__name")
-    }
-    print(context)
+    user_list = NewUser.objects.order_by("groups__name")
+    total_user_count = NewUser.objects.order_by("groups__name").count()
+    context = {"user_list": user_list, "total_user_count": total_user_count}
     return render(request, "aurora/modules/users.html", context)
 
 
@@ -130,7 +128,7 @@ def signup(request):
                         request,
                         "Please confirm your email address to complete the registration.",
                     )
-                return redirect("aurora:signup")
+                return redirect("aurora:login")
             except:
                 messages.warning(request, "Email Not valid")
                 user_obj.delete()
@@ -168,7 +166,6 @@ def edit_user(request, id):
     user_obj = get_object_or_404(NewUser, id=id)
     if request.method == "POST":
         form = EditUserForm(request.POST, request.FILES, instance=user_obj)
-        print(form)
         if form.is_valid():
             user_obj = form.save()
             user_obj.groups.clear()
@@ -177,7 +174,6 @@ def edit_user(request, id):
             return redirect("aurora:users")
     else:
         form = EditUserForm(instance=user_obj)
-        print(form)
     return render(request, "aurora/modules/add-user.html", {"form": form})
 
 
@@ -293,8 +289,7 @@ def group_add(request):
 @permission_required({"auth.view_permission"}, raise_exception=True)
 def permissions(request):
     permission_list = Permission.objects.all()
-
-    paginator = Paginator(permission_list, 5)  # Show 5 permission per page.
+    paginator = Paginator(permission_list, 10)  # Show 10 permission per page.
     context = {
         "permissions_obj": paginator.get_page(request.GET.get("page")),
     }
