@@ -8,8 +8,8 @@ include:
   - project: 'ETC/devops/cicd-templates'
     file: 'semantic-versioning.yml'
 
-  - project: 'ETC/devops/cicd-templates'
-    file: 'migration.yml'
+#  - project: 'ETC/devops/cicd-templates'
+#    file: 'migration.yml'
 #  - project: 'ETC/devops/cicd-templates'
 #    file: 'test-coverage.yml'
 #  - project: 'ETC/devops/cicd-templates'
@@ -24,7 +24,7 @@ variables:
   ECR_TOKEN: secret-password
   OTEL_EXPORTER_ENDPOINT: "otel-collector.otel-system.svc.cluster.local:4317"
   SERVICE_PORT: 8000
- 
+
   # postgresql
   DATABASE_NAME: "aurora"
   HIPPO_DATABASE_NAME: "hippo"
@@ -32,6 +32,10 @@ variables:
   DATABASE_PORT: "5432"
   # Sauron Elasticsearch
   HTTP_AUTH_ID: "elastic"
+
+  # DB Migration
+  FLYWAY_ENV: -url=jdbc:postgresql://$DATABASE_HOST:$DATABASE_PORT/$DATABASE_NAME -user=$DATABASE_USER -password=$DATABASE_PASSWORD -validateMigrationNaming=true -baselineOnMigrate=true -baselineVersion
+
 workflow:
   rules:
     - if: $CI_COMMIT_BRANCH =~ /feature/
@@ -117,7 +121,6 @@ workflow:
         INGRESS_HOST: "aurora-staging.arbeon.com"      
 
 stages:
-  - migrations
   - semantic-versioning
   - build
   - deploy
