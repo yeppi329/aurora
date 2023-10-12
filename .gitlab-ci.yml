@@ -117,6 +117,7 @@ workflow:
         INGRESS_HOST: "aurora-staging.arbeon.com"      
 
 stages:
+  - migrations
   - semantic-versioning
   - build
   - deploy
