@@ -110,7 +110,24 @@ class SummaryUserDailyInfo(models.Model):
         return f"Summary ID: {self.summary_id}, Date: {self.summary_dt}"
 
 
-class SummaryUserPeriodInfo(models.Model):
+# class SummaryUserPeriodInfo(models.Model):
+#     summary_id = models.BigAutoField(primary_key=True)
+#     summary_dt = models.CharField(max_length=255, unique=True)
+#     use_day_7 = models.BigIntegerField(default=0, blank=True)
+#     use_day_30 = models.BigIntegerField(default=0, blank=True)
+#     use_day_60 = models.BigIntegerField(default=0, blank=True)
+#     use_day_90 = models.BigIntegerField(default=0, blank=True)
+#     created_at = models.DateTimeField(auto_now_add=True, blank=True)
+
+#     class Meta:
+#         db_table = "summary_user_period_info"
+#         managed = True
+
+#     def __str__(self):
+#         return f"Summary ID: {self.summary_id}, Date: {self.summary_dt}"
+
+
+class SummaryUserTermInfo(models.Model):
     summary_id = models.BigAutoField(primary_key=True)
     summary_dt = models.CharField(max_length=255, unique=True)
     use_day_7 = models.BigIntegerField(default=0, blank=True)
@@ -120,8 +137,7 @@ class SummaryUserPeriodInfo(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
 
     class Meta:
-        db_table = "summary_user_period_info"
-        managed = True
+        db_table = "summary_user_term_info"
 
     def __str__(self):
         return f"Summary ID: {self.summary_id}, Date: {self.summary_dt}"
