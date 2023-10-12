@@ -20,7 +20,7 @@
     </div>
     <div class="card-body">
       <div class="table-responsive">
-        <table class="table style-1 custom-tbl" id="ListDatatableView">
+        <table id="example" class="display min-w850">
           <thead>
             <tr>
               <th>#</th>
@@ -52,8 +52,8 @@
                     </div>
                   </div>
                 </td>
-                <td>{{ user.created_at | date:"y-m-d H:m:s" }}</td>
-                <td>{{ user.last_login | date:"y-m-d H:m:s" }}</td>
+                <td class="time_seoul">{{ user.created_at | date:"y-m-d H:m:s" }}</td>
+                <td class="time_seoul">{{ user.last_login}}</td>
                 <td>{{ user.division }}</td>
                 <td>
                   <div>
@@ -140,6 +140,24 @@
           }
         });
     });
+
+    // 서울 시간으로 변환하는 함수
+    function convertToSeoulTime(utcTime) {
+      return new Date(utcTime.getTime() + (9 * 60 * 60 * 1000)); // 9 hours ahead of UTC
+    }
+
+    // 모든 요소에 대한 처리
+    var elements = document.getElementsByClassName("time_seoul");
+    console.log(elements)
+    for (var i = 0; i < elements.length; i++) {
+      var utcTimeString = elements[i].textContent;
+      console.log(utcTimeString)
+      var utcTime = new Date(utcTimeString);
+      console.log(utcTime)
+      var seoulTime = convertToSeoulTime(utcTime);
+      console.log(seoulTime)
+      elements[i].textContent = seoulTime;
+    }
   </script>
 
 {% endblock %}
