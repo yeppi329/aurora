@@ -15,7 +15,7 @@ urlpatterns = [
         name="object-list-dynamic",
     ),
     re_path(
-        r"^object-list/mg-id-detail/(?P<mg_id>[\w-]+)/$",
+        r"^object-list/mg-id-detail/(?P<mg_id>[\w\W]+)/$",
         operation_views.mgid_detail,
         name="object-list-mg-id-detail",
     ),
