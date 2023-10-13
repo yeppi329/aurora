@@ -33,9 +33,6 @@ variables:
   # Sauron Elasticsearch
   HTTP_AUTH_ID: "elastic"
 
-  # DB Migration
-  FLYWAY_ENV: -url=jdbc:postgresql://$DATABASE_HOST:$DATABASE_PORT/$DATABASE_NAME -user=$DATABASE_USER -password=$DATABASE_PASSWORD -validateMigrationNaming=true -baselineOnMigrate=true -baselineVersion
-
 workflow:
   rules:
     - if: $CI_COMMIT_BRANCH =~ /feature/
@@ -100,14 +97,15 @@ workflow:
         # "*.arbeon.com" cert-arn
         ALB_CERT_ARN: "arn:aws:acm:ap-northeast-2:873799242473:certificate/9f247e95-7e34-4921-b07d-90fe76924a44"
         INGRESS_HOST: "aurora-staging.arbeon.com"
-    - if: $CI_COMMIT_BRANCH == "master" && $CI_PIPELINE_SOURCE == "web"
+    - if: $CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "web"
       variables:
         ENV: "production"
         EKS_CLUSTER_NAME: "arbeon-production-cls"
         SERVICE_TYPE: "NodePort"
         # POSTGRESQL
+        DATABASE_USER: "auroradmin"
         DATABASE_HOST: "arbeon-production-db-cls.cluster-czqqo2sfzzru.ap-northeast-2.rds.amazonaws.com"
-        DATABASE_PASSWORD: "${AWS_PG_PW}"
+        DATABASE_PASSWORD: "${DB_PG_AURORA_PW}"
         # ES
         CLOUD_ID : "${ES_PRODUCTION_CLOUD_ID}"
         ELASTIC_PW: "${ES_PRODUCTION_ELASTIC_PW}"
@@ -118,7 +116,7 @@ workflow:
         ALB_SCHEME: "internet-facing"
         # "*.arbeon.com" cert-arn
         ALB_CERT_ARN: "arn:aws:acm:ap-northeast-2:873799242473:certificate/9f247e95-7e34-4921-b07d-90fe76924a44"
-        INGRESS_HOST: "aurora-staging.arbeon.com"      
+        INGRESS_HOST: "aurora.arbeon.com"
 
 stages:
   - semantic-versioning
