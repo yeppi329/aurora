@@ -1,6 +1,7 @@
 {% extends 'aurora/elements/layouts/admin.html' %}
 
 {% load static %}
+{% load mathfilters %}
 
 {% block additional_css %}
 {% endblock %}
@@ -62,20 +63,86 @@
                     {% for data in all_data %}
                     <tr>
                         <td><span class="text-black font-w500">{{ data.summary_dt }}</span></td>
-                        <td><span class="text-black font-w500">{{ data.total_user }}</span></td>
-                        <td><span class="text-black font-w500">{{ data.dau }}</span></td>
-                        <td><span class="text-black font-w500">{{ data.new_user }}</span></td>
-                        <td><span class="text-black font-w500">{{ data.dau }}</span></td><!--신규회원 기준 dau 산정 필요-->
-                        <td><span class="text-black font-w500">{{ data.suspended_user }}</span></td>
-                        <td><span class="text-black font-w500">{{ data.deleted_user }}</span></td>
-                        <td><span class="text-black font-w500">{{ data.return_user }}</span></td>
-                        <td><span class="text-black font-w500">{{ data.inactive_user }}</span></td>
+                        <td><span class="text-black font-w500">{{ data.scan_success }}</span></td>
+                        <td><span class="text-black font-w500">{{ data.scan_fail }}</span></td>
+                        <td><span class="text-black font-w500">{{ data.scan_success|add:data.scan_fail }}</span></td>
+
+                        <td><span class="text-black font-w500">{{ data.total_scan_user }}</span></td>
+                        <!--신규회원 기준 dau 산정 필요-->
+                        <td>
+                            {% if data.total_scan_user > 0 %}
+                            <span class="text-black font-w500">
+                                {{ data.scan_success|add:data.scan_fail|div:data.total_scan_user|floatformat:"2" }}
+                            </span>
+                            {% else %}
+                            <span class="text-black font-w500">0</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if data.scan_success|add:data.scan_fail > 0 %}
+                            {% with numerator=data.scan_success|add:data.scan_fail%}
+                            <span class="text-black font-w500">
+                                {{ data.scan_success|div:numerator|mul:100|floatformat:"2" }}%
+                            </span>
+                            {% endwith %}
+                            {% else %}
+                            <span class="text-black font-w500">0%</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if data.scan_success|add:data.scan_fail > 0 %}
+                            {% with numerator=data.scan_success|add:data.scan_fail%}
+                            <span class="text-black font-w500">
+                                {{ data.scan_fail|div:numerator|mul:100|floatformat:"2" }}%
+                            </span>
+                            {% endwith %}
+                            {% else %}
+                            <span class="text-black font-w500">0%</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if data.total_scan_user > 0 %}
+                            <span class="text-black font-w500">
+                                {{ data.scan_success|div:data.total_scan_user|floatformat:"2" }}%
+                            </span>
+                            {% else %}
+                            <span class="text-black font-w500">0%</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if data.total_scan_user > 0 %}
+                            <span class="text-black font-w500">
+                                {{ data.scan_fail|div:data.total_scan_user|floatformat:"2" }}%
+                            </span>
+                            {% else %}
+                            <span class="text-black font-w500">0%</span>
+                            {% endif %}
+                        </td>
                     </tr>
                     {% endfor %}
-                    
+
                 </tbody>
             </table>
         </div>
+        <ul class="pagination">
+            {% if all_data.has_previous %}
+            <li class="page-item page-indicator">
+              <a class="page-link" href="?page={{ all_data.previous_page_number }}">
+                <i class="la la-angle-left"></i>
+              </a>
+            </li>
+            {% endif %} {% for page_num in all_data.paginator.page_range %}
+            <li class="page-item{% if page_num == all_data.number %} active{% endif %}">
+              <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+            </li>
+            {% endfor %} {% if all_data.has_next %}
+            <li class="page-item page-indicator">
+              <a class="page-link" href="?page={{ all_data.paginator.num_pages }}">
+                <i class="la la-angle-right"></i>
+              </a>
+            </li>
+            {% endif %}
+          </ul>
     </div>
 </div>
 

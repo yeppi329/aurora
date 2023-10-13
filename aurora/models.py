@@ -13,9 +13,6 @@ class SummaryScanMonthInfo(models.Model):
     class Meta:
         db_table = 'summary_scan_month_info'  
 
-    def __str__(self):
-        return f'Scan ID: {self.summary_id}, Date: {self.summary_dt}'
-    
 #스캔현황_일별현황
 class SummaryScanDailyInfo(models.Model):
     summary_id = models.BigAutoField(primary_key=True)
@@ -27,14 +24,12 @@ class SummaryScanDailyInfo(models.Model):
 
     class Meta:
         db_table = 'summary_scan_daily_info'  
-
-    def __str__(self):
-        return f'Scan ID: {self.summary_id}, Date: {self.summary_dt}'
     
 #스캔현황_시간별현황
 class SummaryScanHourInfo(models.Model):
     summary_id = models.BigAutoField(primary_key=True)
     summary_dt = models.CharField('통계일자',max_length=255,blank=True)
+    summary_hour = models.CharField(max_length=255, unique=True,blank=True)
     scan_success = models.BigIntegerField('스캔성공',default=0,blank=True)
     scan_fail = models.BigIntegerField('스캔실패',default=0,blank=True)
     total_scan_user = models.BigIntegerField('스캔참여회원',default=0,blank=True)
@@ -42,9 +37,6 @@ class SummaryScanHourInfo(models.Model):
 
     class Meta:
         db_table = 'summary_scan_hour_info'  
-
-    def __str__(self):
-        return f'Scan ID: {self.summary_id}, Date: {self.summary_dt}'
     
 #이용자현황_월별현황 + 대시보드 이용자 현황          
 class SummaryUserMonthInfo(models.Model):
@@ -61,9 +53,6 @@ class SummaryUserMonthInfo(models.Model):
 
     class Meta:
         db_table = 'summary_user_month_info'  
-
-    def __str__(self):
-        return f'Summary ID: {self.summary_id}, Date: {self.summary_dt}'
     
 #이용자현황_시간별현황 + 대시보드 이용자 현황
 class SummaryUserHourInfo(models.Model):
@@ -81,9 +70,6 @@ class SummaryUserHourInfo(models.Model):
     class Meta:
         db_table = 'summary_user_hour_info'  
 
-    def __str__(self):
-        return f'Summary ID: {self.summary_id}, Date: {self.summary_dt}'
-
 #이용자현황_일별현황 + 대시보드 이용자 현황
 class SummaryUserDailyInfo(models.Model):
     summary_id = models.BigAutoField(primary_key=True)
@@ -100,9 +86,6 @@ class SummaryUserDailyInfo(models.Model):
     class Meta:
         db_table = 'summary_user_daily_info'  
 
-    def __str__(self):
-        return f'Summary ID: {self.summary_id}, Date: {self.summary_dt}'
-
 class SummaryUserPeriodInfo(models.Model):
     summary_id = models.BigAutoField(primary_key=True)
     summary_dt = models.CharField(max_length=255, unique=True)
@@ -114,9 +97,6 @@ class SummaryUserPeriodInfo(models.Model):
 
     class Meta:
         db_table = 'summary_user_period_info'
-        
-    def __str__(self):
-        return f'Summary ID: {self.summary_id}, Date: {self.summary_dt}'
 
 #대시보드_콘텐츠현황    
 class SummaryContentInfo(models.Model):
@@ -128,6 +108,3 @@ class SummaryContentInfo(models.Model):
     created_at = models.DateTimeField(auto_now=True,blank=True)
     class Meta:
         db_table = 'summary_content_info'  
-
-    def __str__(self):
-        return f'Summary ID: {self.summary_id}, Date: {self.reg_date}'
