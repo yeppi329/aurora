@@ -30,3 +30,4 @@ urlpatterns = [
         name="object-list-user-id-detail",
     ),
 ]
+
