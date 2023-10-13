@@ -1,6 +1,7 @@
 {% extends 'aurora/elements/layouts/admin.html' %}
 
 {% load static %}
+{% load mathfilters %}
 
 {% block additional_css %}
 {% endblock %}
@@ -62,65 +63,88 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {% for data in all_data %}
                     <tr>
-                        <td><span class="text-black font-w500">2022.04.27</span></td>
-                        <td><span class="text-black font-w500">20000000</span></td>
-                        <td><span class="text-black font-w500">1500000</span></td>
-                        <td><span class="text-black font-w500">20000</span></td>
-                        <td><span class="text-black font-w500">1200</span></td>
+                        <td><span class="text-black font-w500">{{ data.summary_dt }}</span></td>
+                        <td><span class="text-black font-w500">{{ data.summary_hour }}</span></td>
+                        <td><span class="text-black font-w500">{{ data.scan_success }}</span></td>
+                        <td><span class="text-black font-w500">{{ data.scan_fail }}</span></td>
+                        <td><span class="text-black font-w500">{{ data.scan_success|add:data.scan_fail }}</span></td>
+
+                        <td><span class="text-black font-w500">{{ data.total_scan_user }}</span></td>
+                        <td>
+                            {% if data.total_scan_user > 0 %}
+                            <span class="text-black font-w500">
+                                {{ data.scan_success|add:data.scan_fail|div:data.total_scan_user|floatformat:"2" }}
+                            </span>
+                            {% else %}
+                            <span class="text-black font-w500">0</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if data.scan_success|add:data.scan_fail > 0 %}
+                            {% with numerator=data.scan_success|add:data.scan_fail%}
+                            <span class="text-black font-w500">
+                                {{ data.scan_success|div:numerator|mul:100|floatformat:"2" }}%
+                            </span>
+                            {% endwith %}
+                            {% else %}
+                            <span class="text-black font-w500">0%</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if data.scan_success|add:data.scan_fail > 0 %}
+                            {% with numerator=data.scan_success|add:data.scan_fail%}
+                            <span class="text-black font-w500">
+                                {{ data.scan_fail|div:numerator|mul:100|floatformat:"2" }}%
+                            </span>
+                            {% endwith %}
+                            {% else %}
+                            <span class="text-black font-w500">0%</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if data.total_scan_user > 0 %}
+                            <span class="text-black font-w500">
+                                {{ data.scan_success|div:data.total_scan_user|floatformat:"2" }}%
+                            </span>
+                            {% else %}
+                            <span class="text-black font-w500">0%</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if data.total_scan_user > 0 %}
+                            <span class="text-black font-w500">
+                                {{ data.scan_fail|div:data.total_scan_user|floatformat:"2" }}%
+                            </span>
+                            {% else %}
+                            <span class="text-black font-w500">0%</span>
+                            {% endif %}
+                        </td>
                     </tr>
-                    <tr>
-                        <td><span class="text-black font-w500">2022.04.26</span></td>
-                        <td><span class="text-black font-w500">20000000</span></td>
-                        <td><span class="text-black font-w500">1500000</span></td>
-                        <td><span class="text-black font-w500">20000</span></td>
-                        <td><span class="text-black font-w500">1200</span></td>
-                    </tr>
-                    <tr>
-                        <td><span class="text-black font-w500">2022.04.25</span></td>
-                        <td><span class="text-black font-w500">20000000</span></td>
-                        <td><span class="text-black font-w500">1500000</span></td>
-                        <td><span class="text-black font-w500">20000</span></td>
-                        <td><span class="text-black font-w500">1200</span></td>
-                    </tr>
-                    <tr>
-                        <td><span class="text-black font-w500">2022.04.24</span></td>
-                        <td><span class="text-black font-w500">20000000</span></td>
-                        <td><span class="text-black font-w500">1500000</span></td>
-                        <td><span class="text-black font-w500">20000</span></td>
-                        <td><span class="text-black font-w500">1200</span></td>
-                    </tr>
-                    <tr>
-                        <td><span class="text-black font-w500">2022.04.23</span></td>
-                        <td><span class="text-black font-w500">20000000</span></td>
-                        <td><span class="text-black font-w500">1500000</span></td>
-                        <td><span class="text-black font-w500">20000</span></td>
-                        <td><span class="text-black font-w500">1200</span></td>
-                    </tr>
-                    <tr>
-                        <td><span class="text-black font-w500">2022.04.22</span></td>
-                        <td><span class="text-black font-w500">20000000</span></td>
-                        <td><span class="text-black font-w500">1500000</span></td>
-                        <td><span class="text-black font-w500">20000</span></td>
-                        <td><span class="text-black font-w500">1200</span></td>
-                    </tr>
-                    <tr>
-                        <td><span class="text-black font-w500">2022.04.21</span></td>
-                        <td><span class="text-black font-w500">20000000</span></td>
-                        <td><span class="text-black font-w500">1500000</span></td>
-                        <td><span class="text-black font-w500">20000</span></td>
-                        <td><span class="text-black font-w500">1200</span></td>
-                    </tr>
-                    <tr>
-                        <td><span class="text-black font-w500">2022.04.20</span></td>
-                        <td><span class="text-black font-w500">20000000</span></td>
-                        <td><span class="text-black font-w500">1500000</span></td>
-                        <td><span class="text-black font-w500">20000</span></td>
-                        <td><span class="text-black font-w500">1200</span></td>
-                    </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>
+        <ul class="pagination">
+            {% if all_data.has_previous %}
+            <li class="page-item page-indicator">
+              <a class="page-link" href="?page={{ all_data.previous_page_number }}">
+                <i class="la la-angle-left"></i>
+              </a>
+            </li>
+            {% endif %} {% for page_num in all_data.paginator.page_range %}
+            <li class="page-item{% if page_num == all_data.number %} active{% endif %}">
+              <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+            </li>
+            {% endfor %} {% if all_data.has_next %}
+            <li class="page-item page-indicator">
+              <a class="page-link" href="?page={{ all_data.paginator.num_pages }}">
+                <i class="la la-angle-right"></i>
+              </a>
+            </li>
+            {% endif %}
+          </ul>
     </div>
 </div>
 

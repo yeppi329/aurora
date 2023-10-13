@@ -13,7 +13,7 @@
     <div class="d-sm-flex  d-block align-items-center mb-4">
         <div class="me-auto">
             <h4 class="fs-20 text-black" style="margin-top: 10px;">스캔 현황(월별)</h4>
-             <span class="fs-12">Arbeon 월별 스캔 현황</span>
+            <span class="fs-12">Arbeon 월별 스캔 현황</span>
         </div>
         <div class="dropdown custom-dropdown mb-0 mt-3 mt-sm-0">
             <div class="btn btn-light btn-rounded" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -65,33 +65,83 @@
                         <td><span class="text-black font-w500">{{ data.scan_success }}</span></td>
                         <td><span class="text-black font-w500">{{ data.scan_fail }}</span></td>
                         <td><span class="text-black font-w500">{{ data.scan_success|add:data.scan_fail }}</span></td>
-                        <td><span class="text-black font-w500">{{ data.total_scan_user }}</span></td>
-                        <td>
-                            {% if data.total_scan_user > 0 %}
-                                <span class="text-black font-w500">
-                                    {{ data.scan_success|add:data.scan_fail|div:data.total_scan_user|floatformat:"2" }}
-                                </span>
-                            {% else %}
-                                <span class="text-black font-w500">N/A</span>
-                            {% endif %}
-                        </td>
-                        <td>
-                            {% if data.total_scan_user > 0 %}
-                                <span class="text-black font-w500">
-                                    {{ data.scan_success|add:data.scan_fail|div:data.scan_success|add:data.scan_fail|mul:100|floatformat:"2" }}%
 
-                                </span>
+                        <td><span class="text-black font-w500">{{ data.total_scan_user }}</span></td>
+                        <!--신규회원 기준 dau 산정 필요-->
+                        <td>
+                            {% if data.total_scan_user > 0 %}
+                            <span class="text-black font-w500">
+                                {{ data.scan_success|add:data.scan_fail|div:data.total_scan_user|floatformat:"2" }}
+                            </span>
                             {% else %}
-                                <span class="text-black font-w500">N/A</span>
+                            <span class="text-black font-w500">0</span>
                             {% endif %}
                         </td>
-                        
+                        <td>
+                            {% if data.scan_success|add:data.scan_fail > 0 %}
+                            {% with numerator=data.scan_success|add:data.scan_fail%}
+                            <span class="text-black font-w500">
+                                {{ data.scan_success|div:numerator|mul:100|floatformat:"2" }}%
+                            </span>
+                            {% endwith %}
+                            {% else %}
+                            <span class="text-black font-w500">0%</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if data.scan_success|add:data.scan_fail > 0 %}
+                            {% with numerator=data.scan_success|add:data.scan_fail%}
+                            <span class="text-black font-w500">
+                                {{ data.scan_fail|div:numerator|mul:100|floatformat:"2" }}%
+                            </span>
+                            {% endwith %}
+                            {% else %}
+                            <span class="text-black font-w500">0%</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if data.total_scan_user > 0 %}
+                            <span class="text-black font-w500">
+                                {{ data.scan_success|div:data.total_scan_user|floatformat:"2" }}%
+                            </span>
+                            {% else %}
+                            <span class="text-black font-w500">0%</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if data.total_scan_user > 0 %}
+                            <span class="text-black font-w500">
+                                {{ data.scan_fail|div:data.total_scan_user|floatformat:"2" }}%
+                            </span>
+                            {% else %}
+                            <span class="text-black font-w500">0%</span>
+                            {% endif %}
+                        </td>
                     </tr>
                     {% endfor %}
-                    
+
                 </tbody>
             </table>
         </div>
+        <ul class="pagination">
+            {% if all_data.has_previous %}
+            <li class="page-item page-indicator">
+              <a class="page-link" href="?page={{ all_data.previous_page_number }}">
+                <i class="la la-angle-left"></i>
+              </a>
+            </li>
+            {% endif %} {% for page_num in all_data.paginator.page_range %}
+            <li class="page-item{% if page_num == all_data.number %} active{% endif %}">
+              <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+            </li>
+            {% endfor %} {% if all_data.has_next %}
+            <li class="page-item page-indicator">
+              <a class="page-link" href="?page={{ all_data.paginator.num_pages }}">
+                <i class="la la-angle-right"></i>
+              </a>
+            </li>
+            {% endif %}
+          </ul>
     </div>
 </div>
 
