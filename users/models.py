@@ -55,6 +55,8 @@ class NewUser(AbstractBaseUser, PermissionsMixin):
     about = models.TextField(_("about"), max_length=500, blank=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)  # this false work on ui not in admin
+    division = models.CharField(max_length=150, blank=True)  # 조직
+    created_at = models.DateTimeField(auto_now_add=True, null=True)  # 생성일
     # when user is created, than system send a email after varify the user we check the user is active
 
     objects = CustomAccountManager()
