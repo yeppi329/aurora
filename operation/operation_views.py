@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-from .models import ScanInfo, ImageRecognition
+from .models import ScanInfo, ImageRecognition, Users
 from django.db.models import OuterRef, Subquery, Count, Q, F
 from django.core.paginator import Paginator
 import time
@@ -29,14 +29,14 @@ def object_list(request, object_type="mg_id"):
     # header data
     # count mg_id
     unique_count_mg_id = (
-        ScanInfo.objects.using("hippo_db").values("mg_id").distinct().count()
+        ScanInfo.objects.using("hippo").values("mg_id").distinct().count()
     )
     # count total scan_id
-    total_count_sacn_id = ScanInfo.objects.using("hippo_db").count()
+    total_count_sacn_id = ScanInfo.objects.using("hippo").count()
 
     # count unique user
     unique_count_user_id = (
-        ScanInfo.objects.using("hippo_db").values("user_id").distinct().count()
+        ScanInfo.objects.using("hippo").values("user_id").distinct().count()
     )
     esmodules = EsModules()
     es_result = esmodules.get_category()
@@ -51,20 +51,20 @@ def object_list(request, object_type="mg_id"):
     if object_type == "mg_id":
         # mg_id 별로 레코드 수와 img_url을 가져오는 서브쿼리
         record_count_subquery = (
-            ScanInfo.objects.using("hippo_db")
+            ScanInfo.objects.using("hippo")
             .values("mg_id")
             .annotate(mg_id_count=Count("mg_id"))
         )
 
         # ImageRecognition 모델에서 first_scan_id를 통해 mg_id_count와 img_url을 가져옵니다.
-        data = ImageRecognition.objects.using("hippo_db").annotate(
+        data = ImageRecognition.objects.using("hippo").annotate(
             mg_id_count=Subquery(
                 record_count_subquery.filter(mg_id=OuterRef("mg_id")).values(
                     "mg_id_count"
                 )
             ),
             img_url=Subquery(
-                ScanInfo.objects.using("hippo_db")
+                ScanInfo.objects.using("hippo")
                 .filter(scan_id=OuterRef("first_scan_id"))
                 .values("img_url")
             ),
@@ -75,35 +75,48 @@ def object_list(request, object_type="mg_id"):
             item.mg_id_count = int(item.mg_id_count or 0)
     elif object_type == "scan_id":
         matching_image_url = (
-            ScanInfo.objects.using("hippo_db")
+            ScanInfo.objects.using("hippo")
             .order_by("mg_id", "created_at")
             .distinct("mg_id")
             .values("mg_id", "img_url")
         )
+        matching_user_id = Users.objects.using("lama").values("user_id", "username")
         # ScanInfo 모델을 사용하여 쿼리 생성
         data = (
-            ScanInfo.objects.using("hippo_db")
+            ScanInfo.objects.using("hippo")
             .values()
             .order_by("-created_at")
             .annotate(
                 frist_img_url=Subquery(
                     matching_image_url.filter(mg_id=OuterRef("mg_id")).values("img_url")
-                )
+                ),
             )
         )
+        for item in data:
+            user_id = item["user_id"]
+            matching_username = next(
+                (
+                    user["username"]
+                    for user in matching_user_id
+                    if str(user["user_id"]) == user_id
+                ),
+                None,
+            )
+            item["username"] = matching_username
     else:
         # 서브쿼리로서 record_count_subquery를 준비합니다.
         record_count_subquery = (
-            ScanInfo.objects.using("hippo_db")
+            ScanInfo.objects.using("hippo")
             .filter(user_id=OuterRef("user_id"))
             .values("user_id")
             .annotate(user_id_count=Count("user_id"))
             .values("user_id_count")
         )
 
+        matching_user_id = Users.objects.using("lama").values("user_id", "username")
         # user_data를 가져오고 외부 조인합니다.
         data = (
-            ScanInfo.objects.using("hippo_db")
+            ScanInfo.objects.using("hippo")
             .values()
             .order_by("user_id", "created_at")
             .distinct("user_id")
@@ -111,6 +124,17 @@ def object_list(request, object_type="mg_id"):
         )
         for item in data:
             item["user_id_count"] = int(item["user_id_count"] or 0)
+            user_id = item["user_id"]
+            matching_username = next(
+                (
+                    user["username"]
+                    for user in matching_user_id
+                    if str(user["user_id"]) == user_id
+                ),
+                None,
+            )
+            item["username"] = matching_username
+
     return render(
         request,
         "aurora/pages/operation/object-list.html",
@@ -132,14 +156,19 @@ def mgid_detail(request, mg_id):
     context = {"page_title": "mg ID 디테일 페이지"}
     # ScanInfo 모델을 사용하여 쿼리 생성
     mg_id_like_cnt = (
-        ImageRecognition.objects.using("hippo_db")
-        .filter(mg_id=mg_id)
-        .values("like_cnt")
+        ImageRecognition.objects.using("hippo").filter(mg_id=mg_id).values("like_cnt")
     )
     # ScanInfo 모델을 사용하여 쿼리 생성
     queryset = (
-        ScanInfo.objects.using("hippo_db").filter(mg_id=mg_id).order_by("created_at")
+        ScanInfo.objects.using("hippo").filter(mg_id=mg_id).order_by("created_at")
     )
+
+    # user_id, username
+    matching_user_id = Users.objects.using("lama").values("user_id", "username")
+    matching_user_id_dict = {}
+    for _ in matching_user_id:
+        matching_user_id_dict[str(_["user_id"])] = _["username"]
+
     total_count = queryset.count()
     # 원하는 페이지당 항목 수 설정
     items_per_page = 15  # 페이지당 15개 항목을 표시하도록 설정
@@ -197,6 +226,7 @@ def mgid_detail(request, mg_id):
             "page": page,
             "mg_id_like_cnt": mg_id_like_cnt,
             "crop_img_list": crop_img_list,
+            "matching_user_id_dict": matching_user_id_dict,
         },
     )
 
@@ -215,7 +245,7 @@ def scanid_detail(request, scan_id):
         scan_id_list = [result["scanId"] for result in search_result]
         scan_id_list.append(scan_id)
         scan_info_objects = (
-            ScanInfo.objects.using("hippo_db")
+            ScanInfo.objects.using("hippo")
             .filter(scan_id__in=scan_id_list)
             .values("scan_id", "img_url")
         )
@@ -229,7 +259,7 @@ def scanid_detail(request, scan_id):
         scan_id_list = []
         scan_id_list.append(scan_id)
         scan_info_objects = (
-            ScanInfo.objects.using("hippo_db")
+            ScanInfo.objects.using("hippo")
             .filter(scan_id__in=scan_id_list)
             .values("scan_id", "img_url")
         )
@@ -268,9 +298,7 @@ def userid_detail(request, user_id):
     context = {"page_title": "유저아이디 디테일 페이지"}
     # ScanInfo 모델을 사용하여 쿼리 생성
     queryset = (
-        ScanInfo.objects.using("hippo_db")
-        .filter(user_id=user_id)
-        .order_by("created_at")
+        ScanInfo.objects.using("hippo").filter(user_id=user_id).order_by("created_at")
     )
     total_count = queryset.count()
     # 원하는 페이지당 항목 수 설정
@@ -286,6 +314,11 @@ def userid_detail(request, user_id):
         page_number = 1
     # 페이지 번호에 해당하는 Page 객체 가져오기
     page = paginator.get_page(page_number)
+    # user_id, username
+    matching_user_id = Users.objects.using("lama").values("user_id", "username")
+    matching_user_id_dict = {}
+    for _ in matching_user_id:
+        matching_user_id_dict[str(_["user_id"])] = _["username"]
 
     return render(
         request,
@@ -295,6 +328,7 @@ def userid_detail(request, user_id):
             "user_id": user_id,
             "page": page,
             "total_count": total_count,
+            "matching_user_id_dict": matching_user_id_dict,
         },
     )
 

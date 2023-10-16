@@ -113,11 +113,21 @@
               <ul class="list-group list-group-flush">
                 <li class="list-group-item d-flex px-0 justify-content-between">
                   <strong>scan_id</strong>
-                  <span class="mb-0" style="font-size: 14px;">{{ item.scan_id }}</span>
+                  <a href="{% url 'operation:object-list-scan-id-detail' scan_id=item.scan_id %}">
+                    <span class="mb-0" style="font-size: 14px;">{{ item.scan_id }}</span>
+                  </a>
                 </li>                
                 <li class="list-group-item d-flex px-0 justify-content-between">
                   <strong>User</strong>
-                  <span class="mb-0" style="font-size: 14px;">{{ item.user_id }}</span>
+                  <a href="{% url 'operation:object-list-user-id-detail' user_id=item.user_id %}">
+                    <span class="mb-0" style="font-size: 14px;">
+                      {% if matching_user_id_dict|get_value_from_dict:item.user_id %}
+                        {{ matching_user_id_dict|get_value_from_dict:item.user_id }}
+                      {% else %}
+                        {{ item.user_id }}
+                      {% endif %}
+                    </span>
+                  </a>
                 </li>
                 <li class="list-group-item d-flex px-0 justify-content-between">
                   <strong>Created</strong>
@@ -125,7 +135,25 @@
                 </li>
                 <li class="list-group-item d-flex px-0 justify-content-between">
                   <strong>Geohash</strong>
-                  <span class="mb-0">{{ item.geohash }}</span>
+                  <span class="mb-0" data-bs-toggle="modal" data-bs-target="#{{ item.geohash }}" >{{ item.geohash }}</span>
+                  <!-- Modal -->
+                  <div class="modal fade" id="{{ item.geohash }}">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">{{ item.geohash }}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                              <iframe src="https://geohash.softeng.co/{{ item.geohash }}" width="100%" height="400" frameborder="0"></iframe>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger light" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
                 </li>
               </ul>
 
