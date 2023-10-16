@@ -66,7 +66,7 @@ env:
   - name: DATABASE_USER
     value: "${DATABASE_USER}"
   - name: DATABASE_PASSWORD
-    value: "${DB_PG_PW}"
+    value: "${DATABASE_PASSWORD}"
   - name: DATABASE_HOST
     value: "${DATABASE_HOST}"
 
