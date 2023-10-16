@@ -84,6 +84,7 @@ workflow:
         EKS_CLUSTER_NAME: "arbeon-staging-cls"
         SERVICE_TYPE: "NodePort"
         # POSTGRESQL
+        DATABASE_USER: "auroradmin"
         DATABASE_HOST: "arbeon-staging-db-cls.cluster-czqqo2sfzzru.ap-northeast-2.rds.amazonaws.com"
         DATABASE_PASSWORD: "${AWS_PG_PW}"
         # ES
