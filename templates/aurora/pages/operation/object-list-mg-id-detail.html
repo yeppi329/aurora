@@ -110,10 +110,11 @@
           </div>
           <div class="col-md-7 col-xxl-12">
             <div class="new-arrival-content position-relative">
-              <h4>
-                <a href="javascript:void(0)">{{ item.scan_id }}</a>
-              </h4>
               <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex px-0 justify-content-between">
+                  <strong>scan_id</strong>
+                  <span class="mb-0" style="font-size: 14px;">{{ item.scan_id }}</span>
+                </li>                
                 <li class="list-group-item d-flex px-0 justify-content-between">
                   <strong>User</strong>
                   <span class="mb-0" style="font-size: 14px;">{{ item.user_id }}</span>
