@@ -11,6 +11,8 @@ from aurora.models import (
     SummaryScanMonthInfo,
     SummaryScanHourInfo,
 )
+from django.http import HttpResponse
+import csv
 
 
 @login_required(login_url="aurora:login")
@@ -62,6 +64,27 @@ def svc_user_status_month(request):
     
     return render(request, 'aurora/pages/data/svc-user-status-month.html', context)
 
+def download_summary_as_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="summary_user_month_info.csv"'
+
+    response.write(u'\ufeff'.encode('utf8'))
+    writer = csv.writer(response)
+    header = [
+        'Summary ID', '통계일자', '총 이용자 수', '신규 가입 이용자 수', '중지된 이용자 수',
+        '삭제된 이용자 수', '재가입 이용자 수', '비활성 이용자 수', 'DAU', '생성일시'
+    ]
+    writer.writerow(header)
+
+    summaries = SummaryUserMonthInfo.objects.all()
+    for summary in summaries:
+        writer.writerow([
+            summary.summary_id, summary.summary_dt, summary.total_user, summary.new_user,
+            summary.suspended_user, summary.deleted_user, summary.return_user,
+            summary.inactive_user, summary.dau, summary.created_at
+        ])
+
+    return response
 
 @login_required(login_url="aurora:login")
 def svc_activity_user(request):
@@ -135,9 +158,6 @@ def scan_status_month(request):
         "all_data": page,
     }
     return render(request, 'aurora/pages/data/scan-status-month.html', context)
-
-    context = {"page_title": "스캔 현황(월별)", "all_data": all_data}
-    return render(request, "aurora/pages/data/scan-status-month.html", context)
 
 
 @login_required(login_url="aurora:login")

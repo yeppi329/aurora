@@ -10,5 +10,6 @@ urlpatterns = [
     path("scan-status-daily/", data_views.scan_status_daily, name="scan-status-daily"),
     path("scan-status-month/", data_views.scan_status_month, name="scan-status-month"),
     path("scan-activity-status/", data_views.scan_activity_status, name="scan-activity-status"),
+    path('download_summary_as_csv/', data_views.download_summary_as_csv, name='download_summary_as_csv'),
     #path("scan-status/", data_views.scan_status, name="scan-status"),
 ]
