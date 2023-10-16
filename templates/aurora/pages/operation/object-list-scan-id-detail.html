@@ -65,6 +65,26 @@
                             <a href="{% url 'operation:object-list-mg-id-detail' mg_id=v %}">
                               <span class="mb-0" style="font-size: 14px">{{ v }}</span>
                             </a>
+                          {% elif "geohash" == k %}
+                            <span class="mb-0" data-bs-toggle="modal" data-bs-target="#{{ v }}" >{{ v }}</span>
+                            <!-- Modal -->
+                            <div class="modal fade" id="{{ v }}">
+                              <div class="modal-dialog" role="document">
+                                  <div class="modal-content">
+                                      <div class="modal-header">
+                                          <h5 class="modal-title">{{ v }}</h5>
+                                          <button type="button" class="btn-close" data-bs-dismiss="modal">
+                                          </button>
+                                      </div>
+                                      <div class="modal-body">
+                                        <iframe src="https://geohash.softeng.co/{{ v }}" width="100%" height="400" frameborder="0"></iframe>
+                                      </div>
+                                      <div class="modal-footer">
+                                          <button type="button" class="btn btn-danger light" data-bs-dismiss="modal">Close</button>
+                                      </div>
+                                  </div>
+                              </div>
+                            </div>
                           {% else %}
                             <span class="mb-0" style="font-size: 14px">{{ v }}</span>
                           {% endif %}
