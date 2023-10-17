@@ -144,14 +144,18 @@
                   <ul class="list-group list-group-flush">
                     <li class="list-group-item d-flex px-0 justify-content-between">
                       <strong>scan_id</strong>
-                      <span class="mb-0">{{ i.scanId }}</span>
+                      <a href="{% url 'operation:object-list-scan-id-detail' scan_id=i.scanId %}">
+                        <span class="mb-0" style="font-size: 14px;">{{ i.scanId }}</span>
+                      </a>
                     <li >
                       <strong>score</strong>
                       <span class="mb-0" style="font-size: 14px">{{ i.score }}</span>
                     </li>
                     <li class="list-group-item d-flex px-0 justify-content-between">
                       <strong>mg_id</strong>
-                      <span class="mb-0">{{ i.source.mgId }}</span>
+                      <a href="{% url 'operation:object-list-mg-id-detail' mg_id=i.source.mgId %}">
+                        <span class="mb-0" style="font-size: 12px;">{{ i.source.mgId }}</span>
+                      </a>
                     </li>
                   </ul>
                 </div>

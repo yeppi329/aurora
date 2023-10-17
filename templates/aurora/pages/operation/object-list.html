@@ -163,76 +163,86 @@
             </ul>
           </div>
         </div>
-        {% if object_type == "mg_id" %}
-          <div class="card-body">
-            <div class="table-responsive">
-              <table id="example" class="display min-w850">
-                <thead>
-                  <tr>
-                    <th>
-                      <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="form-check-input" id="checkAll" required=""/>
-                        <label class="custom-control-label" for="checkAll"></label>
-                      </div>
-                    </th>
-                    <th>사물이미지</th>
-                    <th>mg_id</th>
-                    <th>Scan 수</th>
-                    <th>태그(분류)</th>
-                    <th>이름</th>
-                    <th>좋아요</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {% for item in data %}
-                    <tr>
-                      <td>
-                        <div class="custom-control custom-checkbox">
-                          <input type="checkbox" class="form-check-input" id="customCheckBox2" required=""/>
-                          <label class="custom-control-label" for="customCheckBox2"></label>
-                        </div>
-                      </td>
-                      <td>
-                        {% if item.img_url %}
-                          <img src="{{ item.img_url }}" alt="Image" width="120" height="160"/>
-                        {% else %}
-                          <img src={% static 'aurora/images/logo.png' %} alt="Image" width="120" height="auto"/>
-                        {% endif %}
-                      </td>
-                      <td>
-                        <a href="{% url 'operation:object-list-mg-id-detail' mg_id=item.mg_id %}">{{ item.mg_id }}</a>
-                      </td>
-                      <td>{{ item.mg_id_count }}</td>
-                      <td>-</td>
-                      <td>-</td>
-                      <td>{{ item.like_cnt }}</td>
-                    </tr>
-                    <!-- 필요한 다른 필드 추가 -->
-                  {% endfor %}
-                </tbody>
-                <tfoot>
-                  <tr>
-                    <th>
-                      <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="form-check-input" id="checkAll" required=""/>
-                        <label class="custom-control-label" for="checkAll"></label>
-                      </div>
-                    </th>
-                    <th>사물이미지</th>
-                    <th>mg_id</th>
-                    <th>Scan 수</th>
-                    <th>태그(분류)</th>
-                    <th>이름</th>
-                    <th>좋아요</th>
-                  </tr>
-                </tfoot>
-              </table>
+        <div class="card-body">
+          <div class="dropdown custom-dropdown">
+            <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="dropdown" aria-expanded="false">Page Size:
+              {{page_size}}
+              <i class="fa fa-angle-down ms-3"></i>
+            </button>
+            <div class="dropdown-menu dropdown-menu-end" style="">
+              <a class="dropdown-item" href="?page_size=10&page={{page_number}}">10</a>
+              <a class="dropdown-item" href="?page_size=20&page={{page_number}}">20</a>
+              <a class="dropdown-item" href="?page_size=50&page={{page_number}}">50</a>
             </div>
-          </div>
-        {% elif object_type == "scan_id" %}
-          <div class="card-body">
+          </div>          
+          {% if object_type == "mg_id" %}
+              <div class="table-responsive">
+                <table id="example2-woody" class="display min-w850">
+                  <thead>
+                    <tr>
+                      <th>
+                        <div class="custom-control custom-checkbox">
+                          <input type="checkbox" class="form-check-input" id="checkAll" required=""/>
+                          <label class="custom-control-label" for="checkAll"></label>
+                        </div>
+                      </th>
+                      <th>사물이미지</th>
+                      <th>mg_id</th>
+                      <th>Scan 수</th>
+                      <th>태그(분류)</th>
+                      <th>이름</th>
+                      <th>좋아요</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for item in data %}
+                      <tr>
+                        <td>
+                          <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="form-check-input" id="customCheckBox2" required=""/>
+                            <label class="custom-control-label" for="customCheckBox2"></label>
+                          </div>
+                        </td>
+                        <td>
+                          {% if item.img_url %}
+                            <img src="{{ item.img_url }}" alt="Image" width="120" height="160"/>
+                          {% else %}
+                            <img src={% static 'aurora/images/logo.png' %} alt="Image" width="120" height="auto"/>
+                          {% endif %}
+                        </td>
+                        <td>
+                          <a href="{% url 'operation:object-list-mg-id-detail' mg_id=item.mg_id %}">{{ item.mg_id }}</a>
+                        </td>
+                        <td>{{ item.mg_id_count }}</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>{{ item.like_cnt }}</td>
+                      </tr>
+                      <!-- 필요한 다른 필드 추가 -->
+                    {% endfor %}
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <th>
+                        <div class="custom-control custom-checkbox">
+                          <input type="checkbox" class="form-check-input" id="checkAll" required=""/>
+                          <label class="custom-control-label" for="checkAll"></label>
+                        </div>
+                      </th>
+                      <th>사물이미지</th>
+                      <th>mg_id</th>
+                      <th>Scan 수</th>
+                      <th>태그(분류)</th>
+                      <th>이름</th>
+                      <th>좋아요</th>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+          {% elif object_type == "scan_id" %}
             <div class="table-responsive">
-              <table id="example" class="display min-w850">
+              <table id="example2-woody" class="display min-w850">
                 <thead>
                   <tr>
                     <th>
@@ -276,23 +286,22 @@
                         <a href="{% url 'operation:object-list-scan-id-detail' scan_id=item.scan_id %}">{{ item.scan_id }}</a>
                       </td>
                       <td>
-                        <span class="mb-0" data-bs-toggle="modal" data-bs-target="#{{ item.geohash }}" >{{ item.geohash }}</span>
+                        <span class="mb-0" data-bs-toggle="modal" data-bs-target="#{{ item.geohash }}">{{ item.geohash }}</span>
                         <!-- Modal -->
                         <div class="modal fade" id="{{ item.geohash }}">
                           <div class="modal-dialog" role="document">
-                              <div class="modal-content">
-                                  <div class="modal-header">
-                                      <h5 class="modal-title">{{ item.geohash }}</h5>
-                                      <button type="button" class="btn-close" data-bs-dismiss="modal">
-                                      </button>
-                                  </div>
-                                  <div class="modal-body">
-                                    <iframe src="https://geohash.softeng.co/{{ item.geohash }}" width="100%" height="400" frameborder="0"></iframe>
-                                  </div>
-                                  <div class="modal-footer">
-                                      <button type="button" class="btn btn-danger light" data-bs-dismiss="modal">Close</button>
-                                  </div>
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title">{{ item.geohash }}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                               </div>
+                              <div class="modal-body">
+                                <iframe src="https://geohash.softeng.co/{{ item.geohash }}" width="100%" height="400" frameborder="0"></iframe>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-danger light" data-bs-dismiss="modal">Close</button>
+                              </div>
+                            </div>
                           </div>
                         </div>
 
@@ -329,57 +338,81 @@
                 </tfoot>
               </table>
             </div>
-          </div>
-        {% else %}
-          <div class="card-body">
-            <div class="table-responsive">
-              <table id="example" class="display min-w850">
-                <thead>
-                  <tr>
-                    <th>첫스캔 이미지</th>
-                    <th>user_id</th>
-                    <th>scan 총 개수</th>
-                    <th>첫스캔 일시</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {% for item in data %}
+          {% else %}          
+              <div class="table-responsive">
+                <table id="example2-woody" class="display min-w850">
+                  <thead>
                     <tr>
-                      <td>
-                        {% if item.img_url %}
-                          <img src="{{ item.img_url }}" alt="Image" width="120" height="160"/>
-                        {% else %}
-                          <img src={% static 'aurora/images/logo.png' %} alt="Image" width="120" height="auto"/>
-                        {% endif %}
-                      </td>
-                      <td>
-                        <a href="{% url 'operation:object-list-user-id-detail' user_id=item.user_id %}">
-                          {% if item.username %}
-                            {{ item.username }}
-                          {% else %}
-                            {{ item.user_id }}
-                          {% endif %}
-                        </a>
-                      </td>
-                      <td>{{ item.user_id_count }}</td>
-                      <td>{{ item.created_at }}</td>
+                      <th>마지막 이미지</th>
+                      <th>user_id</th>
+                      <th>scan 총 개수</th>
+                      <th>마지막 스캔 일시</th>
                     </tr>
-                    <!-- 필요한 다른 필드 추가 -->
-                  {% endfor %}
-                </tbody>
-                <tfoot>
-                  <tr></tr>
-                  <tr>
-                    <th>첫스캔 이미지</th>
-                    <th>user_id</th>
-                    <th>scan 총 개수</th>
-                    <th>첫스캔 일시</th>
-                  </tr>
-                </tfoot>
-              </table>
-            </div>
+                  </thead>
+                  <tbody>
+                    {% for item in data %}
+                      <tr>
+                        <td>
+                          {% if item.img_url %}
+                            <img src="{{ item.img_url }}" alt="Image" width="120" height="160"/>
+                          {% else %}
+                            <img src={% static 'aurora/images/logo.png' %} alt="Image" width="120" height="auto"/>
+                          {% endif %}
+                        </td>
+                        <td>
+                          <a href="{% url 'operation:object-list-user-id-detail' user_id=item.user_id %}">
+                            {% if item.username %}
+                              {{ item.username }}
+                            {% else %}
+                              {{ item.user_id }}
+                            {% endif %}
+                          </a>
+                        </td>
+                        <td>{{ item.user_id_count }}</td>
+                        <td>{{ item.created_at | date:"y-m-d H:m:s" }}</td>
+                      </tr>
+                      <!-- 필요한 다른 필드 추가 -->
+                    {% endfor %}
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <th>마지막 이미지</th>
+                      <th>user_id</th>
+                      <th>scan 총 개수</th>
+                      <th>마지막 스캔 일시</th>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+          {% endif %}
+            <ul class="pagination">
+              {% if data.has_previous %}
+                <li class="page-item page-indicator">
+                  <a class="page-link" href="?page_size={{ page_size }}&page={{ data.paginator.page_range.0 }}">
+                    <i class="la la-angle-left"></i>
+                  </a>
+                </li>
+              {% endif %}
+
+              {% for page_num in data.paginator.page_range %}
+                {% with data_number=data.number|add:"-0" %}
+                  {% if page_num >= data_number|add:"-5" and page_num <= data_number|add:"5" %}
+                    <li class="page-item{% if page_num == data_number %} active{% endif %}">
+                      <a class="page-link" href="?page_size={{ page_size }}&page={{ page_num }}">{{ page_num }}</a>
+                    </li>
+                  {% endif %}
+                {% endwith %}
+              {% endfor %}
+
+              {% if data.has_next %}
+                <li class="page-item page-indicator">
+                  <a class="page-link" href="?page_size={{ page_size }}&page={{ data.paginator.page_range|last }}">
+                    <i class="la la-angle-right"></i>
+                  </a>
+                </li>
+              {% endif %}
+            </ul>   
           </div>
-        {% endif %}
       </div>
     </div>
   </div>
