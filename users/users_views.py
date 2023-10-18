@@ -1,11 +1,11 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
-from users.models import NewUser
+from users.models import NewUser, GroupExpended
 from users.forms import (
     NewUserForm,
     SignupForm,
     LoginForm,
-    GroupForm,
+    RoleForm,
     PermissionsForm,
     UserPermissionsForm,
     EditUserForm,
@@ -68,6 +68,7 @@ def user_details(request, id):
     }
 
     return render(request, "aurora/modules/user-details.html", context)
+
 
 @login_required(login_url="aurora:login")
 @permission_required(
@@ -223,6 +224,7 @@ def groups_list(request):
     }
     return render(request, "aurora/modules/group-list.html", context)
 
+
 # 권한 관리 > 롤 관리
 @login_required(login_url="aurora:login")
 @permission_required({"auth.view_group"}, raise_exception=True)
@@ -235,6 +237,71 @@ def role_list(request):
         "colors": {"primary": "primary", "success": "success", "dark": "dark"},
     }
     return render(request, "aurora/modules/role-list.html", context)
+
+
+# 권한 관리 > 롤 관리 > 롤 추가
+@login_required(login_url="aurora:login")
+@permission_required({"auth.view_group", "auth.add_group"}, raise_exception=True)
+def role_add(request):
+    if request.method == "POST":
+        form = RoleForm(request.POST)
+        if form.is_valid():
+            group = Group.objects.create(name=form.cleaned_data["name"])
+            group_expended = GroupExpended.objects.create(group=group, description=form.cleaned_data["description"])
+            group_expended.save()
+
+            messages.success(request, "Group Created Successfully")
+            return redirect("users:roles")
+        else:
+            messages.warning(request, "Name Already Exist")
+            return render(request, "aurora/modules/role-add.html", {"form": form})
+    else:
+        form = RoleForm()
+        return render(request, "aurora/modules/role-add.html", {"form": form})
+
+# 권한 관리 > 롤 관리 > 롤 수정
+@login_required(login_url="aurora:login")
+@permission_required({"auth.view_group", "auth.change_group"}, raise_exception=True)
+def role_edit(request, id):
+    group_obj = Group.objects.filter(id=id).first()
+    group_obj_expended = GroupExpended.objects.filter(group=group_obj).first()
+    group_obj_expended.group = group_obj
+
+    if request.method == "POST":
+        queryDict = request.POST
+        data = dict(queryDict)
+
+        try:
+            group_obj.name = data["name"][0]
+            group_obj.save()
+
+            group_obj_expended.group = group_obj
+            group_obj_expended.description = data["description"][0]
+            group_obj_expended.save()
+
+            response = JsonResponse({"success": "Save Successfully"})
+            response.status_code = 200
+            return redirect("users:roles")
+        except:
+            response = JsonResponse({"error": "Group Name already exist"})
+            response.status_code = 403
+            return response
+    else:
+
+        form = RoleForm(instance=group_obj_expended)
+    return render(request, "aurora/modules/role-edit.html", {"form": form})
+
+# 권한 관리 > 롤 관리 > 롤 삭제
+@login_required(login_url="aurora:login")
+@permission_required({"auth.view_group", "auth.delete_group"}, raise_exception=True)
+def role_delete(request, id):
+    g = get_object_or_404(Group, id=id)
+
+    g.delete()
+    messages.success(request, "Group Deleted Sucessfully")
+
+    return redirect("users:roles")
+
 
 # 권한 관리 > 롤 관리 > 롤 사용자 리스트
 @login_required(login_url="aurora:login")
@@ -260,68 +327,10 @@ def permission_list(request):
     context = {
         "permissions_obj": paginator.get_page(request.GET.get("page")),
     }
-
     return render(request, "aurora/modules/permission-list.html", context)
 
-@login_required(login_url="aurora:login")
-@permission_required({"auth.view_group", "auth.change_group"}, raise_exception=True)
-def group_edit(request, id):
-    group_obj = get_object_or_404(Group, id=id)
 
-    if request.method == "POST":
-        queryDict = request.POST
-        data = dict(queryDict)
-
-        try:
-            group_obj.name = data["name"][0]
-            group_obj.save()
-        except:
-            response = JsonResponse({"error": "Group Name already exist"})
-            response.status_code = 403
-            return response
-
-        if "permissions[]" in data:
-            group_obj.permissions.clear()
-            group_obj.permissions.set(data["permissions[]"])
-        else:
-            group_obj.permissions.clear()
-
-        response = JsonResponse({"success": "Save Successfully"})
-        response.status_code = 200
-        return response
-
-    else:
-        form = GroupForm(instance=group_obj)
-    return render(request, "aurora/modules/group-edit.html", {"form": form})
-
-
-
-@login_required(login_url="aurora:login")
-@permission_required({"auth.view_group", "auth.delete_group"}, raise_exception=True)
-def group_delete(request, id):
-    g = get_object_or_404(Group, id=id)
-
-    g.delete()
-    messages.success(request, "Group Deleted Sucessfully")
-
-    return redirect("aurora:groups")
-
-
-@login_required(login_url="aurora:login")
-@permission_required({"auth.view_group", "auth.add_group"}, raise_exception=True)
-def group_add(request):
-    if request.method == "POST":
-        form = GroupForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Group Created Successfully")
-            return redirect("aurora:groups")
-        else:
-            messages.warning(request, "Name Already Exist")
-            return render(request, "aurora/modules/group-add.html", {"form": form})
-    else:
-        form = GroupForm()
-        return render(request, "aurora/modules/group-add.html", {"form": form})
+# ======================================================================
 
 
 @login_required(login_url="aurora:login")

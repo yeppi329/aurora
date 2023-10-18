@@ -31,10 +31,6 @@ urlpatterns = [
     path("add-user/", users_views.add_user, name="add-user"),
     path("edit-user/<int:id>/", users_views.edit_user, name="edit-user"),
     path("delete-user/<int:id>/", users_views.delete_user, name="delete-user"),
-    path("groups/", users_views.groups_list, name="groups"),
-    path("group-edit/<int:id>/", users_views.group_edit, name="group-edit"),
-    path("group-delete/<int:id>/", users_views.group_delete, name="group-delete"),
-    path("group-add/", users_views.group_add, name="group-add"),
     path("permissions/", users_views.permissions, name="permissions"),
     path(
         "edit-permissions/<int:id>/",

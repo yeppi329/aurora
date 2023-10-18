@@ -1,14 +1,9 @@
 {% extends 'aurora/elements/layouts/admin.html' %}
-{% load static widget_tweaks %}
-
-
-{% block additional_css %}
- 
+    {% load static %}
+    {% block additional_css %}
 {% endblock %}
-
-
 {% block message %}
-{% include 'aurora/elements/alert.html' %}
+    {% include 'aurora/elements/alert.html' %}
 {% endblock %}
 
 
@@ -51,11 +46,6 @@
         <div class="card">
             <div class="card-header">
                 <h4 class="card-title">롤 사용자 리스트</h4>
-                {% if perms.auth.add_group %}
-                <a href="{% url 'aurora:group-add' %}" class="btn btn-primary btn-xs content-justify-right">ADD GROUP  <span class="btn-icon-end">
-                    <i class="fa fa-plus"></i></span>
-                </a>
-                {% endif %}
             </div>
             <div class="card-body">
                 <div class="alert alert-info alert-dismissible fade show">

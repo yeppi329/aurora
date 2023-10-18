@@ -61,7 +61,7 @@ dz_array = {
                         f"{folderName}/vendor/bootstrap-daterangepicker/daterangepicker.css",
                         f"{folderName}/vendor/select2/css/select2.min.css",
                     ],
-                    "groups_list": [
+                    "role_list": [
                         f"{folderName}/vendor/sweetalert2/dist/sweetalert2.min.css",
                     ],
                     "assign_permissions_to_user": [
@@ -69,12 +69,12 @@ dz_array = {
                         f"{folderName}/vendor/bootstrap-duallistbox/src/bootstrap-duallistbox.css",
                         f"{folderName}/vendor/bootstrap-duallistbox/dist/bootstrap-duallistbox.css",
                     ],
-                    "group_add": [
+                    "role_add": [
                         f"{folderName}/vendor/bootstrap-duallistbox/ajax/libs/prettify/r298/prettify.min.css",
                         f"{folderName}/vendor/bootstrap-duallistbox/src/bootstrap-duallistbox.css",
                         f"{folderName}/vendor/bootstrap-duallistbox/dist/bootstrap-duallistbox.css",
                     ],
-                    "group_edit": [
+                    "role_edit": [
                         f"{folderName}/vendor/bootstrap-duallistbox/ajax/libs/prettify/r298/prettify.min.css",
                         f"{folderName}/vendor/bootstrap-duallistbox/src/bootstrap-duallistbox.css",
                         f"{folderName}/vendor/bootstrap-duallistbox/dist/bootstrap-duallistbox.css",
@@ -229,7 +229,7 @@ dz_array = {
                         f"{folderName}/vendor/select2/js/select2.full.min.js",
                         f"{folderName}/js/plugins-init/select2-init.js",
                     ],
-                    "groups_list": [
+                    "role_list": [
                         f"{folderName}/vendor/sweetalert2/dist/sweetalert2.min.js",
                     ],
                     "assign_permissions_to_user": [
@@ -237,12 +237,12 @@ dz_array = {
                         f"{folderName}/vendor/bootstrap-duallistbox/ajax/libs/prettify/r298/run_prettify.js",
                         f"{folderName}/vendor/bootstrap-duallistbox/dist/jquery.bootstrap-duallistbox.js",
                     ],
-                    "group_add": [
+                    "role_add": [
                         f"{folderName}/vendor/bootstrap-duallistbox/ajax/libs/popper.js/1.12.9/umd/popper.min.js",
                         f"{folderName}/vendor/bootstrap-duallistbox/ajax/libs/prettify/r298/run_prettify.js",
                         f"{folderName}/vendor/bootstrap-duallistbox/dist/jquery.bootstrap-duallistbox.js",
                     ],
-                    "group_edit": [
+                    "role_edit": [
                         f"{folderName}/vendor/bootstrap-duallistbox/ajax/libs/popper.js/1.12.9/umd/popper.min.js",
                         f"{folderName}/vendor/bootstrap-duallistbox/ajax/libs/prettify/r298/run_prettify.js",
                         f"{folderName}/vendor/bootstrap-duallistbox/dist/jquery.bootstrap-duallistbox.js",
