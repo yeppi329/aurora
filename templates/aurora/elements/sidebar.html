@@ -58,8 +58,11 @@
                         {% endif %}
 
                         {% if perms.auth.view_group or perms.auth.change_group or perms.auth.add_group or perms.auth.delete_group %}
-                            <li>
-                                <a {% if '/groups/' in request.path %} class="mm-active"{% endif %} href="{% url 'aurora:groups' %}">Groups</a>
+                            <li><a class="has-arrow" href="{% url 'operation:object-list' %}">권한 관리</a>
+                                <ul aria-expanded="false">
+                                    <li><a href="{% url 'users:roles'%}">롤 관리</a></li>
+                                    <li><a href="{% url 'users:permission-list' %}">허가 관리</a></li>
+                                </ul>
                             </li>
                         {% endif %}
 

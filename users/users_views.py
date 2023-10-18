@@ -13,7 +13,7 @@ from users.forms import (
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import Group, Permission
-from django.db.models import Count
+from django.db.models import Subquery, OuterRef, Count
 from django.http import HttpResponse, JsonResponse
 from django.contrib.contenttypes.models import ContentType
 
@@ -68,7 +68,6 @@ def user_details(request, id):
     }
 
     return render(request, "aurora/modules/user-details.html", context)
-
 
 @login_required(login_url="aurora:login")
 @permission_required(
@@ -224,6 +223,45 @@ def groups_list(request):
     }
     return render(request, "aurora/modules/group-list.html", context)
 
+# 권한 관리 > 롤 관리
+@login_required(login_url="aurora:login")
+@permission_required({"auth.view_group"}, raise_exception=True)
+def role_list(request):
+    context = {
+        "total": len(NewUser.objects.all()),
+        "roles": Group.objects.annotate(
+            user_count=Count("newuser", distinct=True)
+        ).annotate(perms_count=Count("permissions", distinct=True)),
+        "colors": {"primary": "primary", "success": "success", "dark": "dark"},
+    }
+    return render(request, "aurora/modules/role-list.html", context)
+
+# 권한 관리 > 롤 관리 > 롤 사용자 리스트
+@login_required(login_url="aurora:login")
+@permission_required({"auth.view_group"}, raise_exception=True)
+def role_user_list(request, id):
+    user_list = NewUser.objects.filter(groups__id=id).all()
+    paginator = Paginator(user_list, 20)
+
+    context = {
+        "total": Group.objects.annotate(user_count=Count("newuser", distinct=True)).filter(id=id).first().user_count,
+        "role_info": Group.objects.get(id=id),
+        "user_list": paginator.get_page(request.GET.get("page")),
+        "colors": {"primary": "primary", "success": "success", "dark": "dark"},
+    }
+    return render(request, "aurora/modules/role-user-list.html", context)
+
+# 권한 관리 > 허가 관리
+@login_required(login_url="aurora:login")
+@permission_required({"auth.view_permission"}, raise_exception=True)
+def permission_list(request):
+    permission_list = Permission.objects.all()
+    paginator = Paginator(permission_list, 10)
+    context = {
+        "permissions_obj": paginator.get_page(request.GET.get("page")),
+    }
+
+    return render(request, "aurora/modules/permission-list.html", context)
 
 @login_required(login_url="aurora:login")
 @permission_required({"auth.view_group", "auth.change_group"}, raise_exception=True)
@@ -255,6 +293,7 @@ def group_edit(request, id):
     else:
         form = GroupForm(instance=group_obj)
     return render(request, "aurora/modules/group-edit.html", {"form": form})
+
 
 
 @login_required(login_url="aurora:login")

@@ -19,10 +19,7 @@ from django.contrib import admin
 from django.urls import path, include
 from users.forms import EmailValidationOnForgotPassword
 from django.contrib.auth import views as auth_views
-from aurora import aurora_views
 from users import users_views
-from data import data_views
-from operation import operation_views
 
 urlpatterns = [
 
@@ -47,7 +44,10 @@ urlpatterns = [
     # operation
     path("operation/", include('operation.urls', namespace='operation')),
 
+    # administrator
+    path("administrator/", include('users.urls', namespace='administrator')),
 ]
+
 if settings.DEBUG == True or settings.DEBUG == False:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

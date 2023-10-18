@@ -9,6 +9,9 @@ from django.core.validators import RegexValidator
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
 
+class GroupExpended(models.Model):
+    group = models.OneToOneField(Group, on_delete=models.CASCADE, primary_key=True)
+    description = models.CharField(max_length=255, null=True, blank=True)
 
 class CustomAccountManager(BaseUserManager):
     def create_superuser(self, email, first_name, last_name, password, **other_fields):
@@ -68,3 +71,5 @@ class NewUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
+
+

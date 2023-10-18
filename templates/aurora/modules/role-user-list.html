@@ -1,0 +1,178 @@
+{% extends 'aurora/elements/layouts/admin.html' %}
+{% load static widget_tweaks %}
+
+
+{% block additional_css %}
+ 
+{% endblock %}
+
+
+{% block message %}
+{% include 'aurora/elements/alert.html' %}
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="page-titles">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+            <li class="breadcrumb-item"><a href="javascript:void(0)">관리자</a></li>
+            <li class="breadcrumb-item"><a href="javascript:void(0)">권한 관리</a></li>
+            <li class="breadcrumb-item"><a href="javascript:void(0)">롤 관리</a></li>
+        </ol>
+    </div>
+
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3>롤 사용자 관리</h3>
+                </div>
+                <div class="card-body">
+                    <div class="media align-items-center invoice-card">
+                        <div class="media-body">
+                            <h2 class="fs-38 text-black font-w600">{{ total }} 명</h2>
+                        </div>
+                        <span class="p-3 border ms-3 rounded-circle">
+                            <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M26.9165 1.41669H7.08317C5.58028 1.41669 4.13894 2.01371 3.07623 3.07642C2.01353 4.13912 1.4165 5.58046 1.4165 7.08335V17C1.4165 17.3757 1.56576 17.7361 1.83144 18.0018C2.09711 18.2674 2.45745 18.4167 2.83317 18.4167H9.9165V31.1667C9.91583 31.4376 9.99289 31.7031 10.1385 31.9316C10.2842 32.1601 10.4923 32.342 10.7382 32.4559C10.9847 32.5693 11.2585 32.6096 11.5273 32.5719C11.796 32.5343 12.0482 32.4202 12.254 32.2434L16.2915 28.7867L20.329 32.2434C20.5856 32.4628 20.9122 32.5834 21.2498 32.5834C21.5875 32.5834 21.9141 32.4628 22.1707 32.2434L26.2082 28.7867L30.2457 32.2434C30.5023 32.4628 30.8289 32.5834 31.1665 32.5834C31.3715 32.5819 31.574 32.5385 31.7615 32.4559C32.0074 32.342 32.2155 32.1601 32.3612 31.9316C32.5068 31.7031 32.5838 31.4376 32.5832 31.1667V7.08335C32.5832 5.58046 31.9862 4.13912 30.9234 3.07642C29.8607 2.01371 28.4194 1.41669 26.9165 1.41669ZM4.24984 15.5834V7.08335C4.24984 6.33191 4.54835 5.61124 5.0797 5.07988C5.61105 4.54853 6.33172 4.25002 7.08317 4.25002C7.83462 4.25002 8.55529 4.54853 9.08664 5.07988C9.61799 5.61124 9.9165 6.33191 9.9165 7.08335V15.5834H4.24984ZM29.7498 28.0925L27.129 25.84C26.8724 25.6205 26.5458 25.4999 26.2082 25.4999C25.8705 25.4999 25.5439 25.6205 25.2873 25.84L21.2498 29.2967L17.2123 25.84C16.9557 25.6205 16.6292 25.4999 16.2915 25.4999C15.9538 25.4999 15.6273 25.6205 15.3707 25.84L12.7498 28.0925V7.08335C12.7481 6.08812 12.4842 5.1109 11.9848 4.25002H26.9165C27.668 4.25002 28.3886 4.54853 28.92 5.07988C29.4513 5.61124 29.7498 6.33191 29.7498 7.08335V28.0925ZM26.9165 8.50002C26.9165 8.87574 26.7673 9.23608 26.5016 9.50175C26.2359 9.76743 25.8756 9.91669 25.4998 9.91669H16.9998C16.6241 9.91669 16.2638 9.76743 15.9981 9.50175C15.7324 9.23608 15.5832 8.87574 15.5832 8.50002C15.5832 8.1243 15.7324 7.76396 15.9981 7.49829C16.2638 7.23261 16.6241 7.08335 16.9998 7.08335H25.4998C25.8756 7.08335 26.2359 7.23261 26.5016 7.49829C26.7673 7.76396 26.9165 8.1243 26.9165 8.50002ZM26.9165 14.1667C26.9165 14.5424 26.7673 14.9027 26.5016 15.1684C26.2359 15.4341 25.8756 15.5834 25.4998 15.5834H16.9998C16.6241 15.5834 16.2638 15.4341 15.9981 15.1684C15.7324 14.9027 15.5832 14.5424 15.5832 14.1667C15.5832 13.791 15.7324 13.4306 15.9981 13.165C16.2638 12.8993 16.6241 12.75 16.9998 12.75H25.4998C25.8756 12.75 26.2359 12.8993 26.5016 13.165C26.7673 13.4306 26.9165 13.791 26.9165 14.1667ZM26.9165 19.8334C26.9165 20.2091 26.7673 20.5694 26.5016 20.8351C26.2359 21.1008 25.8756 21.25 25.4998 21.25H16.9998C16.6241 21.25 16.2638 21.1008 15.9981 20.8351C15.7324 20.5694 15.5832 20.2091 15.5832 19.8334C15.5832 19.4576 15.7324 19.0973 15.9981 18.8316C16.2638 18.5659 16.6241 18.4167 16.9998 18.4167H25.4998C25.8756 18.4167 26.2359 18.5659 26.5016 18.8316C26.7673 19.0973 26.9165 19.4576 26.9165 19.8334Z" fill="#858585"></path>
+                            </svg>
+                        </span>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">롤 사용자 리스트</h4>
+                {% if perms.auth.add_group %}
+                <a href="{% url 'aurora:group-add' %}" class="btn btn-primary btn-xs content-justify-right">ADD GROUP  <span class="btn-icon-end">
+                    <i class="fa fa-plus"></i></span>
+                </a>
+                {% endif %}
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info alert-dismissible fade show">
+                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                    <strong>{{ role_info.name }}</strong> {{ role_info.groupexpended.description }}
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-responsive-md ck-table">
+                        <thead>
+                            <tr>
+                                <th style="width:50px;">
+                                    <div class="custom-control custom-checkbox checkbox-primary">
+                                        체크
+                                    </div>
+                                </th>
+                                <th scope="col">롤 사용자</th>
+                                <th scope="col">허가 내용 및 카테고리</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in user_list %}
+                            <tr>
+                                <td>
+                                    <div class="custom-control custom-checkbox checkbox-primary">
+                                        <input type="checkbox" class="form-check-input" id="customCheckBox2" required="">
+                                        <label class="custom-control-label" for="customCheckBox2"></label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="media style-1">
+                                        <div class="media-body">
+                                            <a href="{% url 'aurora:user-details' id=user.id %}"><h6>{{ user.first_name }}&nbsp;{{ user.last_name }}</h6>
+                                                <span>{{ user.email }}</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    {% if role.user_count == 0 %}
+                                        <span class="badge badge-{{ colors.dark }}"><i class="fa fa-users" aria-hidden="true"></i> &nbsp;{{ role.user_count }}</span>
+                                    {% elif role.user_count > 0 and role.user_count < 10  %}
+                                        <span class="badge badge-{{ colors.primary }}"><i class="fa fa-users" aria-hidden="true"></i> &nbsp;{{ role.user_count }}</span>
+                                    {% elif role.user_count >= 10 %}
+                                        <span class="badge badge-{{ colors.success }}"><i class="fa fa-users" aria-hidden="true"></i> &nbsp;{{ role.user_count }}</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Paging -->
+                <nav mt-5>
+                    <ul class="pagination pagination-gutter  justify-content-end">
+
+                        <li class="page-item page-indicator ">
+                            <a class="page-link" href="{% if user_list.has_previous %}
+                                                        ?page={{ user_list.previous_page_number }}
+                                                        {% else %}
+                                                        javascript:void(0);
+                                                        {% endif %}">
+                                <i class="la la-angle-left"></i>
+                            </a>
+                        </li>
+
+                        {% for i in user_list.paginator.page_range|slice:":3" %}
+                        <li class="page-item {% if user_list.number == i %} active{% endif %}"><a class="page-link" href="?page={{i}}">{{i}}</a></li>
+                        {% endfor %}
+                        {% if user_list.number > 3 %}
+                        <li class="page-item active"><a class="page-link" href="?page={{ user_list.number }}">{{ user_list.number }}</a></li>
+                        {% endif %}
+                        <li class="page-item page-indicator ">
+                            <a class="page-link"  href="{% if user_list.has_next %}
+                                                        ?page={{ user_list.next_page_number }}
+                                                        {% else %}
+                                                        javascript:void(0);
+                                                        {% endif %}">
+                                <i class="la la-angle-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <!-- card-body -->
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block additional_js %}
+<script>
+    $('.sweet-success-cancel').on('click', function (event) {
+           event.preventDefault();
+           const url = $(this).attr('href');
+   
+           Swal.fire({
+               title: 'Are you sure?',
+               text: "You won't be able to revert this!",
+               type: "warning",
+               icon: 'question',
+               showCancelButton: true,
+               confirmButtonText: "Yes, delete it !!",
+               confirmButtonText: 'Delete',
+               confirmButtonColor: "#DD6B55"
+               
+           }).then((result) => {
+               if (result.value) {
+                   window.location.href = url;
+               } else if (result.dismiss === Swal.DismissReason.cancel) {
+                   event.preventDefault();
+               }
+           })
+       });
+   </script>
+   
+{% endblock %}
+
+
