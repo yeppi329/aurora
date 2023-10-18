@@ -104,9 +104,17 @@ DATABASES = {
         "HOST": os.getenv("DATABASE_HOST"),
         "PORT": os.getenv("DATABASE_PORT"),
     },
-    "hippo_db": {
+    "hippo": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv("HIPPO_DATABASE_NAME"),
+        "NAME": "hippo",
+        "USER": os.getenv("DATABASE_USER"),
+        "PASSWORD": os.getenv("DATABASE_PASSWORD"),
+        "HOST": os.getenv("DATABASE_HOST"),
+        "PORT": os.getenv("DATABASE_PORT"),
+    },
+    "lama": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "lama",
         "USER": os.getenv("DATABASE_USER"),
         "PASSWORD": os.getenv("DATABASE_PASSWORD"),
         "HOST": os.getenv("DATABASE_HOST"),

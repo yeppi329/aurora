@@ -24,7 +24,13 @@
         <div class="media align-items-center invoice-card">
           <div class="media-body">
             <h2 class="fs-38 text-black font-w600">user_id</h2>
-            <span class="fs-18">{{ user_id }}</span>
+              <span class="mb-0" style="font-size: 14px;">
+                {% if matching_user_id_dict|get_value_from_dict:user_id %}
+                  {{ matching_user_id_dict|get_value_from_dict:user_id }}
+                {% else %}
+                  {{ item.user_id }}
+                {% endif %}
+              </span>
           </div>
         </div>
       </div>
@@ -160,21 +166,48 @@
           </div>
           <div class="col-md-7 col-xxl-12">
             <div class="new-arrival-content position-relative">
-              <h4>
-                <a href="javascript:void(0)">{{ item.scan_id }}</a>
-              </h4>
               <ul class="list-group list-group-flush">
                 <li class="list-group-item d-flex px-0 justify-content-between">
-                  <strong>User</strong>
-                  <span class="mb-0" style="font-size: 14px;">{{ item.user_id }}</span>
-                </li>
+                  <strong>scan_id</strong>
+                  <a href="{% url 'operation:object-list-scan-id-detail' scan_id=item.scan_id %}">
+                    <span class="mb-0" style="font-size: 14px;">{{ item.scan_id }}</span>
+                  </a>
+                </li>         
+                <li class="list-group-item d-flex px-0 justify-content-between">
+                  <strong>mg_id</strong>
+                  {% if item.mg_id %}
+                    <a href="{% url 'operation:object-list-mg-id-detail' mg_id=item.mg_id %}">
+                      <span class="mb-0" style="font-size: 12px;">{{ item.mg_id }}</span>
+                    </a>
+                  {% else %}
+                    <span class="mb-0" style="font-size: 12px;">None</span>
+                  {% endif %}
+                </li>                          
                 <li class="list-group-item d-flex px-0 justify-content-between">
                   <strong>Created</strong>
                   <span class="mb-0">{{ item.created_at| date:"y-m-d H:m:s" }}</span>
                 </li>
                 <li class="list-group-item d-flex px-0 justify-content-between">
                   <strong>Geohash</strong>
-                  <span class="mb-0">{{ item.geohash }}</span>
+                  <span class="mb-0" data-bs-toggle="modal" data-bs-target="#{{ item.geohash }}" >{{ item.geohash }}</span>
+                  <!-- Modal -->
+                  <div class="modal fade" id="{{ item.geohash }}">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">{{ item.geohash }}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                              <iframe src="https://geohash.softeng.co/{{ item.geohash }}" width="100%" height="400" frameborder="0"></iframe>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger light" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
                 </li>
               </ul>
 
@@ -232,22 +265,30 @@
   {% endfor %}
   <ul class="pagination">
     {% if page.has_previous %}
-    <li class="page-item page-indicator">
-      <a class="page-link" href="?page={{ page.previous_page_number }}">
-        <i class="la la-angle-left"></i>
-      </a>
-    </li>
-    {% endif %} {% for page_num in page.paginator.page_range %}
-    <li class="page-item{% if page_num == page.number %} active{% endif %}">
-      <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
-    </li>
-    {% endfor %} {% if page.has_next %}
-    <li class="page-item page-indicator">
-      <a class="page-link" href="?page={{ page.paginator.num_pages }}">
-        <i class="la la-angle-right"></i>
-      </a>
-    </li>
+      <li class="page-item page-indicator">
+        <a class="page-link" href="?page={{ page.paginator.page_range.0 }}">
+          <i class="la la-angle-left"></i>
+        </a>
+      </li>
     {% endif %}
-  </ul>
+
+    {% for page_num in page.paginator.page_range %}
+      {% with page_number=page.number|add:"-0" %}
+        {% if page_num >= page_number|add:"-5" and page_num <= page_number|add:"5" %}
+          <li class="page-item{% if page_num == page_number %} active{% endif %}">
+            <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+          </li>
+        {% endif %}
+      {% endwith %}
+    {% endfor %}
+
+    {% if data.has_next %}
+      <li class="page-item page-indicator">
+        <a class="page-link" href="?page={{ page.paginator.page_range|last }}">
+          <i class="la la-angle-right"></i>
+        </a>
+      </li>
+    {% endif %}
+  </ul>   
 </div>
 {% endblock %}
