@@ -41,6 +41,27 @@ def svc_user_status_daily(request):
     }
     return render(request, 'aurora/pages/data/svc-user-status-daily.html', context)
 
+def download_summary_as_csv_user_daily(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="SummaryUserDailyInfo.csv"'
+
+    response.write(u'\ufeff'.encode('utf8'))
+    writer = csv.writer(response)
+    header = [
+        '통계일자', '전체 회원 수','전체 회원 DAU' '신규 회원 수','신규 회원 DAU', '정지 회원',
+        '탈퇴 회원', '복귀 회원', '휴면 회원'
+    ]
+    writer.writerow(header)
+
+    summaries = SummaryUserDailyInfo.objects.all()
+    for summary in summaries:
+        writer.writerow([
+            summary.summary_dt, summary.total_user,summary.dau, summary.new_user,summary.dau, 
+            summary.suspended_user, summary.deleted_user, summary.return_user,
+            summary.inactive_user
+        ])
+
+    return response
 
 @login_required(login_url="aurora:login")
 def svc_user_status_month(request):
@@ -64,24 +85,24 @@ def svc_user_status_month(request):
     
     return render(request, 'aurora/pages/data/svc-user-status-month.html', context)
 
-def download_summary_as_csv(request):
+def download_summary_as_csv_user_month(request):
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="summary_user_month_info.csv"'
+    response['Content-Disposition'] = 'attachment; filename="SummaryUserMonthInfo.csv"'
 
     response.write(u'\ufeff'.encode('utf8'))
     writer = csv.writer(response)
     header = [
-        'Summary ID', '통계일자', '총 이용자 수', '신규 가입 이용자 수', '중지된 이용자 수',
-        '삭제된 이용자 수', '재가입 이용자 수', '비활성 이용자 수', 'DAU', '생성일시'
+        '통계일자', '전체 회원 수','전체 회원 DAU' '신규 회원 수','신규 회원 DAU', '정지 회원',
+        '탈퇴 회원', '복귀 회원', '휴면 회원'
     ]
     writer.writerow(header)
 
     summaries = SummaryUserMonthInfo.objects.all()
     for summary in summaries:
         writer.writerow([
-            summary.summary_id, summary.summary_dt, summary.total_user, summary.new_user,
+            summary.summary_dt, summary.total_user,summary.dau, summary.new_user,summary.dau, 
             summary.suspended_user, summary.deleted_user, summary.return_user,
-            summary.inactive_user, summary.dau, summary.created_at
+            summary.inactive_user
         ])
 
     return response
@@ -109,9 +130,26 @@ def svc_activity_user(request):
 
     return render(request, 'aurora/pages/data/svc-activity-user.html', context)
 
-    context = {"page_title": "기간별 이용자", "all_data": all_data}
-    return render(request, "aurora/pages/data/svc-activity-user.html", context)
+def download_summary_as_csv_active_user(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="SummaryUserPeriodInfo.csv"'
 
+    response.write(u'\ufeff'.encode('utf8'))
+    writer = csv.writer(response)
+    header = [
+        '통계일자', '07일 이용자', '30일 이용자', '60일 이용자',
+        '90일 이용자'
+    ]
+    writer.writerow(header)
+
+    summaries = SummaryUserPeriodInfo.objects.all()
+    for summary in summaries:
+        writer.writerow([
+            summary.summary_dt, summary.use_day_7, summary.use_day_30,
+            summary.use_day_60, summary.use_day_90
+        ])
+
+    return response
 
 @login_required(login_url="aurora:login")
 def scan_status_daily(request):
@@ -136,6 +174,32 @@ def scan_status_daily(request):
     }
     return render(request, 'aurora/pages/data/scan-status-daily.html', context)
 
+def download_summary_as_csv_scan_daily(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="SummaryScanDailyInfo.csv"'
+
+    response.write(u'\ufeff'.encode('utf8'))
+    writer = csv.writer(response)
+    header = [
+        '통계일자', '스캔_성공', '스캔_실패', '합계',
+        '스캔 참여 회원 수', '인당 스캔 수', '스캔 비율_성공', '스캔 비율_실패', '평균 스캔 회원 수_성공', '평균 스캔 회원 수_실패'
+    ]
+    writer.writerow(header)
+
+    summaries = SummaryScanDailyInfo.objects.all()
+    for summary in summaries:
+        writer.writerow([
+            summary.summary_dt, summary.scan_success, summary.scan_fail,
+            summary.scan_success + summary.scan_fail, summary.total_scan_user,
+            (summary.scan_success + summary.scan_fail)/summary.total_scan_user if summary.total_scan_user > 0 else 0,
+            summary.scan_success/(summary.scan_success + summary.scan_fail) * 100 if (summary.scan_success + summary.scan_fail) > 0 else 0,
+            summary.scan_fail/(summary.scan_success + summary.scan_fail) * 100 if (summary.scan_success + summary.scan_fail) > 0 else 0,
+            summary.scan_success/summary.total_scan_user if summary.total_scan_user > 0 else 0,
+            summary.scan_fail/summary.total_scan_user if summary.total_scan_user > 0 else 0
+            
+        ])
+
+    return response
 
 @login_required(login_url='aurora:login')
 def scan_status_month(request):
@@ -159,6 +223,32 @@ def scan_status_month(request):
     }
     return render(request, 'aurora/pages/data/scan-status-month.html', context)
 
+def download_summary_as_csv_scan_month(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="SummaryScanMonthInfo.csv"'
+
+    response.write(u'\ufeff'.encode('utf8'))
+    writer = csv.writer(response)
+    header = [
+        '통계일자', '스캔_성공', '스캔_실패', '합계',
+        '스캔 참여 회원 수', '인당 스캔 수', '스캔 비율_성공', '스캔 비율_실패', '평균 스캔 회원 수_성공', '평균 스캔 회원 수_실패'
+    ]
+    writer.writerow(header)
+
+    summaries = SummaryScanMonthInfo.objects.all()
+    for summary in summaries:
+        writer.writerow([
+            summary.summary_dt, summary.scan_success, summary.scan_fail,
+            summary.scan_success + summary.scan_fail, summary.total_scan_user,
+            (summary.scan_success + summary.scan_fail)/summary.total_scan_user if summary.total_scan_user > 0 else 0,
+            summary.scan_success/(summary.scan_success + summary.scan_fail) * 100 if (summary.scan_success + summary.scan_fail) > 0 else 0,
+            summary.scan_fail/(summary.scan_success + summary.scan_fail) * 100 if (summary.scan_success + summary.scan_fail) > 0 else 0,
+            summary.scan_success/summary.total_scan_user if summary.total_scan_user > 0 else 0,
+            summary.scan_fail/summary.total_scan_user if summary.total_scan_user > 0 else 0
+            
+        ])
+
+    return response
 
 @login_required(login_url="aurora:login")
 def scan_activity_status(request):
@@ -180,3 +270,30 @@ def scan_activity_status(request):
         "all_data": page,
     }
     return render(request, 'aurora/pages/data/scan-activity-status.html', context)
+
+def download_summary_as_csv_active_scan(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="SummaryScanHourInfo.csv"'
+
+    response.write(u'\ufeff'.encode('utf8'))
+    writer = csv.writer(response)
+    header = [
+        '통계일자','시간', '스캔_성공', '스캔_실패', '합계',
+        '스캔 참여 회원 수', '인당 스캔 수', '스캔 비율_성공', '스캔 비율_실패', '평균 스캔 회원 수_성공', '평균 스캔 회원 수_실패'
+    ]
+    writer.writerow(header)
+
+    summaries = SummaryScanHourInfo.objects.all()
+    for summary in summaries:
+        writer.writerow([
+            summary.summary_dt,summary.summary_hour, summary.scan_success, summary.scan_fail,
+            summary.scan_success + summary.scan_fail, summary.total_scan_user,
+            (summary.scan_success + summary.scan_fail)/summary.total_scan_user if summary.total_scan_user > 0 else 0,
+            summary.scan_success/(summary.scan_success + summary.scan_fail) * 100 if (summary.scan_success + summary.scan_fail) > 0 else 0,
+            summary.scan_fail/(summary.scan_success + summary.scan_fail) * 100 if (summary.scan_success + summary.scan_fail) > 0 else 0,
+            summary.scan_success/summary.total_scan_user if summary.total_scan_user > 0 else 0,
+            summary.scan_fail/summary.total_scan_user if summary.total_scan_user > 0 else 0
+            
+        ])
+
+    return response
