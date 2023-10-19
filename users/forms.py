@@ -137,12 +137,13 @@ class EmailValidationOnForgotPassword(PasswordResetForm):
 
 
 class RoleForm(forms.ModelForm):
-    name = forms.CharField(label="Name", help_text="Example: Can action modelname")
+    name = forms.CharField(label="Name", help_text="Example: action_modelname")
     description = forms.CharField(label="Description", help_text="Example: action_modelname")
+    permissions = forms.ModelMultipleChoiceField(label="Permissions", queryset=Permission.objects.all(), required=False)
 
     class Meta:
         model = GroupExpended
-        fields = ("name", "description")
+        fields = '__all__'
 
 class PermissionsForm(forms.ModelForm):
     name = forms.CharField(label="Name", help_text="Example: Can action modelname")

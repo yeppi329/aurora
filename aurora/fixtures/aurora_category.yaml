@@ -1,0 +1,142 @@
+- model: aurora.category
+  pk: 1
+  fields:
+    parent_id: 0
+    content_type: 10
+    category_name: "view_dashboard"
+    category_desc: "지표_Dashboard"
+    uri: "/index"
+    order: 1
+    created_at: 2023-10-19 10:25:17.602333 +00:00
+
+- model: aurora.category
+  pk: 2
+  fields:
+    parent_id: 0
+    content_type: 11
+    category_name: "view_data"
+    category_desc: "지표_내부 지표"
+    uri: "/data"
+    order: 2
+    created_at: 2023-10-19 10:25:17.602333 +00:00
+
+- model: aurora.category
+  pk: 3
+  fields:
+    parent_id: 0
+    content_type: 12
+    category_name: "view_operation"
+    category_desc: "내부 Admin"
+    uri: "/operation"
+    order: 3
+    created_at: 2023-10-19 10:25:17.602333 +00:00
+
+- model: aurora.category
+  pk: 4
+  fields:
+    parent_id: 2
+    content_type: 11
+    category_name: "user_status"
+    category_desc: "이용자 현황"
+    uri: ""
+    order: 1
+    created_at: 2023-10-19 10:25:17.602333 +00:00
+
+- model: aurora.category
+  pk: 5
+  fields:
+    parent_id: 2
+    content_type: 11
+    category_name: "content_status"
+    category_desc: "콘텐츠 현황"
+    uri: ""
+    order: 2
+    created_at: 2023-10-19 10:25:17.602333 +00:00
+
+- model: aurora.category
+  pk: 6
+  fields:
+    parent_id: 2
+    content_type: 11
+    category_name: "scan_status"
+    category_desc: "스캔 현황"
+    uri: ""
+    order: 3
+    created_at: 2023-10-19 10:25:17.602333 +00:00
+
+- model: aurora.category
+  pk: 7
+  fields:
+    parent_id: 3
+    content_type: 12
+    category_name: "user_list"
+    category_desc: "이용자 관리"
+    uri: ""
+    order: 1
+    created_at: 2023-10-19 10:25:17.602333 +00:00
+
+- model: aurora.category
+  pk: 8
+  fields:
+    parent_id: 3
+    content_type: 12
+    category_name: "object_list"
+    category_desc: "사물 관리"
+    uri: ""
+    order: 2
+    created_at: 2023-10-19 10:25:17.602333 +00:00
+
+- model: aurora.category
+  pk: 9
+  fields:
+    parent_id: 3
+    content_type: 12
+    category_name: "content_list"
+    category_desc: "사물 관리"
+    uri: ""
+    order: 3
+    created_at: 2023-10-19 10:25:17.602333 +00:00
+
+- model: aurora.category
+  pk: 10
+  fields:
+    parent_id: 3
+    content_type: 12
+    category_name: "block_list"
+    category_desc: "신고/차단 관리"
+    uri: ""
+    order: 4
+    created_at: 2023-10-19 10:25:17.602333 +00:00
+
+- model: aurora.category
+  pk: 11
+  fields:
+    parent_id: 9
+    content_type: 12
+    category_name: "mg_id"
+    category_desc: "사물 관리(mg_id)"
+    uri: ""
+    order: 1
+    created_at: 2023-10-19 10:25:17.602333 +00:00
+
+- model: aurora.category
+  pk: 12
+  fields:
+    parent_id: 9
+    content_type: 12
+    category_name: "scan_id"
+    category_desc: "사물 관리(scan_id)"
+    uri: ""
+    order: 2
+    created_at: 2023-10-19 10:25:17.602333 +00:00
+
+- model: aurora.category
+  pk: 13
+  fields:
+    parent_id: 9
+    content_type: 12
+    category_name: "user_id"
+    category_desc: "사물 관리(user_id)"
+    uri: ""
+    order: 3
+    created_at: 2023-10-19 10:25:17.602333 +00:00

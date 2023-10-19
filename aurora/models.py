@@ -142,3 +142,14 @@ class SummaryContentInfo(models.Model):
 
     def __str__(self):
         return f"Summary ID: {self.summary_id}, Date: {self.summary_dt}"
+
+# 메뉴 퀀한 카테고리
+class Category(models.Model):
+    category_id = models.BigAutoField('카테고리 고유값', primary_key=True)
+    parent_id = models.IntegerField('상위 카테고리 고유값', null=False, default=0)
+    content_type = models.IntegerField('퍼미션 타입', null=False, default=0)
+    category_name = models.CharField('카테고리 코드', max_length=255, blank=False)
+    category_desc = models.CharField('카테고리 설명', max_length=255, blank=False)
+    uri = models.CharField('카테고리 URI', max_length=255, blank=True)
+    order = models.IntegerField('정렬순서', null=False, default=0)
+    created_at = models.DateTimeField(auto_now=True, blank=True)

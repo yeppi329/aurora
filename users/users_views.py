@@ -1,5 +1,8 @@
+from django.contrib.postgres.aggregates import StringAgg
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
+from django.db.models import F, CharField, Subquery, Value
+from django.db.models.functions import Concat
 from users.models import NewUser, GroupExpended
 from users.forms import (
     NewUserForm,
@@ -10,6 +13,7 @@ from users.forms import (
     UserPermissionsForm,
     EditUserForm,
 )
+from aurora.models import Category
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import Group, Permission
@@ -264,32 +268,61 @@ def role_add(request):
 @permission_required({"auth.view_group", "auth.change_group"}, raise_exception=True)
 def role_edit(request, id):
     group_obj = Group.objects.filter(id=id).first()
-    group_obj_expended = GroupExpended.objects.filter(group=group_obj).first()
+    group_obj_expended = GroupExpended.objects.filter(group_id=group_obj.id).get()
     group_obj_expended.group = group_obj
 
     if request.method == "POST":
-        queryDict = request.POST
-        data = dict(queryDict)
-
+        data = dict(request.POST)
         try:
+            if "permissions[]" in data:
+                group_obj.permissions.clear()
+                group_obj.permissions.set(data["permissions[]"])
+            else:
+                group_obj.permissions.clear()
+
             group_obj.name = data["name"][0]
             group_obj.save()
 
-            group_obj_expended.group = group_obj
+            group_obj_expended.group.name = group_obj
+            group_obj_expended.group.permissions.set(data["permissions[]"])
             group_obj_expended.description = data["description"][0]
             group_obj_expended.save()
 
             response = JsonResponse({"success": "Save Successfully"})
             response.status_code = 200
-            return redirect("users:roles")
+            return response
+
         except:
             response = JsonResponse({"error": "Group Name already exist"})
             response.status_code = 403
             return response
     else:
+        category_perm = Permission.objects.raw("""
+        select * from (
+            select t1.id, t1.codename, t2.order as order_clause, t2.category_desc, t2.uri,
+                    (select concat('ALL, ', string_agg(x.category_desc::text, ', ')) from aurora_category x where x.parent_id = t2.category_id and x.parent_id != 0) as sub_category
+            from auth_permission t1 inner join aurora_category t2 on t1.codename = t2.category_name
+            where t2.parent_id = 0
+        ) t order by order_clause
+        """
+        )
 
-        form = RoleForm(instance=group_obj_expended)
-    return render(request, "aurora/modules/role-edit.html", {"form": form})
+        perm_list = []
+        for perm in category_perm:
+            is_checked = False
+            for group_perm in group_obj.permissions.all():
+                if perm.id == group_perm.id:
+                    is_checked = True
+            perm_list.append({"id": perm.id, "name": perm.category_desc, "is_checked": is_checked})
+
+        form = {
+            "description": group_obj_expended.description,
+            "name": group_obj.name,
+            "group_id": group_obj.id,
+            "permissions": perm_list,
+        }
+
+    return render(request, "aurora/modules/role-edit.html", {"form": form, })
 
 # 권한 관리 > 롤 관리 > 롤 삭제
 @login_required(login_url="aurora:login")
@@ -322,10 +355,20 @@ def role_user_list(request, id):
 @login_required(login_url="aurora:login")
 @permission_required({"auth.view_permission"}, raise_exception=True)
 def permission_list(request):
-    permission_list = Permission.objects.all()
-    paginator = Paginator(permission_list, 10)
+
+    raw_sql = """
+select 0 as id, 0 as order_clause, 'ALL' as category_desc, 'All Category' as uri, 'ALL' as sub_category
+union
+select * from (
+    select t1.id, t2.order as order_clause, t2.category_desc, t2.uri,
+           (select concat('ALL, ', string_agg(x.category_desc::text, ', ')) from aurora_category x where x.parent_id = t2.category_id and x.parent_id != 0) as sub_category
+    from auth_permission t1 inner join aurora_category t2 on t1.codename = t2.category_name
+    where t2.parent_id = 0
+) t order by order_clause
+"""
+    permission_menu_list = Permission.objects.raw(raw_sql)
     context = {
-        "permissions_obj": paginator.get_page(request.GET.get("page")),
+        "permissions_obj": permission_menu_list,
     }
     return render(request, "aurora/modules/permission-list.html", context)
 
