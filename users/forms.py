@@ -1,5 +1,5 @@
 from django import forms
-from users.models import NewUser
+from users.models import NewUser, GroupExpended
 from django.contrib.auth.models import Group, Permission
 from django.contrib.auth import authenticate
 from django.contrib.auth.forms import PasswordResetForm
@@ -136,11 +136,14 @@ class EmailValidationOnForgotPassword(PasswordResetForm):
         return email
 
 
-class GroupForm(forms.ModelForm):
-    class Meta:
-        model = Group
-        fields = ("name", "permissions")
+class RoleForm(forms.ModelForm):
+    name = forms.CharField(label="Name", help_text="Example: action_modelname")
+    description = forms.CharField(label="Description", help_text="Example: action_modelname")
+    permissions = forms.ModelMultipleChoiceField(label="Permissions", queryset=Permission.objects.all(), required=False)
 
+    class Meta:
+        model = GroupExpended
+        fields = '__all__'
 
 class PermissionsForm(forms.ModelForm):
     name = forms.CharField(label="Name", help_text="Example: Can action modelname")

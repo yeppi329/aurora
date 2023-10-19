@@ -1,19 +1,23 @@
+from django.contrib.postgres.aggregates import StringAgg
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
-from users.models import NewUser
+from django.db.models import F, CharField, Subquery, Value
+from django.db.models.functions import Concat
+from users.models import NewUser, GroupExpended
 from users.forms import (
     NewUserForm,
     SignupForm,
     LoginForm,
-    GroupForm,
+    RoleForm,
     PermissionsForm,
     UserPermissionsForm,
     EditUserForm,
 )
+from aurora.models import Category
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import Group, Permission
-from django.db.models import Count
+from django.db.models import Subquery, OuterRef, Count
 from django.http import HttpResponse, JsonResponse
 from django.contrib.contenttypes.models import ContentType
 
@@ -225,64 +229,151 @@ def groups_list(request):
     return render(request, "aurora/modules/group-list.html", context)
 
 
+# 권한 관리 > 롤 관리
+@login_required(login_url="aurora:login")
+@permission_required({"auth.view_group"}, raise_exception=True)
+def role_list(request):
+    context = {
+        "total": len(NewUser.objects.all()),
+        "roles": Group.objects.annotate(
+            user_count=Count("newuser", distinct=True)
+        ).annotate(perms_count=Count("permissions", distinct=True)),
+        "colors": {"primary": "primary", "success": "success", "dark": "dark"},
+    }
+    return render(request, "aurora/modules/role-list.html", context)
+
+
+# 권한 관리 > 롤 관리 > 롤 추가
+@login_required(login_url="aurora:login")
+@permission_required({"auth.view_group", "auth.add_group"}, raise_exception=True)
+def role_add(request):
+    if request.method == "POST":
+        form = RoleForm(request.POST)
+        if form.is_valid():
+            group = Group.objects.create(name=form.cleaned_data["name"])
+            group_expended = GroupExpended.objects.create(group=group, description=form.cleaned_data["description"])
+            group_expended.save()
+
+            messages.success(request, "Group Created Successfully")
+            return redirect("users:roles")
+        else:
+            messages.warning(request, "Name Already Exist")
+            return render(request, "aurora/modules/role-add.html", {"form": form})
+    else:
+        form = RoleForm()
+        return render(request, "aurora/modules/role-add.html", {"form": form})
+
+# 권한 관리 > 롤 관리 > 롤 수정
 @login_required(login_url="aurora:login")
 @permission_required({"auth.view_group", "auth.change_group"}, raise_exception=True)
-def group_edit(request, id):
-    group_obj = get_object_or_404(Group, id=id)
+def role_edit(request, id):
+    group_obj = Group.objects.filter(id=id).first()
+    group_obj_expended = GroupExpended.objects.filter(group_id=group_obj.id).get()
+    group_obj_expended.group = group_obj
 
     if request.method == "POST":
-        queryDict = request.POST
-        data = dict(queryDict)
-
+        data = dict(request.POST)
         try:
+            if "permissions[]" in data:
+                group_obj.permissions.clear()
+                group_obj.permissions.set(data["permissions[]"])
+            else:
+                group_obj.permissions.clear()
+
             group_obj.name = data["name"][0]
             group_obj.save()
+
+            group_obj_expended.group.name = group_obj
+            group_obj_expended.group.permissions.set(data["permissions[]"])
+            group_obj_expended.description = data["description"][0]
+            group_obj_expended.save()
+
+            response = JsonResponse({"success": "Save Successfully"})
+            response.status_code = 200
+            return response
+
         except:
             response = JsonResponse({"error": "Group Name already exist"})
             response.status_code = 403
             return response
-
-        if "permissions[]" in data:
-            group_obj.permissions.clear()
-            group_obj.permissions.set(data["permissions[]"])
-        else:
-            group_obj.permissions.clear()
-
-        response = JsonResponse({"success": "Save Successfully"})
-        response.status_code = 200
-        return response
-
     else:
-        form = GroupForm(instance=group_obj)
-    return render(request, "aurora/modules/group-edit.html", {"form": form})
+        category_perm = Permission.objects.raw("""
+        select * from (
+            select t1.id, t1.codename, t2.order as order_clause, t2.category_desc, t2.uri,
+                    (select concat('ALL, ', string_agg(x.category_desc::text, ', ')) from aurora_category x where x.parent_id = t2.category_id and x.parent_id != 0) as sub_category
+            from auth_permission t1 inner join aurora_category t2 on t1.codename = t2.category_name
+            where t2.parent_id = 0
+        ) t order by order_clause
+        """
+        )
 
+        perm_list = []
+        for perm in category_perm:
+            is_checked = False
+            for group_perm in group_obj.permissions.all():
+                if perm.id == group_perm.id:
+                    is_checked = True
+            perm_list.append({"id": perm.id, "name": perm.category_desc, "is_checked": is_checked})
 
+        form = {
+            "description": group_obj_expended.description,
+            "name": group_obj.name,
+            "group_id": group_obj.id,
+            "permissions": perm_list,
+        }
+
+    return render(request, "aurora/modules/role-edit.html", {"form": form, })
+
+# 권한 관리 > 롤 관리 > 롤 삭제
 @login_required(login_url="aurora:login")
 @permission_required({"auth.view_group", "auth.delete_group"}, raise_exception=True)
-def group_delete(request, id):
+def role_delete(request, id):
     g = get_object_or_404(Group, id=id)
 
     g.delete()
     messages.success(request, "Group Deleted Sucessfully")
 
-    return redirect("aurora:groups")
+    return redirect("users:roles")
 
 
+# 권한 관리 > 롤 관리 > 롤 사용자 리스트
 @login_required(login_url="aurora:login")
-@permission_required({"auth.view_group", "auth.add_group"}, raise_exception=True)
-def group_add(request):
-    if request.method == "POST":
-        form = GroupForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Group Created Successfully")
-            return redirect("aurora:groups")
-        else:
-            messages.warning(request, "Name Already Exist")
-            return render(request, "aurora/modules/group-add.html", {"form": form})
-    else:
-        form = GroupForm()
-        return render(request, "aurora/modules/group-add.html", {"form": form})
+@permission_required({"auth.view_group"}, raise_exception=True)
+def role_user_list(request, id):
+    user_list = NewUser.objects.filter(groups__id=id).all()
+    paginator = Paginator(user_list, 20)
+
+    context = {
+        "total": Group.objects.annotate(user_count=Count("newuser", distinct=True)).filter(id=id).first().user_count,
+        "role_info": Group.objects.get(id=id),
+        "user_list": paginator.get_page(request.GET.get("page")),
+        "colors": {"primary": "primary", "success": "success", "dark": "dark"},
+    }
+    return render(request, "aurora/modules/role-user-list.html", context)
+
+# 권한 관리 > 허가 관리
+@login_required(login_url="aurora:login")
+@permission_required({"auth.view_permission"}, raise_exception=True)
+def permission_list(request):
+
+    raw_sql = """
+select 0 as id, 0 as order_clause, 'ALL' as category_desc, 'All Category' as uri, 'ALL' as sub_category
+union
+select * from (
+    select t1.id, t2.order as order_clause, t2.category_desc, t2.uri,
+           (select concat('ALL, ', string_agg(x.category_desc::text, ', ')) from aurora_category x where x.parent_id = t2.category_id and x.parent_id != 0) as sub_category
+    from auth_permission t1 inner join aurora_category t2 on t1.codename = t2.category_name
+    where t2.parent_id = 0
+) t order by order_clause
+"""
+    permission_menu_list = Permission.objects.raw(raw_sql)
+    context = {
+        "permissions_obj": permission_menu_list,
+    }
+    return render(request, "aurora/modules/permission-list.html", context)
+
+
+# ======================================================================
 
 
 @login_required(login_url="aurora:login")
