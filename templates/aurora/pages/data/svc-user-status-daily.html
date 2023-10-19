@@ -3,6 +3,20 @@
 {% load static %}
 
 {% block additional_css %}
+<style>
+    /* Initially hide the chart container */
+    #userStatusChartContainer {
+        position: absolute;
+        z-index: 1000;
+    }
+
+    /* Style the chart container */
+    .chart-container {
+        background-color: #fff;
+        border: 1px solid #ccc;
+        padding: 10px;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -48,11 +62,11 @@
                 <tbody>
                     {% for data in all_data %}
                     <tr>
-                        <td><span class="text-black font-w500">{{ data.summary_dt }}</span></td>
+                        <td class="table-cell-trigger"><span class="text-black font-w500">{{ data.summary_dt }}</span></td>
                         <td><span class="text-black font-w500">{{ data.total_user }}</span></td>
-                        <td><span class="text-black font-w500">{{ data.dau }}</span></td>
+                        <td class="dau-cell"><span class="text-black font-w500">{{ data.dau }}</span></td>
                         <td><span class="text-black font-w500">{{ data.new_user }}</span></td>
-                        <td><span class="text-black font-w500">{{ data.dau }}</span></td><!--신규회원 기준 dau 산정 필요-->
+                        <td><span class="text-black font-w500">{{ data.new_dau }}</span></td>
                         <td><span class="text-black font-w500">{{ data.suspended_user }}</span></td>
                         <td><span class="text-black font-w500">{{ data.deleted_user }}</span></td>
                         <td><span class="text-black font-w500">{{ data.return_user }}</span></td>
@@ -84,24 +98,106 @@
           </ul>
     </div>
 </div>
-
+<div class="row">
+    <div class="col-lg-12">
+        <div id="userStatusChartContainer" class="chart-container">
+            <canvas id="userStatusChart" width="600" height="400"></canvas>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block additional_js %}
+<link rel="stylesheet" href="{% static "drf_api_logger/css/Chart.min.css" %}" />
+<script src="{% static "drf_api_logger/js/Chart.bundle.min.js" %}"></script>
 <script>
     (function ($) {
-        var table = $('#example5').DataTable({
-            searching: false,
-            paging: true,
-            select: false,
-            //info: false,         
-            lengthChange: false
+        var data = [
+            {% for data in all_data %}
+                { date: "{{ data.summary_dt }}", new_dau: {{ data.new_dau }}, dau: {{ data.dau }} },
+            {% endfor %}
+        ];
 
-        });
-        $('#example tbody').on('click', 'tr', function () {
-            var data = table.row(this).data();
+        var ctx = document.getElementById('userStatusChart').getContext('2d');
 
+        var chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: data.map(item => item.date),
+                datasets: [
+                    {
+                        label: 'DAU',
+                        data: data.map(item => item.dau),
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        fill: false
+                    },
+                    {
+                        label: 'New_DAU',
+                        data: data.map(item => item.new_dau),
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+					legend: false, 
+					scales: {
+						yAxes: [{
+							ticks: {
+								beginAtZero: true, 
+								max: 100, 
+								min: 0, 
+								stepSize: 20, 
+								padding: 10
+							}
+						}],
+						xAxes: [{ 
+							ticks: {
+								padding: 5
+							}
+						}]
+					}
+				}
         });
+        var tableCells = document.querySelectorAll('.table-cell-trigger');
+        var chartContainer = document.getElementById('userStatusChartContainer');
+
+        tableCells.forEach(function (cell) {
+            cell.addEventListener('mouseover', function () {
+                chartContainer.style.display = 'block';
+
+                // Get the date from the cell
+                const hoveredDate = cell.innerText;
+
+                // Calculate the date range
+                const startDate = new Date(hoveredDate);
+                const endDate = new Date(hoveredDate);
+                startDate.setDate(startDate.getDate() - 5);
+                endDate.setDate(endDate.getDate() + 5);
+
+                // Filter data based on the date range
+                const filteredData = data.filter(item => {
+                    const itemDate = new Date(item.date);
+                    return itemDate >= startDate && itemDate <= endDate;
+                });
+
+                // Update chart data
+                chart.data.labels = filteredData.map(item => item.date);
+                chart.data.datasets[0].data = filteredData.map(item => item.dau);
+                chart.data.datasets[1].data = filteredData.map(item => item.new_dau);
+                chart.update();
+            });
+
+            cell.addEventListener('mouseout', function () {
+                chartContainer.style.display = 'none';
+            });
+
+            cell.addEventListener('mousemove', function (event) {
+                chartContainer.style.left = (event.pageX + 10) + 'px';
+                chartContainer.style.top = (event.pageY - 400) + 'px';
+            });
+        });
+
     })(jQuery);
 </script>
-{% endblock %}
+{% endblock %} 
