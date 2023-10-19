@@ -63,6 +63,7 @@ class SummaryUserMonthInfo(models.Model):
     return_user = models.BigIntegerField(default=0, blank=True)
     inactive_user = models.BigIntegerField(default=0, blank=True)
     dau = models.BigIntegerField(default=0, blank=True)
+    new_dau = models.BigIntegerField(default=0, null=False, blank=False)
     created_at = models.DateTimeField(auto_now=True, blank=True)
 
     class Meta:
@@ -103,6 +104,7 @@ class SummaryUserDailyInfo(models.Model):
     return_user = models.BigIntegerField(default=0, blank=True)
     inactive_user = models.BigIntegerField(default=0, blank=True)
     dau = models.BigIntegerField(default=0, blank=True)
+    new_dau = models.BigIntegerField(default=0, null=False, blank=False)
     created_at = models.DateTimeField(auto_now=True, blank=True)
 
     class Meta:
