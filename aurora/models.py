@@ -55,7 +55,7 @@ class SummaryScanHourInfo(models.Model):
 # 이용자현황_월별현황 + 대시보드 이용자 현황
 class SummaryUserMonthInfo(models.Model):
     summary_id = models.BigAutoField(primary_key=True)
-    summary_dt = models.CharField("통계일자", max_length=255, blank=True)
+    summary_dt = models.CharField("통계일자", max_length=255, blank=True, unique=True)
     total_user = models.BigIntegerField(default=0, blank=True)
     new_user = models.BigIntegerField(default=0, blank=True)
     suspended_user = models.BigIntegerField(default=0, blank=True)
@@ -96,7 +96,7 @@ class SummaryUserHourInfo(models.Model):
 # 이용자현황_일별현황 + 대시보드 이용자 현황
 class SummaryUserDailyInfo(models.Model):
     summary_id = models.BigAutoField(primary_key=True)
-    summary_dt = models.CharField("통계일자", max_length=255, blank=True)
+    summary_dt = models.CharField("통계일자", max_length=255, blank=True, unique=True)
     total_user = models.BigIntegerField(default=0, blank=True)
     new_user = models.BigIntegerField(default=0, blank=True)
     suspended_user = models.BigIntegerField(default=0, blank=True)
