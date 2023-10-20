@@ -365,6 +365,12 @@ class EsModules:
                     "must": [{"match_all": {}}],
                     "must_not": [{"exists": {"field": "search-results"}}],
                     "filter": [{"term": {"query-analysis-result.insertProductId": ""}}],
+                    "should": [
+                        {"term": {"query-analysis-result.shire": "homegood"}},
+                        {"term": {"query-analysis-result.shire": "place"}},
+                        {"term": {"query-analysis-result.shire": "others"}},
+                    ],
+                    "minimum_should_match": 1,
                 }
             }
         }
@@ -383,8 +389,14 @@ class EsModules:
             "query": {
                 "bool": {
                     "must": [{"match_all": {}}],
-                    "must_not": {"exists": {"field": "search-results"}},
+                    "must_not": [{"exists": {"field": "search-results"}}],
                     "filter": [{"term": {"query-analysis-result.insertProductId": ""}}],
+                    "should": [
+                        {"term": {"query-analysis-result.shire": "homegood"}},
+                        {"term": {"query-analysis-result.shire": "place"}},
+                        {"term": {"query-analysis-result.shire": "others"}},
+                    ],
+                    "minimum_should_match": 1,
                 }
             },
             "sort": [{"@timestamp": {"order": "desc"}}],
@@ -395,6 +407,7 @@ class EsModules:
                     "_id",
                     "@timestamp",
                     "userId",
+                    "shire",
                     "query-analysis-result.shire",
                     "query-analysis-result.mgId",
                 ],
@@ -415,7 +428,7 @@ class EsModules:
         last_processed_timestamp,
         data_size,
         gondor="",
-        geohash="",
+        geohash="xxxxxxxxxxxx",
         T800_MIN_SCORE=0,
         MALLORN_MIN_SCORE=0,
     ):
@@ -441,7 +454,7 @@ class EsModules:
                     "num_candidates": data_size,
                     "filter": [
                         {"term": {"shire": "homegood"}},
-                        {"term": {"query-analysis-result.insertProductId": ""}},
+                        {"term": {"insertProductId": ""}},
                         {"range": {"@timestamp": {"lt": last_processed_timestamp}}},
                     ],
                 },
@@ -489,7 +502,7 @@ class EsModules:
                     "num_candidates": data_size,
                     "filter": [
                         {"term": {"shire": "place"}},
-                        {"term": {"query-analysis-result.insertProductId": ""}},
+                        {"term": {"insertProductId": ""}},
                         {"range": {"@timestamp": {"lt": last_processed_timestamp}}},
                     ],
                 },
