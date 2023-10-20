@@ -434,7 +434,7 @@ def new_mgid_detail(request, scan_id):
         "timestamp": datetime.strptime(
             last_processed_timestamp, "%Y-%m-%dT%H:%M:%S.%fZ"
         ),
-        "shire": type_,
+        "shire": scan_id_data["_source"]["shire"],
         "userId": scan_id_data["_source"]["userId"],
         "gps": gps,
     }
