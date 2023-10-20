@@ -365,7 +365,7 @@ def new_mgid(request):
     page_size = int(request.GET.get("page_size", 12))  # 기본값은 10입니다.
     page_number = int(request.GET.get("page", 1))
     esmodules = EsModules()
-    page_number, last_page, new_mgid_data = esmodules.get_new_mgid(
+    page_number, last_page, total_count, new_mgid_data = esmodules.get_new_mgid(
         page_size, page_number
     )
     page_range = range(1, last_page + 1)
@@ -409,6 +409,7 @@ def new_mgid(request):
             "page_number": page_number,
             "last_page": last_page,
             "page_range": page_range,
+            "total_count": total_count,
             "data": data,
             "scanIdToImgUrlDict": scanIdToImgUrlDict,
             "matching_user_id_dict": matching_user_id_dict,
@@ -426,19 +427,23 @@ def new_mgid_detail(request, scan_id):
     mgid = scan_id_data["_source"]["mgId"]
     last_processed_timestamp = scan_id_data["_source"]["@timestamp"]
     emb = scan_id_data["_source"][type_]
+    gps = scan_id_data["_source"]["geohash"]
+
     query_data = {
         "mgId": mgid,
         "timestamp": datetime.strptime(
             last_processed_timestamp, "%Y-%m-%dT%H:%M:%S.%fZ"
         ),
-        "shire": type_,
+        "shire": scan_id_data["_source"]["shire"],
         "userId": scan_id_data["_source"]["userId"],
+        "gps": gps,
     }
     query = esmodules.embedding_query(
         type_=type_,
         embedding=emb,
         last_processed_timestamp=last_processed_timestamp,
         data_size=data_size,
+        geohash=gps,
     )
     if type_:
         search_result_raw = esmodules.search(query_body=query)["hits"]["hits"]
@@ -466,6 +471,16 @@ def new_mgid_detail(request, scan_id):
     scanIdToImgUrlDict = {
         record["scan_id"]: record["img_url"] for record in scan_info_objects
     }
+
+    if scan_id_data["_source"]:
+        crop_data = {}
+        crop_data["cropX"] = scan_id_data["_source"]["crop.cropX"]
+        crop_data["cropY"] = scan_id_data["_source"]["crop.cropY"]
+        crop_data["cropW"] = scan_id_data["_source"]["crop.cropW"]
+        crop_data["cropH"] = scan_id_data["_source"]["crop.cropH"]
+        crop_img = show_draw_crop(scanIdToImgUrlDict[scan_id], crop_data)
+    else:
+        crop_img = None
     # user_id, username
     user_id_list = [
         result["userId"]
@@ -493,6 +508,7 @@ def new_mgid_detail(request, scan_id):
             "search_result": search_result,
             "scanIdToImgUrlDict": scanIdToImgUrlDict,
             "matching_user_id_dict": matching_user_id_dict,
+            "crop_img": crop_img,
         },
     )
 

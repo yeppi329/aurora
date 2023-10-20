@@ -42,7 +42,11 @@
                     <div class="col-md-5 col-xxl-5">
                       <div class="new-arrival-product mb-4 mb-xxl-4 mb-md-0">
                         <div class="new-arrivals-img-contnent">
-                          <img class="img-fluid" src="{{ scanIdToImgUrlDict|get_value_from_dict:scan_id }}" alt=""/>
+                          {% if crop_img %}
+                            <img class="img-fluid" src="data:image/png;base64,{{ crop_img }}" alt="" />
+                          {% else %}
+                            <img class="img-fluid" src="{{ scanIdToImgUrlDict|get_value_from_dict:scan_id }}" alt=""/>
+                          {% endif %}
                         </div>
                       </div>
                     </div>
@@ -51,7 +55,9 @@
                         <ul class="list-group list-group-flush">
                           <li class="list-group-item d-flex px-0 justify-content-between">
                             <strong>scan_id</strong>
-                            <span class="mb-0" style="font-size: 14px">{{ scan_id }}</span>
+                            <a href="{% url 'operation:object-list-scan-id-detail' scan_id=scan_id %}">
+                              <span class="mb-0" style="font-size: 14px">{{ scan_id }}</span>
+                            </a>                            
                           </li>
                           <li class="list-group-item d-flex px-0 justify-content-between">
                             <strong>user_id</strong>
@@ -74,7 +80,15 @@
                             <a href="{% url 'operation:object-list-mg-id-detail' mg_id=query_data.mgId %}">
                               <span class="mb-0" style="font-size: 12px;">{{ query_data.mgId }}</span>
                             </a>                              
-                          </li>                                                                     
+                          </li>
+                          <li class="list-group-item d-flex px-0 justify-content-between">
+                            <strong>geohash</strong>
+                            <span class="mb-0" style="font-size: 14px">{{ query_data.gps }}</span>
+                          </li>    
+                          <li class="list-group-item d-flex px-0 justify-content-between">
+                            <strong>shire</strong>
+                            <span class="mb-0" style="font-size: 14px">{{ query_data.shire }}</span>
+                          </li>                                                                                                                               
                         </ul>
                       </div>
                     </div>
@@ -129,7 +143,7 @@
                       <td>
                         <a href="{% url 'operation:new-mg-id-detail' scan_id=i.scan_id %}">
                           {% if scanIdToImgUrlDict|get_value_from_dict:i.scan_id %}
-                            <img class="img-fluid" src="{{ scanIdToImgUrlDict|get_value_from_dict:i.scan_id }}" alt=""/>
+                            <img class="img-fluid" src="{{ scanIdToImgUrlDict|get_value_from_dict:i.scan_id }}" alt=""  width="120" height="auto"/>
                           {% else %}
                             <img src={% static 'aurora/images/logo.png' %} alt="Image" width="120" height="auto"/>
                           {% endif %}
@@ -140,7 +154,11 @@
                       </td>
                       <td>
                         <a href="{% url 'operation:object-list-user-id-detail' user_id=i.userId %}">
-                          <span class="mb-0" style="font-size: 14px;">
+                          {% if i.userId == query_data.userId%}
+                            <span class="mb-0" style="font-size: 14px; background-color: red;">
+                          {% else %}
+                            <span class="mb-0" style="font-size: 14px;">
+                          {% endif %}
                             {% if matching_user_id_dict|get_value_from_dict:i.userId %}
                               {{ matching_user_id_dict|get_value_from_dict:i.userId }}
                             {% else %}
@@ -156,7 +174,7 @@
                           <span class="mb-0" style="font-size: 10px;">{{ i.scan_id }}</span>
                         </a>
                       </td>
-                      <td>                              
+                      <td>            
                         <a href="{% url 'operation:object-list-mg-id-detail' mg_id=i.mgId %}">
                             <span col-name="mg_id", class="mb-0" style="font-size: 12px;">{{ i.mgId }}</span>
                         </a> 

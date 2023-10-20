@@ -121,6 +121,9 @@
             {% endfor %}
         ];
 
+        // 데이터 배열 역순 정렬
+        data.reverse();
+
         var ctx = document.getElementById('userStatusChart').getContext('2d');
 
         var chart = new Chart(ctx, {
