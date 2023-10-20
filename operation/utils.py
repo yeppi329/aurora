@@ -69,7 +69,7 @@ def show_draw_crop(image_url, crop):
 
 
 def choice_type(shire):
-    if shire == "homegood" or shire == "other":
+    if shire == "homegood" or shire == "others":
         type_ = "t800"
     elif shire == "place":
         type_ = "mallorn"
