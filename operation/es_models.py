@@ -419,7 +419,7 @@ class EsModules:
         last_page = math.ceil(search_data["hits"]["total"]["value"] / page_size)
         all_results = search_data["hits"]["hits"]
 
-        return page, last_page, all_results
+        return page, last_page, total_count, all_results
 
     def embedding_query(
         self,
@@ -442,7 +442,7 @@ class EsModules:
                         "bool": {
                             "should": [{"term": {"gondor": gondor}}],
                             "boost": self.GONDOR_BOOST,
-                        }
+                        },
                     },
                 }
             query = {
@@ -453,7 +453,14 @@ class EsModules:
                     "k": data_size,
                     "num_candidates": data_size,
                     "filter": [
-                        {"term": {"shire": "homegood"}},
+                        {
+                            "bool": {
+                                "should": [
+                                    {"term": {"shire": "homegood"}},
+                                    {"term": {"shire": "others"}},
+                                ]
+                            }
+                        },
                         {"term": {"insertProductId": ""}},
                         {"range": {"@timestamp": {"lt": last_processed_timestamp}}},
                     ],

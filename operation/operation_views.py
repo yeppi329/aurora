@@ -365,7 +365,7 @@ def new_mgid(request):
     page_size = int(request.GET.get("page_size", 12))  # 기본값은 10입니다.
     page_number = int(request.GET.get("page", 1))
     esmodules = EsModules()
-    page_number, last_page, new_mgid_data = esmodules.get_new_mgid(
+    page_number, last_page, total_count, new_mgid_data = esmodules.get_new_mgid(
         page_size, page_number
     )
     page_range = range(1, last_page + 1)
@@ -409,6 +409,7 @@ def new_mgid(request):
             "page_number": page_number,
             "last_page": last_page,
             "page_range": page_range,
+            "total_count": total_count,
             "data": data,
             "scanIdToImgUrlDict": scanIdToImgUrlDict,
             "matching_user_id_dict": matching_user_id_dict,
