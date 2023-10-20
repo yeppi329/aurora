@@ -145,6 +145,47 @@ class SummaryContentInfo(models.Model):
     def __str__(self):
         return f"Summary ID: {self.summary_id}, Date: {self.summary_dt}"
 
+# 월별 컨텐츠 현황
+class SummaryContentMonthInfo(models.Model):
+    summary_id = models.BigAutoField(primary_key=True)
+    summary_dt = models.CharField(max_length=255, null=False, blank=False, unique=True)     # 통계월 (YYYY-MM)
+    post_cnt = models.BigIntegerField(default=0, null=False, blank=False)
+    post_user_cnt = models.BigIntegerField(default=0, null=False, blank=False)
+    media_cnt = models.BigIntegerField(default=0, null=False, blank=False)
+    media_user_cnt = models.BigIntegerField(default=0, null=False, blank=False)
+    arbecon_cnt = models.BigIntegerField(default=0, null=False, blank=False)
+    arbecon_user_cnt = models.BigIntegerField(default=0, null=False, blank=False)
+    drawing_cnt = models.BigIntegerField(default=0, null=False, blank=False)
+    drawing_user_cnt = models.BigIntegerField(default=0, null=False, blank=False)
+    created_at = models.DateTimeField(auto_now=True, blank=True)
+
+    class Meta:
+        db_table = "summary_content_month_info"
+
+    def __str__(self):
+        return f"Summary ID: {self.summary_id}, Date: {self.summary_dt}"
+
+
+# 일별 컨텐츠 현황
+class SummaryContentDailyInfo(models.Model):
+    summary_id = models.BigAutoField(primary_key=True)
+    summary_dt = models.CharField(max_length=255, null=False, blank=False, unique=True)     # 통계일 (YYYY-MM-DD)
+    post_cnt = models.BigIntegerField(default=0, null=False, blank=False)
+    post_user_cnt = models.BigIntegerField(default=0, null=False, blank=False)
+    media_cnt = models.BigIntegerField(default=0, null=False, blank=False)
+    media_user_cnt = models.BigIntegerField(default=0, null=False, blank=False)
+    arbecon_cnt = models.BigIntegerField(default=0, null=False, blank=False)
+    arbecon_user_cnt = models.BigIntegerField(default=0, null=False, blank=False)
+    drawing_cnt = models.BigIntegerField(default=0, null=False, blank=False)
+    drawing_user_cnt = models.BigIntegerField(default=0, null=False, blank=False)
+    created_at = models.DateTimeField(auto_now=True, blank=True)
+
+    class Meta:
+        db_table = "summary_content_daily_info"
+
+    def __str__(self):
+        return f"Summary ID: {self.summary_id}, Date: {self.summary_dt}"
+
 # 메뉴 퀀한 카테고리
 class Category(models.Model):
     category_id = models.BigAutoField('카테고리 고유값', primary_key=True)
