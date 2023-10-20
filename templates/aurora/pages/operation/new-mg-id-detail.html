@@ -1,0 +1,230 @@
+{% extends 'aurora/elements/layouts/admin.html' %}
+{% load static %}
+{% load custom_filters %}
+{% block additional_css %}{% endblock %}
+{% block content %}
+
+  <style>
+    td a:hover {
+      color: white;
+      /* 마우스 오버시 텍스트 색상을 빨간색으로 변경 */
+      background-color: #ed0b4c;
+      /* 마우스 오버시 배경색 변경 */
+      /* 기타 스타일 변경 가능 */
+    }
+  </style>
+  <div class="page-titles">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="/index">Home</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a href="javascript:void(0)">Operation</a>
+      </li>
+      <li class="breadcrumb-item active">
+        <a href="{% url 'operation:new-mg-id' %}">new mg_id</a>
+      </li>
+    </ol>
+  </div>
+
+  <!-- row -->
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <!-- 선택이미지 -->
+          <div class="row">
+            <div class="col-lg-12 col-xl-12 col-xxl-12">
+              <div class="card">
+                <div class="card-body">
+                  <div class="row m-b-30">
+                    <div class="col-md-5 col-xxl-5">
+                      <div class="new-arrival-product mb-4 mb-xxl-4 mb-md-0">
+                        <div class="new-arrivals-img-contnent">
+                          <img class="img-fluid" src="{{ scanIdToImgUrlDict|get_value_from_dict:scan_id }}" alt=""/>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-7 col-xxl-7">
+                      <div class="new-arrival-content position-relative">
+                        <ul class="list-group list-group-flush">
+                          <li class="list-group-item d-flex px-0 justify-content-between">
+                            <strong>scan_id</strong>
+                            <span class="mb-0" style="font-size: 14px">{{ scan_id }}</span>
+                          </li>
+                          <li class="list-group-item d-flex px-0 justify-content-between">
+                            <strong>user_id</strong>
+                            <a href="{% url 'operation:object-list-user-id-detail' user_id=query_data.userId %}">
+                              <span class="mb-0" style="font-size: 14px;">
+                                {% if matching_user_id_dict|get_value_from_dict:query_data.userId %}
+                                  {{ matching_user_id_dict|get_value_from_dict:query_data.userId }}
+                                {% else %}
+                                  {{ query_data.userId }}
+                                {% endif %}
+                              </span>
+                            </a>                        
+                          </li>
+                          <li class="list-group-item d-flex px-0 justify-content-between">
+                            <strong>timestamp</strong>
+                            <span class="mb-0" style="font-size: 14px">{{ query_data.timestamp| date:"y-m-d H:m:s" }}</span>
+                          </li>
+                          <li class="list-group-item d-flex px-0 justify-content-between">
+                            <strong>mg_id</strong>
+                            <a href="{% url 'operation:object-list-mg-id-detail' mg_id=query_data.mgId %}">
+                              <span class="mb-0" style="font-size: 12px;">{{ query_data.mgId }}</span>
+                            </a>                              
+                          </li>                                                                     
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- 후보 -->  
+          <div class="row">
+            <div class="dropdown custom-dropdown">
+              <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="dropdown" aria-expanded="false">DATA Size:
+                {{data_size}}
+                <i class="fa fa-angle-down ms-3"></i>
+              </button>
+              <div class="dropdown-menu dropdown-menu-end" style="">
+                <a class="dropdown-item" href="?data_size=20">20</a>
+                <a class="dropdown-item" href="?data_size=50">50</a>
+                <a class="dropdown-item" href="?data_size=100">100</a>
+                <a class="dropdown-item" href="?data_size=300">300</a>
+                <a class="dropdown-item" href="?data_size=500">500</a>
+              </div>
+            </div>            
+            <div class="table-responsive">
+              <table id="example2-woody" class="display min-w850">
+                <thead>
+                  <tr>
+                    <th>
+                      <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="form-check-input" id="checkAll" required=""/>
+                        <label class="custom-control-label" for="checkAll"></label>
+                      </div>
+                    </th>
+                    <th>이미지</th>
+                    <th>score</th>
+                    <th>user_id</th>
+                    <th>timestamp</th>
+                    <th>shire</th>
+                    <th>scan id</th>
+                    <th>mg id</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for i in search_result %}
+                    <tr data-mg-id={{ i.mgId }}>
+                      <td>
+                        <div class="custom-control custom-checkbox">
+                          <input type="checkbox" class="form-check-input" id="customCheckBox2" required=""/>
+                          <label class="custom-control-label" for="customCheckBox2"></label>
+                        </div>
+                      </td>
+                      <td>
+                        <a href="{% url 'operation:new-mg-id-detail' scan_id=i.scan_id %}">
+                          {% if scanIdToImgUrlDict|get_value_from_dict:i.scan_id %}
+                            <img class="img-fluid" src="{{ scanIdToImgUrlDict|get_value_from_dict:i.scan_id }}" alt=""/>
+                          {% else %}
+                            <img src={% static 'aurora/images/logo.png' %} alt="Image" width="120" height="auto"/>
+                          {% endif %}
+                        </a>
+                      </td>
+                      <td>
+                        {{ i.score }}
+                      </td>
+                      <td>
+                        <a href="{% url 'operation:object-list-user-id-detail' user_id=i.userId %}">
+                          <span class="mb-0" style="font-size: 14px;">
+                            {% if matching_user_id_dict|get_value_from_dict:i.userId %}
+                              {{ matching_user_id_dict|get_value_from_dict:i.userId }}
+                            {% else %}
+                              {{ i.userId }}
+                            {% endif %}
+                          </span>
+                        </a>   
+                      </td>
+                      <td>{{ i.timestamp| date:"y-m-d H:m:s" }}</td>
+                      <td>{{ i.shire }}</td>
+                      <td>
+                        <a href="{% url 'operation:object-list-scan-id-detail' scan_id=i.scan_id %}">
+                          <span class="mb-0" style="font-size: 10px;">{{ i.scan_id }}</span>
+                        </a>
+                      </td>
+                      <td>                              
+                        <a href="{% url 'operation:object-list-mg-id-detail' mg_id=i.mgId %}">
+                            <span col-name="mg_id", class="mb-0" style="font-size: 12px;">{{ i.mgId }}</span>
+                        </a> 
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                      <th>
+                        <div class="custom-control custom-checkbox">
+                          <input type="checkbox" class="form-check-input" id="checkAll" required=""/>
+                          <label class="custom-control-label" for="checkAll"></label>
+                        </div>
+                      </th>
+                      <th>이미지</th>
+                      <th>score</th>
+                      <th>user_id</th>
+                      <th>timestamp</th>
+                      <th>shire</th>
+                      <th>scan id</th>
+                      <th>mg id</th>
+                    </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const table = document.querySelector("#example2-woody");
+      const rows = Array.from(table.querySelectorAll("tbody tr[data-mg-id]"));
+      
+      const colors = [
+        "red", "green", "blue", "yellow", "orange", "pink", "purple",
+        "brown", "gray", "silver", "gold", "cyan", "magenta", "indigo", "violet", "aqua",
+        "teal", "lavender", "maroon", "olive", "beige", "turquoise", "coral", "salmon",
+        "plum", "slate", "orchid", "ruby", "pearl", "ebony", "ivory", "tangerine", "lemon",
+        "mint", "lime", "peach", "charcoal", "mauve", "sepia", "burgundy", "amethyst",
+        "periwinkle", "lilac", "celadon", "emerald", "chartreuse", "azure", "aquamarine",
+        "cobalt", "sapphire", "garnet", "amber", "topaz", "bronze", "sienna", "terracotta",
+        "sand", "khaki", "forest", "moss", "pine", "fern", "caramel", "cinnamon", "chestnut",
+        "espresso", "walnut", "cognac", "taupe", "papaya", "blush", "rose", "fuchsia",
+        "hotpink", "thistle", "wisteria", "grape", "eggplant", "olivedrab", "peru",
+        "rosybrown", "slategray", "dodgerblue", "goldenrod", "tomato", "darkcyan",
+        "mediumvioletred", "firebrick", "darkslategray", "mediumorchid", "royalblue",
+        "darkorange", "darkseagreen", "cadetblue", "purple", "pink", "lightcoral"
+      ];
+      
+      let colorIndex = 0;
+      
+      const mgIdColorMap = new Map();
+      
+      rows.forEach((row) => {
+        const mgId = row.getAttribute("data-mg-id");
+        
+        if (!mgIdColorMap.has(mgId)) {
+          mgIdColorMap.set(mgId, colors[colorIndex]);
+          colorIndex = (colorIndex + 1) % colors.length;
+        }
+        
+        const colNameElement = row.querySelector('[col-name="mg_id"]');
+        colNameElement.style.backgroundColor = mgIdColorMap.get(mgId);
+      });
+    });
+  </script>
+{% endblock %}
+{% block additional_js %}{% endblock %}

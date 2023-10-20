@@ -1,3 +1,4 @@
+import math
 from elasticsearch import Elasticsearch
 from django.conf import settings
 
@@ -13,6 +14,14 @@ class EsModules:
         )
         self.search_index = settings.ELASTICSEARCH["default"]["index"]
         self.log_index = settings.ELASTICSEARCH["default"]["log_index"]
+        # search values
+        self.GONDOR_BOOST = settings.ELASTICSEARCH["default"]["GONDOR_BOOST"]
+        self.MALLORN_DEPTH1_BOOST = settings.ELASTICSEARCH["default"][
+            "MALLORN_DEPTH1_BOOST"
+        ]
+        self.MALLORN_DEPTH2_BOOST = settings.ELASTICSEARCH["default"][
+            "MALLORN_DEPTH2_BOOST"
+        ]
 
     def recent_log(self, page=0):
         if page > 0:
@@ -348,3 +357,152 @@ class EsModules:
         result = self.es.search(index=self.search_index, body=query)
 
         return result
+
+    def get_new_mgid(self, page_size, page):
+        query = {
+            "query": {
+                "bool": {
+                    "must": [{"match_all": {}}],
+                    "must_not": [{"exists": {"field": "search-results"}}],
+                    "filter": [{"term": {"query-analysis-result.insertProductId": ""}}],
+                }
+            }
+        }
+
+        result = self.es.count(index=self.log_index, body=query)
+        total_count = result["count"]
+
+        if page < 1:
+            page = 1
+        elif page > total_count // page_size + 1:
+            page = total_count // page_size + 1
+
+        start = (page - 1) * page_size
+
+        query = {
+            "query": {
+                "bool": {
+                    "must": [{"match_all": {}}],
+                    "must_not": {"exists": {"field": "search-results"}},
+                    "filter": [{"term": {"query-analysis-result.insertProductId": ""}}],
+                }
+            },
+            "sort": [{"@timestamp": {"order": "desc"}}],
+            "from": start,  # 시작 위치 설정
+            "size": page_size,  # 페이지 크기 설정
+            "_source": {
+                "includes": [
+                    "_id",
+                    "@timestamp",
+                    "userId",
+                    "query-analysis-result.shire",
+                    "query-analysis-result.mgId",
+                ],
+                "excludes": [],
+            },
+        }
+
+        search_data = self.es.search(index=self.log_index, body=query)
+        last_page = math.ceil(search_data["hits"]["total"]["value"] / page_size)
+        all_results = search_data["hits"]["hits"]
+
+        return page, last_page, all_results
+
+    def embedding_query(
+        self,
+        type_,
+        embedding,
+        last_processed_timestamp,
+        data_size,
+        gondor="",
+        geohash="",
+        T800_MIN_SCORE=0,
+        MALLORN_MIN_SCORE=0,
+    ):
+        query = {}
+        if type_ == "t800":
+            if gondor == "not_accurate" or gondor == "":
+                should_query = {}
+            else:
+                should_query = {
+                    "query": {
+                        "bool": {
+                            "should": [{"term": {"gondor": gondor}}],
+                            "boost": self.GONDOR_BOOST,
+                        }
+                    },
+                }
+            query = {
+                "size": data_size,
+                "knn": {
+                    "field": "t800",
+                    "query_vector": embedding,
+                    "k": data_size,
+                    "num_candidates": data_size,
+                    "filter": [
+                        {"term": {"shire": "homegood"}},
+                        {"term": {"query-analysis-result.insertProductId": ""}},
+                        {"range": {"@timestamp": {"lt": last_processed_timestamp}}},
+                    ],
+                },
+                "min_score": T800_MIN_SCORE,
+                "_source": {
+                    "excludes": ["t800", "mallorn"],
+                },
+            }
+            query.update(should_query)
+            return query
+
+        elif type_ == "mallorn":
+            if geohash != "xxxxxxxxxxxx":
+                should_query = {
+                    "query": {
+                        "bool": {
+                            "should": [
+                                {
+                                    "geo_distance": {
+                                        "distance": "100m",
+                                        "geohash": geohash,
+                                        "boost": self.MALLORN_DEPTH1_BOOST,
+                                    }
+                                },
+                                {
+                                    "geo_distance": {
+                                        "distance": "300m",
+                                        "geohash": geohash,
+                                        "boost": self.MALLORN_DEPTH2_BOOST,
+                                    }
+                                },
+                            ]
+                        }
+                    }
+                }
+            else:
+                should_query = {}
+
+            query = {
+                "size": data_size,
+                "knn": {
+                    "field": "mallorn",
+                    "query_vector": embedding,
+                    "k": data_size,
+                    "num_candidates": data_size,
+                    "filter": [
+                        {"term": {"shire": "place"}},
+                        {"term": {"query-analysis-result.insertProductId": ""}},
+                        {"range": {"@timestamp": {"lt": last_processed_timestamp}}},
+                    ],
+                },
+                "min_score": MALLORN_MIN_SCORE,
+                "_source": {
+                    "excludes": ["t800", "mallorn"],
+                },
+            }
+            query.update(should_query)
+            return query
+        else:
+            return query
+
+    def search(self, query_body):
+        res = self.es.search(index=self.search_index, body=query_body)
+        return res

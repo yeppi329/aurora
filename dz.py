@@ -89,6 +89,9 @@ dz_array = {
                     "object_list": [
                         f"{folderName}/vendor/datatables/css/jquery.dataTables.min.css",
                     ],
+                    "new_mgid_detail": [
+                        f"{folderName}/vendor/datatables/css/jquery.dataTables.min.css",
+                    ],
                     "content_list": [
                         f"{folderName}/vendor/datatables/css/jquery.dataTables.min.css",
                     ],
@@ -254,6 +257,14 @@ dz_array = {
                         f"{folderName}/js/plugins-init/datatables.init.js",
                     ],
                     "object_list": [
+                        f"{folderName}/vendor/datatables/js/jquery.dataTables.min.js",
+                        f"{folderName}/js/plugins-init/datatables.init.js",
+                        f"{folderName}/vendor/svganimation/vivus.min.js",
+                        f"{folderName}/vendor/svganimation/svg.animation.js",
+                        f"{folderName}/vendor/chart.js/Chart.bundle.min.js",
+                        f"{folderName}/js/plugins-init/chartjs-init.js",
+                    ],
+                    "new_mgid_detail": [
                         f"{folderName}/vendor/datatables/js/jquery.dataTables.min.js",
                         f"{folderName}/js/plugins-init/datatables.init.js",
                         f"{folderName}/vendor/svganimation/vivus.min.js",
