@@ -4,6 +4,7 @@ import geohash
 from PIL import Image, ImageDraw, ImageOps
 from io import BytesIO
 import base64
+import uuid
 
 
 # Geohash를 좌표로 변환
@@ -65,3 +66,21 @@ def show_draw_crop(image_url, crop):
         return image_data
     else:
         return ""
+
+
+def choice_type(shire):
+    if shire == "homegood" or shire == "other":
+        type_ = "t800"
+    elif shire == "place":
+        type_ = "mallorn"
+    else:
+        type_ = None
+    return type_
+
+
+def is_valid_uuid(uuid_str):
+    try:
+        uuid_obj = uuid.UUID(uuid_str)
+        return True
+    except ValueError:
+        return False

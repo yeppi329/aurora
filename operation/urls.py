@@ -29,5 +29,11 @@ urlpatterns = [
         operation_views.userid_detail,
         name="object-list-user-id-detail",
     ),
+    # new mg_id
+    path("new-mg-id/", operation_views.new_mgid, name="new-mg-id"),
+    re_path(
+        r"^new-mg-id/(?P<scan_id>[\w\W]+)/$",
+        operation_views.new_mgid_detail,
+        name="new-mg-id-detail",
+    ),
 ]
-

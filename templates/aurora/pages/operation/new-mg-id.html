@@ -1,0 +1,145 @@
+{% extends 'aurora/elements/layouts/admin.html' %}
+{% load static %}
+{% load custom_filters %}
+{% block additional_css %}{% endblock %}
+{% block content %}
+
+  <style>
+    td a:hover {
+      color: white;
+      /* 마우스 오버시 텍스트 색상을 빨간색으로 변경 */
+      background-color: #ed0b4c;
+      /* 마우스 오버시 배경색 변경 */
+      /* 기타 스타일 변경 가능 */
+    }
+  </style>
+  <div class="page-titles">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="/index">Home</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a href="javascript:void(0)">Operation</a>
+      </li>
+      <li class="breadcrumb-item active">
+        <a href="{% url 'operation:new-mg-id' %}">new mg_id</a>
+      </li>
+    </ol>
+  </div>
+
+  <!-- row -->
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="dropdown custom-dropdown">
+            <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="dropdown" aria-expanded="false">Page Size:
+              {{page_size}}
+              <i class="fa fa-angle-down ms-3"></i>
+            </button>
+            <div class="dropdown-menu dropdown-menu-end" style="">
+              <a class="dropdown-item" href="?page_size=12&page={{page_number}}">12</a>
+              <a class="dropdown-item" href="?page_size=24&page={{page_number}}">24</a>
+              <a class="dropdown-item" href="?page_size=48&page={{page_number}}">48</a>
+            </div>
+          </div>
+            <div class="row">
+              {% for i in data %}
+                <div class="col-lg-12 col-xl-6 col-xxl-4">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="row m-b-30">
+                        <div class="col-md-5 col-xxl-12">
+                          <div class="new-arrival-product mb-4 mb-xxl-4 mb-md-0">
+                            <div class="new-arrivals-img-contnent">
+                              <a href="{% url 'operation:new-mg-id-detail' scan_id=i.id %}">
+                                {% if scanIdToImgUrlDict|get_value_from_dict:i.id %}
+                                  <img class="img-fluid" src="{{ scanIdToImgUrlDict|get_value_from_dict:i.id }}" alt=""/>
+                                {% else %}
+                                  <img src={% static 'aurora/images/logo.png' %} alt="Image" width="120" height="auto"/>
+                                {% endif %}
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-7 col-xxl-12">
+                          <div class="new-arrival-content position-relative">
+                            <ul class="list-group list-group-flush">
+                              <li class="list-group-item d-flex px-0 justify-content-between">
+                                <strong>scan_id</strong>
+                                <a href="{% url 'operation:object-list-scan-id-detail' scan_id=i.id %}">
+                                  <span class="mb-0" style="font-size: 14px;">{{ i.id }}</span>
+                                </a>
+                              </li>
+                              <li class="list-group-item d-flex px-0 justify-content-between">
+                                <strong>mg_id</strong>
+                                <a href="{% url 'operation:object-list-mg-id-detail' mg_id=i.mgId %}">
+                                  <span class="mb-0" style="font-size: 12px;">{{ i.mgId }}</span>
+                                </a>                              
+                              </li>
+                              <li class="list-group-item d-flex px-0 justify-content-between">
+                                <strong>user_id</strong>
+                                <a href="{% url 'operation:object-list-user-id-detail' user_id=i.userId %}">
+                                  <span class="mb-0" style="font-size: 14px;">
+                                    {% if matching_user_id_dict|get_value_from_dict:i.userId %}
+                                      {{ matching_user_id_dict|get_value_from_dict:i.userId }}
+                                    {% else %}
+                                      {{ i.userId }}
+                                    {% endif %}
+                                  </span>
+                                </a>    
+                              </li>                                                            
+                              <li class="list-group-item d-flex px-0 justify-content-between">
+                                <strong>timestamp</strong>
+                                <span class="mb-0" style="font-size: 14px">{{ i.timestamp| date:"y-m-d H:m:s" }}</span>
+                              </li>
+                              <li class="list-group-item d-flex px-0 justify-content-between">
+                                <strong>shire</strong>
+                                <span class="mb-0" style="font-size: 14px">{{ i.shire }}</span>
+                              </li>                              
+
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>          
+          <div name="pagination">
+            <ul class="pagination">
+              {% if page_number > 1 %}
+                <li class="page-item page-indicator">
+                  <a class="page-link" href="?page_size={{ page_size }}&page={{ 1 }}">
+                    <i class="la la-angle-left"></i>
+                  </a>
+                </li>
+              {% endif %}
+
+              {% for page_num in page_range %}
+                {% with page_number=page_number|add:"-0" %}
+                {% if page_num >= page_number|add:"-5" and page_num <= page_number|add:"5" %}
+                  <li class="page-item{% if page_num == page_number %} active{% endif %}">
+                    <a class="page-link" href="?page_size={{ page_size }}&page={{ page_num }}">{{ page_num }}</a>
+                  </li>
+                {% endif %}
+                {% endwith %}
+              {% endfor %}
+
+              {% if page_number < last_page %}
+                <li class="page-item page-indicator">
+                  <a class="page-link" href="?page_size={{ page_size }}&page={{ last_page }}">
+                    <i class="la la-angle-right"></i>
+                  </a>
+                </li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+{% block additional_js %}{% endblock %}

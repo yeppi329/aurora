@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from .models import ScanInfo, ImageRecognition, Users
@@ -304,7 +305,6 @@ def scanid_detail(request, scan_id):
         crop_img = show_draw_crop(scan_img_url, crop_data)
     else:
         crop_img = None
-
     return render(
         request,
         "aurora/pages/operation/object-list-scan-id-detail.html",
@@ -354,6 +354,144 @@ def userid_detail(request, user_id):
             "user_id": user_id,
             "page": page,
             "total_count": total_count,
+            "matching_user_id_dict": matching_user_id_dict,
+        },
+    )
+
+
+@login_required(login_url="aurora:login")
+def new_mgid(request):
+    context = {"page_title": "new mgid"}
+    page_size = int(request.GET.get("page_size", 12))  # 기본값은 10입니다.
+    page_number = int(request.GET.get("page", 1))
+    esmodules = EsModules()
+    page_number, last_page, new_mgid_data = esmodules.get_new_mgid(
+        page_size, page_number
+    )
+    page_range = range(1, last_page + 1)
+    if new_mgid_data:
+        scan_id_list = [result["_id"] for result in new_mgid_data]
+        scan_info_objects = (
+            ScanInfo.objects.using("hippo")
+            .filter(scan_id__in=scan_id_list)
+            .values("scan_id", "img_url")
+        )
+        scanIdToImgUrlDict = {
+            record["scan_id"]: record["img_url"] for record in scan_info_objects
+        }
+    data = []
+    for _ in new_mgid_data:
+        tmp = {}
+        tmp["id"] = _["_id"]
+        tmp["timestamp"] = datetime.strptime(
+            _["_source"]["@timestamp"], "%Y-%m-%dT%H:%M:%S.%fZ"
+        )
+        tmp["userId"] = _["_source"]["userId"]
+        tmp["shire"] = _["_source"]["query-analysis-result"]["shire"]
+        tmp["mgId"] = _["_source"]["query-analysis-result"]["mgId"]
+        data.append(tmp)
+    # user_id, username
+    user_id_list = [result["userId"] for result in data]
+    user_objects = (
+        Users.objects.using("lama")
+        .filter(user_id__in=user_id_list)
+        .values("user_id", "username")
+    )
+    matching_user_id_dict = {}
+    for _ in user_objects:
+        matching_user_id_dict[str(_["user_id"])] = _["username"]
+    return render(
+        request,
+        "aurora/pages/operation/new-mg-id.html",
+        {
+            "context": context,
+            "page_size": page_size,
+            "page_number": page_number,
+            "last_page": last_page,
+            "page_range": page_range,
+            "data": data,
+            "scanIdToImgUrlDict": scanIdToImgUrlDict,
+            "matching_user_id_dict": matching_user_id_dict,
+        },
+    )
+
+
+@login_required(login_url="aurora:login")
+def new_mgid_detail(request, scan_id):
+    context = {"page_title": "new_mgid_detail"}
+    data_size = int(request.GET.get("data_size", 20))
+    esmodules = EsModules()
+    scan_id_data = esmodules.es.get(index=esmodules.search_index, id=scan_id)
+    type_ = choice_type(scan_id_data["_source"]["shire"])
+    mgid = scan_id_data["_source"]["mgId"]
+    last_processed_timestamp = scan_id_data["_source"]["@timestamp"]
+    emb = scan_id_data["_source"][type_]
+    query_data = {
+        "mgId": mgid,
+        "timestamp": datetime.strptime(
+            last_processed_timestamp, "%Y-%m-%dT%H:%M:%S.%fZ"
+        ),
+        "shire": type_,
+        "userId": scan_id_data["_source"]["userId"],
+    }
+    query = esmodules.embedding_query(
+        type_=type_,
+        embedding=emb,
+        last_processed_timestamp=last_processed_timestamp,
+        data_size=data_size,
+    )
+    if type_:
+        search_result_raw = esmodules.search(query_body=query)["hits"]["hits"]
+
+    search_result = []
+    for _ in search_result_raw:
+        tmp = {}
+        tmp["scan_id"] = _["_id"]
+        tmp["score"] = _["_score"]
+        tmp["mgId"] = _["_source"]["mgId"]
+        tmp["userId"] = _["_source"]["userId"]
+        tmp["shire"] = _["_source"]["shire"]
+        tmp["timestamp"] = datetime.strptime(
+            _["_source"]["@timestamp"], "%Y-%m-%dT%H:%M:%S.%fZ"
+        )
+        search_result.append(tmp)
+
+    scan_id_list = [result["scan_id"] for result in search_result]
+    scan_id_list.append(scan_id)
+    scan_info_objects = (
+        ScanInfo.objects.using("hippo")
+        .filter(scan_id__in=scan_id_list)
+        .values("scan_id", "img_url")
+    )
+    scanIdToImgUrlDict = {
+        record["scan_id"]: record["img_url"] for record in scan_info_objects
+    }
+    # user_id, username
+    user_id_list = [
+        result["userId"]
+        for result in search_result
+        if is_valid_uuid(result.get("userId"))
+    ]
+    user_id_list.append(scan_id_data["_source"]["userId"])
+    user_objects = (
+        Users.objects.using("lama")
+        .filter(user_id__in=user_id_list)
+        .values("user_id", "username")
+    )
+    matching_user_id_dict = {}
+    for _ in user_objects:
+        matching_user_id_dict[str(_["user_id"])] = _["username"]
+
+    return render(
+        request,
+        "aurora/pages/operation/new-mg-id-detail.html",
+        {
+            "context": context,
+            "scan_id": scan_id,
+            "data_size": data_size,
+            "query_data": query_data,
+            "search_result": search_result,
+            "scanIdToImgUrlDict": scanIdToImgUrlDict,
             "matching_user_id_dict": matching_user_id_dict,
         },
     )
