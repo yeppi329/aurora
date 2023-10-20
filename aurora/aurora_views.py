@@ -1,10 +1,17 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required, permission_required 
-
+from aurora.models import (
+    SummaryUserMonthInfo,
+    SummaryUserDailyInfo,
+    SummaryUserPeriodInfo,
+)
 
 @login_required(login_url='aurora:login')
 def index(request):
     context = {"page_title": "Dashboard"}
+    all_data = SummaryUserDailyInfo.objects.all().order_by('-summary_dt')
+    
+    context = {"all_data": all_data}
     return render(request, 'aurora/index.html', context)
 
 @login_required(login_url='aurora:login')
