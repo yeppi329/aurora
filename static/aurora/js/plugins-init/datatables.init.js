@@ -159,4 +159,28 @@ let dataSet = [
         this.nodes().to$().removeClass('selected')
     });    
 
+    //example 3
+    var table3_woody = $('#example3-woody').DataTable( {
+        createdRow: function ( row, data, index ) {
+            $(row).addClass('selected')
+        },
+        "info" : false,
+        "paging": false,
+        "searching": false
+    });
+
+    table3_woody.on('click', 'tbody tr', function() {
+        var $row = table3_woody.row(this).nodes().to$();
+        var hasClass = $row.hasClass('selected');
+        if (hasClass) {
+            $row.removeClass('selected')
+        } else {
+            $row.addClass('selected')
+        }
+    })
+        
+    table3_woody.rows().every(function() {
+        this.nodes().to$().removeClass('selected')
+    });        
+
 })(jQuery);

@@ -1,0 +1,310 @@
+{% extends 'aurora/elements/layouts/admin.html' %}
+{% load static %}
+{% block additional_css %}{% endblock %}
+{% block content %}
+  {% load custom_filters %}
+  <style>
+    td a:hover {
+      color: white;
+      /* 마우스 오버시 텍스트 색상을 빨간색으로 변경 */
+      background-color: #ed0b4c;
+      /* 마우스 오버시 배경색 변경 */
+      /* 기타 스타일 변경 가능 */
+    }
+  </style>
+  <div class="page-titles">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="/index">Home</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a href="javascript:void(0)">Operation</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a href="{% url 'operation:object-list'%}">사물 관리</a>
+      </li>
+      <li class="breadcrumb-item active">
+        <a href="{% url 'operation:user-management' %}">이용자 관리</a>
+      </li>
+    </ol>
+  </div>
+
+  <!-- row -->
+
+  <div class="row">
+    <div class="col-xl-3 col-sm-6">
+      <a href="{% url 'data:scan-status-daily'%}">
+        <div class="card">
+          <div class="card-body">
+            <div class="media align-items-center invoice-card">
+              <div class="media-body">
+                <h2 class="fs-38 text-black font-w600">
+                  {{ header_data.total_user }}
+                  {% if header_data.new_user %}
+                    <span style="color: red;">
+                      ▲
+                      {{ header_data.new_user }}
+                    </span>
+                  {% endif %}
+                </h2>
+                <span class="fs-18">Total User</span>
+              </div>
+              <span class="p-3 border ms-3 rounded-circle">
+                <svg fill="#000000" width="34" height="34" viewbox="0 0 256 256" id="Flat" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M164.334,177.15137a52,52,0,1,0-72.668,0,75.79342,75.79342,0,0,0-32.019,33.59082,12.00006,12.00006,0,0,0,21.57471,10.51367,52.02576,52.02576,0,0,1,93.55664,0,11.99984,11.99984,0,0,0,21.57422-10.51367A75.78975,75.78975,0,0,0,164.334,177.15137ZM100,140a28,28,0,1,1,28,28A28.03146,28.03146,0,0,1,100,140Zm151.209,9.58984a11.99687,11.99687,0,0,1-16.80175-2.38574,47.65994,47.65994,0,0,0-31.585-18.72461,11.99543,11.99543,0,0,1-9.97217-9.07055,11.931,11.931,0,0,1,8.15771-16.03882A20.00425,20.00425,0,1,0,177.936,75.39844a12.0001,12.0001,0,1,1-21.65772-10.3418,44.00719,44.00719,0,1,1,73.41309,47.26025,71.94964,71.94964,0,0,1,23.90429,20.4712A11.99992,11.99992,0,0,1,251.209,149.58984ZM53.17773,128.47949A47.65989,47.65989,0,0,0,21.5918,147.20508,12,12,0,0,1,2.40234,132.791a71.95614,71.95614,0,0,1,23.90625-20.47461A44.008,44.008,0,1,1,99.7207,65.05469,12.0003,12.0003,0,0,1,78.06348,75.39844a20.00448,20.00448,0,1,0-23.07129,27.97168,11.931,11.931,0,0,1,8.15771,16.03882A11.99543,11.99543,0,0,1,53.17773,128.47949Z"/>
+                </svg>
+              </span>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+    <div class="col-xl-3 col-sm-6">
+      <a href="{% url 'data:scan-status-daily'%}">
+        <div class="card">
+          <div class="card-body">
+            <div class="media align-items-center invoice-card">
+              <div class="media-body">
+                <h2 class="fs-38 text-black font-w600">
+                  {{ header_data.suspended_user }}
+                </h2>
+                <span class="fs-18">Suspended User</span>
+              </div>
+              <span class="p-3 border ms-3 rounded-circle">
+                <svg fill="#000000" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="34" height="34" viewbox="0 0 454.354 454.354" xml:space="preserve">
+                  <g>
+                    <path d="M451.518,216.585L348.522,38.184c-3.783-6.555-10.781-10.592-18.348-10.592H124.179c-7.566,0-14.561,4.037-18.344,10.592
+                    L2.837,216.585c-3.783,6.558-3.783,14.632,0,21.181L105.835,416.17c3.783,6.556,10.778,10.593,18.344,10.593h205.996
+                    c7.566,0,14.564-4.037,18.348-10.593l102.995-178.404C455.3,231.217,455.3,223.143,451.518,216.585z M317.945,384.395H136.411
+                    L45.646,227.174l90.766-157.215h181.534l90.767,157.215L317.945,384.395z M138.362,245.196c0,14.748-11.349,27.272-35.5,27.272
+                    c-10.054,0-19.96-2.618-24.932-5.349l4.052-16.444c5.355,2.743,13.568,5.485,22.053,5.485c9.129,0,13.976-3.783,13.976-9.528
+                    c0-5.491-4.182-8.618-14.756-12.412c-14.617-5.096-24.143-13.182-24.143-25.969c0-15.004,12.534-26.492,33.284-26.492
+                    c9.918,0,17.23,2.092,22.449,4.436l-4.441,16.057c-3.517-1.699-9.789-4.182-18.4-4.182c-8.615,0-12.797,3.916-12.797,8.485
+                    c0,5.612,4.962,8.08,16.311,12.404C131.062,224.704,138.362,232.79,138.362,245.196z M145.183,183.192h67.613v16.701h-24.018
+                    v71.264h-19.973v-71.264h-23.622V183.192z M258.383,181.759c-25.966,0-42.803,19.712-42.803,46.077
+                    c0,25.05,15.271,44.756,41.372,44.756c25.706,0,43.202-17.483,43.202-46.328C300.154,201.992,285.401,181.759,258.383,181.759z
+                    M257.993,256.805c-13.306,0-21.403-12.135-21.403-29.359c0-17.108,7.832-29.891,21.272-29.891
+                    c13.714,0,21.285,13.577,21.285,29.371C279.142,244.02,271.434,256.805,257.993,256.805z M313.247,271.163h19.706v-31.457
+                    c1.826,0.271,4.179,0.39,6.798,0.39c11.744,0,21.799-2.872,28.572-9.263c5.236-4.959,8.104-12.255,8.104-20.873
+                    c0-8.615-3.783-15.927-9.41-20.363c-5.863-4.696-14.611-7.052-26.87-7.052c-12.146,0-20.765,0.792-26.894,1.835v86.782H313.247z
+                    M332.953,198.33c1.437-0.387,4.179-0.78,8.222-0.78c9.918,0,15.527,4.835,15.527,12.918c0,9.011-6.525,14.354-17.094,14.354
+                    c-2.878,0-4.953-0.13-6.661-0.515V198.33H332.953z"/>
+                  </g>
+                </svg>
+              </span>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+    <div class="col-xl-3 col-sm-6">
+      <a href="{% url 'data:scan-status-daily'%}">
+        <div class="card">
+          <div class="card-body">
+            <div class="media align-items-center invoice-card">
+              <div class="media-body">
+                <h2 class="fs-38 text-black font-w600">
+                  {{ header_data.inactive_user }}
+                </h2>
+                <span class="fs-18">Inactive user</span>
+              </div>
+              <svg width="34" height="34" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6.5 11C7.06692 11.6303 7.75638 12 8.5 12C9.24362 12 9.93308 11.6303 10.5 11" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M13.5 11C14.0669 11.6303 14.7564 12 15.5 12C16.2436 12 16.9331 11.6303 17.5 11" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M13 16C13 16.5523 12.5523 17 12 17C11.4477 17 11 16.5523 11 16C11 15.4477 11.4477 15 12 15C12.5523 15 13 15.4477 13 16Z" fill="#1C274C"/>
+                <path d="M17 4L20.4641 2L19 7.4641L22.4641 5.4641" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M14.0479 5.5L15.7799 6.5L13.0479 7.23205L14.7799 8.23205" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M22 12C22 17.5228 17.5228 22 12 22C10.1786 22 8.47087 21.513 7 20.6622M12 2C6.47715 2 2 6.47715 2 12C2 13.8214 2.48697 15.5291 3.33782 17" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+    <div class="col-xl-3 col-sm-6">
+      <a href="{% url 'data:scan-status-daily'%}">
+        <div class="card">
+          <div class="card-body">
+            <div class="media align-items-center invoice-card">
+              <div class="media-body">
+                <h2 class="fs-38 text-black font-w600">
+                  {{ header_data.deleted_user }}
+                </h2>
+                <span class="fs-18">Deleted User</span>
+              </div>
+              <span class="p-3 border ms-3 rounded-circle">
+                <svg fill="#000000" width="34" height="34" viewbox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M24.973 11.995l0-4.997c0-3.31-4.582-6.995-8.997-6.995s-9.004 3.686-9.004 6.995v4.997c0 2.184 0.997 6.601 3.793 8.846l-8.783 4.145s-1.998 0.89-1.998 1.999v3.001c0 1.105 0.895 1.999 1.998 1.999h18.998v-2l-18.997 0.001v-2.029c0-0.795 0.597-1.045 0.835-1.154l8.782-4.145c0.63-0.289 1.064-0.886 1.149-1.573s-0.193-1.369-0.733-1.803c-2.078-1.668-3.046-5.334-3.046-7.287v-4.997c0-2.090 3.638-4.995 7.004-4.995 3.396 0 6.997 2.861 6.997 4.995v4.997c0 1.924-0.8 5.604-2.945 7.292-0.548 0.43-0.832 1.114-0.749 1.806 0.081 0.692 0.517 1.291 1.151 1.582l0.566 0.261 0.877-1.619-0.609-0.46c2.77-2.179 3.708-6.462 3.708-8.862zM28.895 27.463l2.828-2.829c0.39-0.39 0.39-1.023 0-1.414s-1.024-0.39-1.414 0l-2.829 2.829-2.828-2.829c-0.39-0.39-1.024-0.39-1.414 0s-0.39 1.024 0 1.414l2.828 2.828-2.828 2.828c-0.39 0.39-0.39 1.024 0 1.415 0.39 0.389 1.024 0.389 1.414 0l2.828-2.828 2.828 2.828c0.39 0.389 1.024 0.389 1.414 0 0.391-0.39 0.391-1.024 0-1.415z"></path>
+                </svg>
+              </span>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-action card-tabs mt-3 mt-sm-0">
+            <ul class="nav nav-tabs" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link {% if status == "None" or not status %}active{% endif %}" href="{% url 'operation:user-management'%}">전체</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link {% if status == "1" %}active{% endif %}" href="{% url 'operation:user-management'%}?status=1">정상</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link {% if status == "0" %}active{% endif %}" href="{% url 'operation:user-management'%}?status=0">정지</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link {% if status == "99" %}active{% endif %}" href="{% url 'operation:user-management'%}?status=99">탈퇴</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row justify-content-between">
+            <div class="col-3">
+              <div class="dropdown custom-dropdown">
+                <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="dropdown" aria-expanded="false">Page Size:
+                  {{page_size}}
+                  <i class="fa fa-angle-down ms-3"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-end" style="">
+                  <a class="dropdown-item" href="?status={{ status }}&page_size=10&page={{page_number}}">10</a>
+                  <a class="dropdown-item" href="?status={{ status }}&page_size=20&page={{page_number}}">20</a>
+                  <a class="dropdown-item" href="?status={{ status }}&page_size=50&page={{page_number}}">50</a>
+                </div>
+              </div>
+            </div>
+            <form class="col-5" method="GET" action="" id="searchForm">
+              <div class="input-group">
+                <div class="col-2">
+                  <div class="dropdown bootstrap-select default-select form-control">
+                    <select id="inputState" class="default-select form-control" tabindex="null">
+                      <option value="" selected>Choose...</option>
+                      <option value="username">닉네임</option>
+                      <option value="email">이메일</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-8">
+                  <input type="text" class="form-control" name="q" placeholder="검색">
+                  <!-- 숨겨진 input 엘리먼트를 추가해서 선택한 옵션을 저장 -->
+                  <input type="hidden" id="hiddenInput" name="st" value="">                
+                </div>
+                <div class="col-2">
+                  <button type="submit" class="btn btn-outline-primary">검색</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="table-responsive">
+            <table id="example3-woody" class="display min-w850">
+              <thead>
+                <tr>
+                  <th>
+                    <div class="custom-control custom-checkbox">
+                      <input type="checkbox" class="form-check-input" id="checkAll" required=""/>
+                      <label class="custom-control-label" for="checkAll"></label>
+                    </div>
+                  </th>                  
+                  <th>닉네임</th>
+                  <th>이메일</th>
+                  <th>가입일</th>
+                  <th>총 콘텐츠</th>
+                  <th>상태</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for item in page %}
+                  <tr>
+                    <td>
+                      <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="form-check-input" id="customCheckBox2" required=""/>
+                        <label class="custom-control-label" for="customCheckBox2"></label>
+                      </div>
+                    </td>                    
+                    <td>{{ item.username }}</td>
+                    <td>{{ item.email }}</td>
+                    <td>{{ item.created_at| date:"y-m-d H:m:s"}}</td>
+                    <td>{{ item.content_count }}</td>
+                    <td>{{ item.status_str }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>
+                    <div class="custom-control custom-checkbox">
+                      <input type="checkbox" class="form-check-input" id="checkAll" required=""/>
+                      <label class="custom-control-label" for="checkAll"></label>
+                    </div>
+                  </th>                     
+                  <th>닉네임</th>
+                  <th>이메일</th>
+                  <th>가입일</th>
+                  <th>총 콘텐츠</th>
+                  <th>상태</th>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+        <div class="card-footer">
+          <ul class="pagination">
+            {% if page.has_previous %}
+              <li class="page-item page-indicator">
+                <a class="page-link" href="?status={{ status }}&page_size={{ page_size }}&page={{ page.paginator.page_range.0 }}">
+                  <i class="la la-angle-left"></i>
+                </a>
+              </li>
+            {% endif %}
+
+            {% for page_num in page.paginator.page_range %}
+              {% with data_number=page.number|add:"-0" %}
+              {% if page_num >= data_number|add:"-5" and page_num <= data_number|add:"5" %}
+                <li class="page-item{% if page_num == data_number %} active{% endif %}">
+                  <a class="page-link" href="?status={{ status }}&page_size={{ page_size }}&page={{ page_num }}">{{ page_num }}</a>
+                </li>
+              {% endif %}
+              {% endwith %}
+            {% endfor %}
+
+            {% if page.has_next %}
+              <li class="page-item page-indicator">
+                <a class="page-link" href="?status={{ status }}&page_size={{ page_size }}&page={{ page.paginator.page_range|last }}">
+                  <i class="la la-angle-right"></i>
+                </a>
+              </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    document.getElementById('searchForm').addEventListener('submit', function(event) {
+      event.preventDefault(); // 기본 제출 동작을 막음
+    
+      // 선택된 옵션 엘리먼트를 가져옴
+      const selectElement = document.getElementById('inputState');
+      
+      // 선택된 옵션의 값 (value)를 가져옴
+      const selectedOption = selectElement.options[selectElement.selectedIndex].value;
+      // 검색어(input type="text") 값을 가져옴
+      const searchQuery = document.querySelector('input[name="q"]').value;
+      
+      // 가져온 값이 올바른지 확인
+      if (selectedOption && searchQuery) {
+        // 선택한 옵션을 숨겨진 input 엘리먼트에 설정
+        document.getElementById('hiddenInput').value = selectedOption;
+        // 폼 제출
+        this.submit(); // this는 폼 엘리먼트 자체를 가리킵니다.
+      } else {
+        console.log("옵션을 선택하세요."); // 선택된 옵션이 없는 경우 예외 처리
+      }
+    });
+  </script>  
+{% endblock %}
+{% block additional_js %}{% endblock %}
