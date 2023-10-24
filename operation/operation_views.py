@@ -1,4 +1,5 @@
 from datetime import datetime
+import math
 import pandas as pd
 import numpy as np
 from django.contrib.auth.decorators import login_required
@@ -580,7 +581,6 @@ def user_management(request):
     # 페이지 번호에 해당하는 Page 객체 가져오기
     page = paginator.get_page(page_number)
     account_data = pd.DataFrame(list(page))
-    print(account_data)
     if list(page):
         # find user id
         matching_user_id = (
@@ -590,7 +590,6 @@ def user_management(request):
         )
 
         user_data = pd.DataFrame(list(matching_user_id))
-        print(user_data)
         result = pd.merge(account_data, user_data, on="account_id", how="left")
         # Content Count
         content_count = (
@@ -616,7 +615,6 @@ def user_management(request):
         ]
 
         values = ["정지", "정상", "탈퇴"]
-
         result["status_str"] = np.select(conditions, values, default="")
         return render(
             request,
@@ -627,7 +625,8 @@ def user_management(request):
                 "status": status,
                 "page_size": page_size,
                 "page_number": page_number,
-                "page": result.to_dict(orient="records"),
+                "data": result.to_dict(orient="records"),
+                "page": page,
             },
         )
     else:
@@ -640,7 +639,8 @@ def user_management(request):
                 "status": status,
                 "page_size": page_size,
                 "page_number": page_number,
-                "page": account_data.to_dict(orient="records"),
+                "data": account_data.to_dict(orient="records"),
+                "page": page,
             },
         )
 
