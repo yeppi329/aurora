@@ -1,8 +1,12 @@
 from datetime import datetime
+import math
+import pandas as pd
+import numpy as np
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-from .models import ScanInfo, ImageRecognition, Users
-from django.db.models import OuterRef, Subquery, Count, Q, F
+from operation.models import ScanInfo, ImageRecognition, Users, Content, Account
+from aurora.models import SummaryUserDailyInfo
+from django.db.models import OuterRef, Subquery, Count
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import time
 from .utils import *
@@ -511,6 +515,151 @@ def new_mgid_detail(request, scan_id):
             "crop_img": crop_img,
         },
     )
+
+
+# 유저관리
+@login_required(login_url="aurora:login")
+def user_management(request):
+    context = {"page_title": "이용자 관리"}
+    header_data = SummaryUserDailyInfo.objects.latest("created_at")
+    ###
+    status = request.GET.get("status")
+
+    if not status:
+        account_data = Account.objects.using("camel").values().order_by("-created_at")
+    elif status == "1":
+        account_data = (
+            Account.objects.using("camel")
+            .filter(status=1)
+            .values()
+            .order_by("-created_at")
+        )
+    elif status == "0":
+        account_data = (
+            Account.objects.using("camel")
+            .filter(status=0)
+            .values()
+            .order_by("-created_at")
+        )
+    elif status == "99":
+        account_data = (
+            Account.objects.using("camel")
+            .filter(status=99)
+            .values()
+            .order_by("-created_at")
+        )
+    else:
+        account_data = Account.objects.using("camel").values().order_by("-created_at")
+    q = request.GET.get("q")
+    st = request.GET.get("st")
+    if q and st:
+        if st == "email":
+            account_data = (
+                Account.objects.using("camel")
+                .filter(email=q)
+                .values()
+                .order_by("-created_at")
+            )
+        else:
+            username_data = (
+                Users.objects.using("lama").filter(username=q).order_by("-created_at")
+            )
+            search_account_list = []
+            for _ in username_data:
+                search_account_list.append(_.account_id)
+            account_data = (
+                Account.objects.using("camel")
+                .values()
+                .filter(account_id__in=search_account_list)
+            )
+
+    page_size = int(request.GET.get("page_size", 10))  # 기본값은 10입니다.
+    page_number = int(request.GET.get("page", 1))
+    # Paginator를 사용하여 페이지네이션 객체 생성
+    paginator = Paginator(account_data, page_size)
+
+    # 페이지 번호에 해당하는 Page 객체 가져오기
+    page = paginator.get_page(page_number)
+    account_data = pd.DataFrame(list(page))
+    if list(page):
+        # find user id
+        matching_user_id = (
+            Users.objects.using("lama")
+            .filter(account_id__in=list(account_data["account_id"]))
+            .values("user_id", "account_id", "username")
+        )
+        print(list(account_data["account_id"]))
+        user_data = pd.DataFrame(list(matching_user_id))
+        if len(user_data):
+            result = pd.merge(account_data, user_data, on="account_id", how="left")
+            
+            # Content Count
+            content_count = (
+                Content.objects.using("pelican")
+                .filter(user_id__in=list(result["user_id"]))
+                .values("user_id")
+                .annotate(content_count=Count("user_id"))
+            )
+            content_count_data = pd.DataFrame(list(content_count))
+            if list(content_count_data):
+                content_count_data["user_id"] = content_count_data["user_id"].apply(
+                    lambda x: uuid.UUID(x)
+                )
+
+                result = pd.merge(result, content_count_data, on="user_id", how="left")
+                result.fillna(0, inplace=True)
+                result["content_count"] = result["content_count"].apply(lambda x: int(x))
+            # 조건에 따라 count 값을 설정
+            conditions = [
+                (result["status"] == 0),
+                (result["status"] == 1),
+                (result["status"] == 99),
+            ]
+
+            values = ["정지", "정상", "탈퇴"]
+            result["status_str"] = np.select(conditions, values, default="")
+            return render(
+                request,
+                "aurora/pages/operation/user-management.html",
+                {
+                    "context": context,
+                    "header_data": header_data,
+                    "status": status,
+                    "page_size": page_size,
+                    "page_number": page_number,
+                    "data": result.to_dict(orient="records"),
+                    "page": page,
+                },
+            )
+        else:
+            return render(
+                request,
+                "aurora/pages/operation/user-management.html",
+                {
+                    "context": context,
+                    "header_data": header_data,
+                    "status": status,
+                    "page_size": page_size,
+                    "page_number": page_number,
+                    "data": account_data.to_dict(orient="records"),
+                    "page": page,
+                },
+            )
+            
+    else:
+        return render(
+            request,
+            "aurora/pages/operation/user-management.html",
+            {
+                "context": context,
+                "header_data": header_data,
+                "status": status,
+                "page_size": page_size,
+                "page_number": page_number,
+                "data": account_data.to_dict(orient="records"),
+                "page": page,
+            },
+        )
 
 
 @login_required(login_url="aurora:login")
