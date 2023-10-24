@@ -19,8 +19,20 @@
                     <i class="flaticon-381-database"></i><span class="nav-text">Data (지표)</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="{% url 'data:svc-user-status-daily' %}">이용자 현황</a></li>
-                    <li><a href="{% url 'data:scan-status-daily' %}">스캔 현황</a></li>
+                    <li><a class="has-arrow" href="{% url 'data:svc-user-status-daily' %}">이용자 현황</a>
+                        <ul aria-expanded="false">
+                            <li><a href="{% url 'data:svc-user-status-daily'%}"> - 이용자 현황(일별)</a></li>
+                            <li><a href="{% url 'data:svc-user-status-month' %}"> - 이용자 현황(월별)</a></li>
+                            <li><a href="{% url 'data:svc-activity-user' %}"> - 기간별 이용자</a></li>
+                        </ul>
+                    </li>
+                    <li><a class="has-arrow" href="{% url 'data:scan-status-daily' %}">스캔 현황</a>
+                        <ul aria-expanded="false">
+                            <li><a href="{% url 'data:scan-status-daily'%}"> - 스캔 현황(일별)</a></li>
+                            <li><a href="{% url 'data:scan-status-month' %}"> - 스캔 현황(월별)</a></li>
+                            <li><a href="{% url 'data:scan-activity-status' %}"> - 스캔 현황(시간별)</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </li>
         {% endif %}
@@ -31,7 +43,7 @@
                     <i class="flaticon-381-television"></i><span class="nav-text">Operation (Admin)</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="{% url 'operation:svc-user-list' %}">이용자 관리</a></li>
+                    <li><a href="{% url 'operation:user-management' %}">이용자 관리</a></li>
                     <li><a class="has-arrow" href="{% url 'operation:object-list' %}">사물 관리</a>
                         <ul aria-expanded="false">
                             <li><a href="{% url 'operation:object-list-dynamic' object_type='mg_id' %}">mg_id</a></li>
