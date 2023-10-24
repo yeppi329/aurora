@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.db.models import Max
 from django.contrib.auth.decorators import login_required, permission_required 
 from aurora.models import (
     SummaryUserMonthInfo,
@@ -10,8 +11,12 @@ from aurora.models import (
 def index(request):
     context = {"page_title": "Dashboard"}
     all_data = SummaryUserDailyInfo.objects.all().order_by('-summary_dt')
-    
-    context = {"all_data": all_data}
+    total_user_cnt = SummaryUserDailyInfo.objects.aggregate(latest_total_user=Max('total_user'))['latest_total_user']
+    new_user_cnt = SummaryUserDailyInfo.objects.aggregate(latest_new_user=Max('new_user'))['latest_new_user']
+    normal_user_cnt = total_user_cnt - new_user_cnt
+    context = {"all_data": all_data,"total_user_cnt":total_user_cnt,"new_user_cnt":new_user_cnt,"normal_user_cnt":normal_user_cnt}
+
+    print("total_user_cnt",total_user_cnt,"new_user_cnt",new_user_cnt,"normal_user_cnt",normal_user_cnt)
     return render(request, 'aurora/index.html', context)
 
 @login_required(login_url='aurora:login')
