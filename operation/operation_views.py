@@ -588,47 +588,64 @@ def user_management(request):
             .filter(account_id__in=list(account_data["account_id"]))
             .values("user_id", "account_id", "username")
         )
-
+        print(list(account_data["account_id"]))
         user_data = pd.DataFrame(list(matching_user_id))
-        result = pd.merge(account_data, user_data, on="account_id", how="left")
-        # Content Count
-        content_count = (
-            Content.objects.using("pelican")
-            .filter(user_id__in=list(result["user_id"]))
-            .values("user_id")
-            .annotate(content_count=Count("user_id"))
-        )
-        content_count_data = pd.DataFrame(list(content_count))
-        if list(content_count_data):
-            content_count_data["user_id"] = content_count_data["user_id"].apply(
-                lambda x: uuid.UUID(x)
+        if len(user_data):
+            result = pd.merge(account_data, user_data, on="account_id", how="left")
+            
+            # Content Count
+            content_count = (
+                Content.objects.using("pelican")
+                .filter(user_id__in=list(result["user_id"]))
+                .values("user_id")
+                .annotate(content_count=Count("user_id"))
             )
+            content_count_data = pd.DataFrame(list(content_count))
+            if list(content_count_data):
+                content_count_data["user_id"] = content_count_data["user_id"].apply(
+                    lambda x: uuid.UUID(x)
+                )
 
-            result = pd.merge(result, content_count_data, on="user_id", how="left")
-            result.fillna(0, inplace=True)
-            result["content_count"] = result["content_count"].apply(lambda x: int(x))
-        # 조건에 따라 count 값을 설정
-        conditions = [
-            (result["status"] == 0),
-            (result["status"] == 1),
-            (result["status"] == 99),
-        ]
+                result = pd.merge(result, content_count_data, on="user_id", how="left")
+                result.fillna(0, inplace=True)
+                result["content_count"] = result["content_count"].apply(lambda x: int(x))
+            # 조건에 따라 count 값을 설정
+            conditions = [
+                (result["status"] == 0),
+                (result["status"] == 1),
+                (result["status"] == 99),
+            ]
 
-        values = ["정지", "정상", "탈퇴"]
-        result["status_str"] = np.select(conditions, values, default="")
-        return render(
-            request,
-            "aurora/pages/operation/user-management.html",
-            {
-                "context": context,
-                "header_data": header_data,
-                "status": status,
-                "page_size": page_size,
-                "page_number": page_number,
-                "data": result.to_dict(orient="records"),
-                "page": page,
-            },
-        )
+            values = ["정지", "정상", "탈퇴"]
+            result["status_str"] = np.select(conditions, values, default="")
+            return render(
+                request,
+                "aurora/pages/operation/user-management.html",
+                {
+                    "context": context,
+                    "header_data": header_data,
+                    "status": status,
+                    "page_size": page_size,
+                    "page_number": page_number,
+                    "data": result.to_dict(orient="records"),
+                    "page": page,
+                },
+            )
+        else:
+            return render(
+                request,
+                "aurora/pages/operation/user-management.html",
+                {
+                    "context": context,
+                    "header_data": header_data,
+                    "status": status,
+                    "page_size": page_size,
+                    "page_number": page_number,
+                    "data": account_data.to_dict(orient="records"),
+                    "page": page,
+                },
+            )
+            
     else:
         return render(
             request,
