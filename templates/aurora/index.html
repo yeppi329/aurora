@@ -68,7 +68,7 @@
       <div class="card">
         <div class="card-header d-block d-sm-flex border-0">
           <div class="me-3">
-            <h4 class="fs-20 text-black">Total Report</h4>
+            <h4 class="fs-20 text-black">콘텐츠 현황</h4>
           </div>
           <div class="card-action card-tabs mt-3 mt-sm-0">
             <ul class="nav nav-tabs" role="tablist">
@@ -384,6 +384,13 @@
                   });
                 // 이용자 현황 - doughnutChart
 
+                var userStatusData_1 = [
+                {% for data in all_data %} {
+                  date: "{{ data.summary_dt }}"
+                }, {% endfor %}
+                ];
+                var totalUserCount = {{ total_user_cnt }};
+
                 var ctx = document
                   .getElementById('doughnutChart')
                   .getContext('2d');
@@ -393,10 +400,11 @@
                   data: {
                     weight: 5,
                     defaultFontFamily: 'Poppins',
+                    labels: ['일반 회원', '신규 회원'],
                     datasets: [
                       {
                         data: [
-                          45, 25, 20
+                          {{normal_user_cnt}},{{new_user_cnt}}
                         ],
                         borderWidth: 3,
                         borderColor: "rgba(255,255,255,1)",
@@ -418,12 +426,11 @@
 
                 //이용자현황 - userStatusChart
 
-                var userStatusData = [
+                var userStatusData_2 = [
                 {% for data in all_data %} {
                   date: "{{ data.summary_dt }}",
                   total_user: {{data.total_user}},
-                  new_dau: {{data.new_dau}},
-                  dau: {{data.dau}}
+                  new_user: {{data.new_user}}
                 }, {% endfor %}
                 ];
 
@@ -433,16 +440,16 @@
                 var userStatusChart = new Chart(userStatusCtx, {
                   type: 'line',
                   data: {
-                    labels: userStatusData.map(item => item.date),
+                    labels: userStatusData_2.map(item => item.date),
                     datasets: [
                       {
-                        label: 'DAU',
-                        data: userStatusData.map(item => item.dau),
+                        label: 'Tota_User',
+                        data: userStatusData_2.map(item => item.total_user),
                         borderColor: 'rgba(75, 192, 192, 1)',
                         fill: false
                       }, {
-                        label: 'New_DAU',
-                        data: userStatusData.map(item => item.new_dau),
+                        label: 'New_User',
+                        data: userStatusData_2.map(item => item.new_user),
                         borderColor: 'rgba(255, 99, 132, 1)',
                         fill: false
                       }
