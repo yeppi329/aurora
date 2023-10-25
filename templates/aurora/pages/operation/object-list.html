@@ -251,7 +251,7 @@
                       </th>
                       <th>사물이미지</th>
                       <th>매칭이미지</th>
-                      <th>Scan_id</th>
+                      <th>scan_id</th>
                       <th>위치</th>
                       <th>생성일</th>
                       <th>생성자</th>
@@ -281,7 +281,8 @@
                           {% endif %}
                         </td>
                         <td>
-                          <a href="{% url 'operation:object-list-scan-id-detail' scan_id=item.scan_id %}">{{ item.scan_id }}</a>
+                          mg_id : <a href="{% url 'operation:object-list-mg-id-detail' mg_id=item.mg_id %}">{{ item.mg_id }}</a><br>
+                          scan_id : <a href="{% url 'operation:object-list-scan-id-detail' scan_id=item.scan_id %}">{{ item.scan_id }}</a>
                         </td>
                         <td>
                           <span class="mb-0" data-bs-toggle="modal" data-bs-target="#{{ item.geohash }}">{{ item.geohash }}</span>
@@ -302,7 +303,6 @@
                               </div>
                             </div>
                           </div>
-
                         </td>
                         <td>{{ item.created_at | date:"y-m-d H:i:s"}}</td>
                         <td>
@@ -327,7 +327,7 @@
                       </th>
                       <th>사물이미지</th>
                       <th>매칭이미지</th>
-                      <th>Scan_id</th>
+                      <th>scan_id</th>
                       <th>위치</th>
                       <th>생성일</th>
                       <th>생성자</th>
