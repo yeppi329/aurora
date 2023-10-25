@@ -684,7 +684,7 @@
 		//Gauge chart
 		
 		new Chartist.Pie('#gauge-chart', {
-			series: [20, 10, 30, 40]
+			series: [10, 20, 30, 40]
 		  }, {
 			donut: true,
 			donutWidth: 60,

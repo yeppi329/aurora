@@ -4,9 +4,28 @@ import pandas as pd
 import numpy as np
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-from operation.models import ScanInfo, ImageRecognition, Users, Content, Account
+from operation.models import (
+    ScanInfo,
+    ImageRecognition,
+    Users,
+    Content,
+    Account,
+    Report,
+    Block,
+    Media,
+    Post,
+)
 from aurora.models import SummaryUserDailyInfo
-from django.db.models import OuterRef, Subquery, Count
+from django.db.models import (
+    OuterRef,
+    Subquery,
+    Count,
+    Case,
+    When,
+    IntegerField,
+    Value,
+    Sum,
+)
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import time
 from .utils import *
@@ -588,11 +607,10 @@ def user_management(request):
             .filter(account_id__in=list(account_data["account_id"]))
             .values("user_id", "account_id", "username")
         )
-        print(list(account_data["account_id"]))
         user_data = pd.DataFrame(list(matching_user_id))
         if len(user_data):
             result = pd.merge(account_data, user_data, on="account_id", how="left")
-            
+
             # Content Count
             content_count = (
                 Content.objects.using("pelican")
@@ -608,7 +626,9 @@ def user_management(request):
 
                 result = pd.merge(result, content_count_data, on="user_id", how="left")
                 result.fillna(0, inplace=True)
-                result["content_count"] = result["content_count"].apply(lambda x: int(x))
+                result["content_count"] = result["content_count"].apply(
+                    lambda x: int(x)
+                )
             # 조건에 따라 count 값을 설정
             conditions = [
                 (result["status"] == 0),
@@ -645,7 +665,7 @@ def user_management(request):
                     "page": page,
                 },
             )
-            
+
     else:
         return render(
             request,
@@ -660,6 +680,138 @@ def user_management(request):
                 "page": page,
             },
         )
+
+
+@login_required(login_url="aurora:login")
+def accountid_detail(request, account_id):
+    context = {"page_title": "유저 계정정보 디테일 페이지"}
+    account_data = (
+        Account.objects.using("camel").filter(account_id=account_id).values()[0]
+    )
+    print("*" * 20)
+    print("account_data")
+    print(account_data)
+    user_data = Users.objects.using("lama").filter(account_id=account_id).values()[0]
+    print("*" * 20)
+    print("user_data")
+    print(user_data)
+    report_count = (
+        Report.objects.using("lama").filter(user_id=user_data["user_id"]).count()
+    )
+    block_count = (
+        Block.objects.using("lama").filter(user_id=user_data["user_id"]).count()
+    )
+    print("report_count", report_count, "block_count", block_count)
+    scan_info_data = []
+    fail_count = (
+        ScanInfo.objects.using("hippo")
+        .filter(user_id=user_data["user_id"])
+        .filter(mg_id="")
+        .count()
+    )
+    fail_count_dict = {"label": "fail", "serie": fail_count}
+    scan_info_data.append(fail_count_dict)
+    success_count = (
+        ScanInfo.objects.using("hippo")
+        .filter(user_id=user_data["user_id"])
+        .exclude(mg_id="")
+        .count()
+    )
+    success_count_dict = {"label": "success", "serie": success_count}
+    scan_info_data.append(success_count_dict)
+
+    content_ids = (
+        Content.objects.using("pelican")
+        .filter(user_id=user_data["user_id"])
+        .values_list("content_id", flat=True)
+    )
+    card_info_data = list(
+        Media.objects.using("pelican")
+        .filter(content_id__in=content_ids)
+        .values("type")
+        .annotate(serie=Count("type"))
+    )
+    for item in card_info_data:
+        item["label"] = item.pop("type")
+    print("*" * 20)
+    print("card_info_data")
+    print(card_info_data)
+
+    content_type_info_data = list(
+        Content.objects.using("pelican")
+        .filter(user_id=user_data["user_id"])
+        .values("content_type")
+        .annotate(serie=Count("content_type"))
+    )
+    for item in content_type_info_data:
+        item["label"] = item.pop("content_type")
+
+    print("*" * 20)
+    print("content_type_info_data")
+    print(content_type_info_data)
+
+    etc_content_info_data = list(
+        Content.objects.using("pelican")
+        .filter(user_id=user_data["user_id"])
+        .values("comment_cnt", "like_cnt", "up_cnt")
+    )
+    print("*" * 20)
+    comment_cnt = 0
+    like_cnt = 0
+    up_cnt = 0
+    for _ in etc_content_info_data:
+        comment_cnt += _["comment_cnt"]
+        like_cnt += _["like_cnt"]
+        up_cnt += _["up_cnt"]
+    print(comment_cnt, like_cnt, up_cnt)
+
+    post_cnt = (
+        Post.objects.using("pelican")
+        .filter(user_id=user_data["user_id"])
+        .values("user_id")
+        .count()
+    )
+
+    ratio = post_cnt + comment_cnt + like_cnt + up_cnt
+    if ratio != 0:
+        post_ratio = post_cnt / ratio * 100
+        comment_ratio = comment_cnt / ratio * 100
+        like_ratio = like_cnt / ratio * 100
+        up_ratio = up_cnt / ratio * 100
+    else:
+        post_ratio = 0
+        comment_ratio = 0
+        like_ratio = 0
+        up_ratio = 0
+
+    etc_info_data = {
+        "post_cnt": post_cnt,
+        "post_ratio": post_ratio,
+        "comment_cnt": comment_cnt,
+        "comment_ratio": comment_ratio,
+        "like_cnt": like_cnt,
+        "like_ratio": like_ratio,
+        "up_cnt": up_cnt,
+        "up_ratio": up_ratio,
+    }
+    print(scan_info_data)
+    print(etc_info_data)
+    return render(
+        request,
+        "aurora/pages/operation/user-management-account-id-detail.html",
+        {
+            "context": context,
+            "account_id": account_id,
+            "account_data": account_data,
+            "user_data": user_data,
+            "report_count": report_count,
+            "block_count": block_count,
+            "scan_info_data": scan_info_data,
+            "card_info_data": card_info_data,
+            "content_type_info_data": content_type_info_data,
+            "etc_info_data": etc_info_data,
+        },
+    )
 
 
 @login_required(login_url="aurora:login")

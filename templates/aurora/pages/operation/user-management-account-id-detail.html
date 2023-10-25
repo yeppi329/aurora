@@ -1,0 +1,254 @@
+{% extends 'aurora/elements/layouts/admin.html' %}
+{% load static %}
+{% block additional_css %}{% endblock %}
+{% block content %}
+{% load custom_filters %}
+<link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+<script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+<script src="
+https://cdn.jsdelivr.net/npm/chartist-plugin-tooltips@0.0.17/dist/chartist-plugin-tooltip.min.js
+"></script>
+  <style>
+    td a:hover {
+      color: white;
+      /* 마우스 오버시 텍스트 색상을 빨간색으로 변경 */
+      background-color: #ed0b4c;
+      /* 마우스 오버시 배경색 변경 */
+      /* 기타 스타일 변경 가능 */
+    }
+  </style>  
+  <div class="page-titles">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="/index">Home</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a href="javascript:void(0)">Operation</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a href="{% url 'operation:user-management' %}">이용자 관리</a>
+      </li>
+      <li class="breadcrumb-item active">
+        <a href="{% url 'operation:user-management-account-id-detail' account_id=account_id %}">이용자 관리</a>
+      </li>
+    </ol>
+  </div>
+
+  <!-- row -->
+  <div class="row">
+    <div class="col-xl-4 col-lg-6 col-sm-6">
+      <div class="card overflow-hidden align-items-center">
+        <div class="card-body d-flex align-items-center">
+          <div class="text-center">
+            <div class="profile-photo">
+              {% if user_data.profile_img %}
+                <img src="{{ user_data.profile_img }}" width="150" class="img-fluid rounded-circle" alt="">
+              {% else %}
+                <img src={% static 'aurora/images/logo.png' %} width="150" class="img-fluid rounded-circle" alt="">
+              {% endif %}
+            </div>
+            <h3 class="mt-4 mb-1">{{user_data.username}}</h3>
+            <p class="text-muted">{{user_data.email}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-8 col-lg-6 col-sm-6">
+      <div class="card overflow-hidden">
+        <div class="card-body pb-0">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item d-flex px-0 justify-content-between">
+              <strong>상태</strong>
+              <span class="mb-0">
+                {% if account_data.status == 1 %}
+                  정상
+                {% elif account_data.status == 0 %}
+                  정지
+                {% elif account_data.status == 99 %}
+                  탈퇴
+                {% endif %}
+              </span>
+            </li>
+            <li class="list-group-item d-flex px-0 justify-content-between">
+              <strong>생년월일</strong>
+              <span class="mb-0">{{account_data.birth}}</span>
+            </li>
+            <li class="list-group-item d-flex px-0 justify-content-between">
+              <strong>가입일</strong>
+              <span class="mb-0">{{user_data.created_at|date:"y-m-d H:i:s"}}</span>
+            </li>
+            {% if user_data.deleted_at %}
+              <li class="list-group-item d-flex px-0 justify-content-between">
+                <strong>탈퇴일</strong>
+                <span class="mb-0">{{user_data.deleted_at|date:"y-m-d H:i:s"}}</span>
+              </li>
+            {% endif %}
+            <li class="list-group-item d-flex px-0 justify-content-between">
+              <strong>최종 로그인</strong>
+              <span class="mb-0">{{user_data.updated_at|date:"y-m-d H:i:s"}}</span>
+            </li>
+            <li class="list-group-item d-flex px-0 justify-content-between">
+              <strong>가입형태</strong>
+              <span class="mb-0">email</span>
+            </li>
+            <li class="list-group-item d-flex px-0 justify-content-between">
+              <strong>신고/차단</strong>
+              <span class="mb-0">신고:
+                {{report_count}}
+                / 차단:
+                {{block_count}}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xl-3 col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">스캔정보</h4>
+        </div>
+        <div class="card-body">
+          <div id="scan-info-chart" class="ct-chart ct-golden-section chartlist-chart">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">팔로우 정보</h4>
+        </div>
+        <div class="card-body">
+          <div id="follow-info-chart" class="ct-chart ct-golden-section chartlist-chart">
+          </div>          
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">카드</h4>
+        </div>
+        <div class="card-body">
+          <div id="card-info-chart" class="ct-chart ct-golden-section chartlist-chart">
+          </div>      
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">콘텐츠타입</h4>
+        </div>
+        <div class="card-body">
+          <div id="content-type-info-chart" class="ct-chart ct-golden-section chartlist-chart">
+          </div>                
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-6 col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">기타</h4>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-12">
+                <div class="d-flex justify-content-between">
+                    <h6>{{etc_info_data.post_cnt}}</h6>
+                    <span>POST</span>
+                </div>
+                <div class="progress">
+                    <div class="progress-bar bg-primary" style="width: {{etc_info_data.post_ratio}}%"></div>
+                </div>
+            </div>
+            <div class="col-12 mt-4">
+                <div class="d-flex justify-content-between">
+                    <h6>{{etc_info_data.comment_cnt}}</h6>
+                    <span>댓글</span>
+                </div>
+                <div class="progress">
+                    <div class="progress-bar bg-success" style="width: {{etc_info_data.comment_ratio}}%"></div>
+                </div>
+            </div>
+            <div class="col-12 mt-4">
+                <div class="d-flex justify-content-between">
+                    <h6>{{etc_info_data.like_cnt}}</h6>
+                    <span>좋아요</span>
+                </div>
+                <div class="progress">
+                    <div class="progress-bar bg-info" style="width: {{etc_info_data.like_ratio}}%"></div>
+                </div>
+            </div>
+            <div class="col-12 mt-4">
+                <div class="d-flex justify-content-between">
+                    <h6>{{etc_info_data.up_cnt}}</h6>
+                    <span>UP</span>
+                </div>
+                <div class="progress">
+                    <div class="progress-bar bg-warning" style="width: {{etc_info_data.up_ratio}}%"></div>
+                </div>
+            </div>
+        </div>          
+        </div>
+      </div>
+    </div>      
+  </div>
+{% endblock %}
+{% block additional_js %}
+<script>
+  var DonutChart = function(chart_id, data, donut_type){
+    var labels = [];
+    var series = [];
+    var total = 0;
+  
+    // 결과를 이용하여 labels와 series 변수를 채웁니다
+    for (var i = 0; i < data.length; i++) {
+      labels.push(data[i].label);
+      series.push(data[i].serie);
+      total += data[i].serie
+    }
+
+    if (total > 0){
+      if (donut_type === "half") {
+        var startAngle = 270
+        total = total * 2
+      } else {
+        var startAngle = 0
+      }
+  
+      new Chartist.Pie(chart_id, {
+        labels: labels,
+        series: series,
+        }, {
+        donut: true,
+        donutWidth: 60,
+        startAngle: startAngle,
+        total: total,      
+        showLabel: true,
+        plugins: [
+          Chartist.plugins.tooltip(),
+        ]
+      });
+    }    
+  }
+  var scan_info_chart_id = "#scan-info-chart";
+  var scan_info_data = {{ scan_info_data|safe }};
+  DonutChart(scan_info_chart_id, scan_info_data, "half");
+
+  var follow_info_chart_id = "#follow-info-chart";
+  var follow_info_data = [{'serie': {{user_data.following_cnt}}, 'label': 'follower'}, {'serie': {{user_data.follower_cnt}}, 'label': 'following'}];
+  DonutChart(follow_info_chart_id, follow_info_data, "half");
+
+  var card_info_chart_id = "#card-info-chart";
+  var card_info_data = {{ card_info_data|safe }};
+  DonutChart(card_info_chart_id, card_info_data, "full");
+
+  var content_type_info_chart_id = "#content-type-info-chart";
+  var content_type_info_data = {{ content_type_info_data|safe }};
+  DonutChart(content_type_info_chart_id, content_type_info_data, "full");
+  
+</script>  
+{% endblock %}

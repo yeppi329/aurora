@@ -20,9 +20,6 @@
       <li class="breadcrumb-item">
         <a href="javascript:void(0)">Operation</a>
       </li>
-      <li class="breadcrumb-item">
-        <a href="{% url 'operation:object-list'%}">사물 관리</a>
-      </li>
       <li class="breadcrumb-item active">
         <a href="{% url 'operation:user-management' %}">이용자 관리</a>
       </li>
@@ -224,10 +221,12 @@
                         <input type="checkbox" class="form-check-input" id="customCheckBox2" required=""/>
                         <label class="custom-control-label" for="customCheckBox2"></label>
                       </div>
-                    </td>                    
-                    <td>{{ item.username }}</td>
+                    </td>   
+                    <td>
+                      <a href="{% url 'operation:user-management-account-id-detail' account_id=item.account_id %}">{{ item.username }}</a>
+                    </td>
                     <td>{{ item.email }}</td>
-                    <td>{{ item.created_at| date:"y-m-d H:m:s"}}</td>
+                    <td>{{ item.created_at| date:"y-m-d H:i:s"}}</td>
                     <td>{{ item.content_count }}</td>
                     <td>{{ item.status_str }}</td>
                   </tr>
