@@ -105,7 +105,7 @@
                               </li>                                                            
                               <li class="list-group-item d-flex px-0 justify-content-between">
                                 <strong>timestamp</strong>
-                                <span class="mb-0" style="font-size: 14px">{{ i.timestamp| date:"y-m-d H:m:s" }}</span>
+                                <span class="mb-0" style="font-size: 14px">{{ i.timestamp| date:"y-m-d H:i:s" }}</span>
                               </li>
                               <li class="list-group-item d-flex px-0 justify-content-between">
                                 <strong>shire</strong>
@@ -121,7 +121,7 @@
                 </div>
               {% endfor %}
             </div>          
-          <div name="pagination">
+          <div>
             <ul class="pagination">
               {% if page_number > 1 %}
                 <li class="page-item page-indicator">

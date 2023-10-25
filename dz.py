@@ -92,6 +92,12 @@ dz_array = {
                     "new_mgid_detail": [
                         f"{folderName}/vendor/datatables/css/jquery.dataTables.min.css",
                     ],
+                    "user_management": [
+                        f"{folderName}/vendor/datatables/css/jquery.dataTables.min.css",
+                    ],
+                    # "accountid_detail": [
+                    #     f"{folderName}/vendor/chartist/css/chartist.min.css"
+                    # ],
                     "content_list": [
                         f"{folderName}/vendor/datatables/css/jquery.dataTables.min.css",
                     ],
@@ -272,6 +278,19 @@ dz_array = {
                         f"{folderName}/vendor/chart.js/Chart.bundle.min.js",
                         f"{folderName}/js/plugins-init/chartjs-init.js",
                     ],
+                    "user_management": [
+                        f"{folderName}/vendor/datatables/js/jquery.dataTables.min.js",
+                        f"{folderName}/js/plugins-init/datatables.init.js",
+                        f"{folderName}/vendor/svganimation/vivus.min.js",
+                        f"{folderName}/vendor/svganimation/svg.animation.js",
+                    ],
+                    # "accountid_detail": [
+                    #     f"{folderName}/vendor/chart.js/Chart.bundle.min.js",
+                    #     f"{folderName}/vendor/apexchart/apexchart.js",
+                    #     f"{folderName}/vendor/chartist/js/chartist.min.js",
+                    #     f"{folderName}/vendor/chartist-plugin-tooltips/js/chartist-plugin-tooltip.min.js",
+                    #     f"{folderName}/js/plugins-init/chartist-init.js",
+                    # ],
                     "content_list": [
                         f"{folderName}/vendor/chart.js/Chart.bundle.min.js",
                         f"{folderName}/vendor/apexchart/apexchart.js",

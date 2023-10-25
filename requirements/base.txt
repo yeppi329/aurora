@@ -14,3 +14,4 @@ geopy==2.4.0
 requests==2.31.0
 python-geohash==0.8.5
 django-mathfilters==1.0.0
+pandas==2.1.1

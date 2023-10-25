@@ -7,6 +7,13 @@ urlpatterns = [
     path("svc-user-list/", operation_views.svc_user_list, name="svc-user-list"),
     path("content-list/", operation_views.content_list, name="content-list"),
     path("report-list/", operation_views.report_list, name="report-list"),
+    # 이용자 관리
+    path("user-management/", operation_views.user_management, name="user-management"),
+    re_path(
+        r"^user-management/account-id-detail/(?P<account_id>[\w-]+)/$",
+        operation_views.accountid_detail,
+        name="user-management-account-id-detail",
+    ),
     # 사물관리
     path("object-list/", operation_views.object_list, name="object-list"),
     re_path(
