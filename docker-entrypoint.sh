@@ -37,9 +37,15 @@ while ! python manage.py loaddata group_expended  2>&1; do
 done
 
 while ! python manage.py loaddata aurora_category 2>&1; do
-   echo "load group_expended"
+   echo "load aurora_category"
    sleep 1
 done
+
+while ! python manage.py loaddata aurroa_arbeconresource 2>&1; do
+   echo "load aurroa_arbeconresource"
+   sleep 1
+done
+
 
 echo "Django docker is fully configured successfully."
 
