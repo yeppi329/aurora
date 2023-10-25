@@ -214,7 +214,13 @@
                           <a href="{% url 'operation:object-list-mg-id-detail' mg_id=item.mg_id %}">{{ item.mg_id }}</a>
                         </td>
                         <td>{{ item.mg_id_count }}</td>
-                        <td>-</td>
+                        <td>
+                          {%if item.shire_count %}
+                            {% for i in item.shire_count %}
+                              {{i.key}} : {{i.doc_count}}
+                            {% endfor %}
+                          {% endif %}
+                        </td>
                         <td>-</td>
                         <td>{{ item.like_cnt }}</td>
                       </tr>
@@ -251,7 +257,8 @@
                       </th>
                       <th>사물이미지</th>
                       <th>매칭이미지</th>
-                      <th>scan_id</th>
+                      <th>mg_id/scan_id</th>
+                      <th>shire</th>
                       <th>위치</th>
                       <th>생성일</th>
                       <th>생성자</th>
@@ -283,6 +290,9 @@
                         <td>
                           mg_id : <a href="{% url 'operation:object-list-mg-id-detail' mg_id=item.mg_id %}">{{ item.mg_id }}</a><br>
                           scan_id : <a href="{% url 'operation:object-list-scan-id-detail' scan_id=item.scan_id %}">{{ item.scan_id }}</a>
+                        </td>
+                        <td>
+                          {{ item.shire }}
                         </td>
                         <td>
                           <span class="mb-0" data-bs-toggle="modal" data-bs-target="#{{ item.geohash }}">{{ item.geohash }}</span>
@@ -327,7 +337,8 @@
                       </th>
                       <th>사물이미지</th>
                       <th>매칭이미지</th>
-                      <th>scan_id</th>
+                      <th>mg_id/scan_id</th>
+                      <th>shire</th>
                       <th>위치</th>
                       <th>생성일</th>
                       <th>생성자</th>

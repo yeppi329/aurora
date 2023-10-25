@@ -37,16 +37,28 @@ def geocoding_reverse(lat_lng_str):
 
 
 def arbepoint2polygonpoints(image_size, crop_data):
+    increase_percentage = 3 / 100.0
+
+    increase_width = image_size[0] * increase_percentage
+    increase_height = image_size[1] * increase_percentage
+
     if crop_data:
-        x1 = image_size[0] * crop_data["cropX"]
-        y1 = image_size[1] * crop_data["cropY"]
-        x2 = image_size[0] * (crop_data["cropX"] + crop_data["cropW"])
-        y2 = image_size[1] * (crop_data["cropY"] + crop_data["cropH"])
+        x1 = max(0, image_size[0] * crop_data["cropX"] - increase_width)
+        y1 = max(0, image_size[1] * crop_data["cropY"] - increase_height)
+        x2 = min(
+            image_size[0],
+            image_size[0] * (crop_data["cropX"] + crop_data["cropW"]) + increase_width,
+        )
+        y2 = min(
+            image_size[1],
+            image_size[1] * (crop_data["cropY"] + crop_data["cropH"]) + increase_height,
+        )
         return (x1, y1, x2, y2)
     else:
         return None
 
 
+# TODO crop 데이터가 풀사이즈면 안돌게 만들어야함
 def show_draw_crop(image_url, crop):
     if image_url:
         response = requests.get(image_url)
