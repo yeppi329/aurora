@@ -1,0 +1,407 @@
+- model: aurora.arbeconresource
+  pk: 1
+  fields:
+    resource_id: "10001"
+    motion_name: "Mticon_MolangBubble"
+    show_name: "방울방울"
+    created_at: 2023-10-25 10:57:17.602333 +00:00
+
+- model: aurora.arbeconresource
+  pk: 2
+  fields:
+    resource_id: "10002"
+    motion_name: "Mticon_MolangFire"
+    show_name: "타닥 모닥불"
+    created_at: 2023-10-25 10:57:17.602333 +00:00
+
+- model: aurora.arbeconresource
+  pk: 3
+  fields:
+    resource_id: "10003"
+    motion_name: "Mticon_MolangEp03Disco"
+    show_name: "댄스배틀"
+    created_at: 2023-10-25 10:57:17.602333 +00:00
+
+- model: aurora.arbeconresource
+  pk: 4
+  fields:
+    resource_id: "10004"
+    motion_name: "Mticon_MolangEp04Book"
+    show_name: "꾸벅꾸벅"
+    created_at: 2023-10-25 10:57:17.602333 +00:00
+
+- model: aurora.arbeconresource
+  pk: 5
+  fields:
+    resource_id: "10005"
+    motion_name: "Mticon_MolangEp05Cake"
+    show_name: "신나는 파티"
+    created_at: 2023-10-25 10:57:17.602333 +00:00
+
+- model: aurora.arbeconresource
+  pk: 6
+  fields:
+    resource_id: "10006"
+    motion_name: "Mticon_MolangEp06_butterfly"
+    show_name: "살랑살랑 나비"
+    created_at: 2023-10-25 10:57:17.602333 +00:00
+
+- model: aurora.arbeconresource
+  pk: 7
+  fields:
+    resource_id: "10007"
+    motion_name: "Mticon_MolangEp07"
+    show_name: "까꿍"
+    resource_desc: "사물이 인식되면 캐릭터가 사물 뒤에서 나타나요"
+    created_at: 2023-10-25 10:57:17.602333 +00:00
+
+- model: aurora.arbeconresource
+  pk: 8
+  fields:
+    resource_id: "10008"
+    motion_name: "Mticon_MolangEp08_lyingDown"
+    show_name: "lyingDown"
+    created_at: 2023-10-25 10:57:17.602333 +00:00
+
+- model: aurora.arbeconresource
+  pk: 9
+  fields:
+    resource_id: "10009"
+    motion_name: "Mticon_MolangEp09_Roll"
+    show_name: "떼굴떼굴"
+    resource_desc: "캐릭터가 증강되면 디바이스를 좌우로 기울여보세요"
+    created_at: 2023-10-25 10:57:17.602333 +00:00
+
+- model: aurora.arbeconresource
+  pk: 10
+  fields:
+    resource_id: "10010"
+    motion_name: "Mticon_MolangEp10_doughnut"
+    show_name: "도넛 냠냠"
+    created_at: 2023-10-25 10:57:17.602333 +00:00
+
+- model: aurora.arbeconresource
+  pk: 11
+  fields:
+    resource_id: "10011"
+    motion_name: "Mticon_MolangEp12_DeviceShake1"
+    show_name: "둥실둥실 쿵"
+    resource_desc: "캐릭터가 증강되면 디바이스를 상하로 흔들어주세요"
+    created_at: 2023-10-25 10:57:17.602333 +00:00
+
+- model: aurora.arbeconresource
+  pk: 12
+  fields:
+    resource_id: "10012"
+    motion_name: "Mticon_MolangEp13_DeviceShake2"
+    show_name: "어질어질 쿵"
+    resource_desc: "캐릭터가 증강되면 디바이스를 좌우로 흔들어주세요"
+    created_at: 2023-10-25 10:57:17.602333 +00:00
+
+- model: aurora.arbeconresource
+  pk: 13
+  fields:
+    resource_id: "10013"
+    motion_name: "Mticon_MolangEp14_BlockHit"
+    resource_desc: "캐릭터가 사물에 부딪히면 반응해요"
+    show_name: "꽈당"
+    created_at: 2023-10-25 10:57:17.602333 +00:00
+
+- model: aurora.arbeconresource
+  pk: 14
+  fields:
+    resource_id: "10014"
+    motion_name: "Mticon_MolangFire"
+    show_name: "울음 뚝!"
+    created_at: 2023-10-25 10:57:17.602333 +00:00
+
+- model: aurora.arbeconresource
+  pk: 15
+  fields:
+    resource_id: "10015"
+    motion_name: "Mticon_MolangEp17_Landing"
+    show_name: "하나 둘, 폴짝"
+    resource_desc: "캐릭터가 사물에서 점프해요"
+    created_at: 2023-10-25 10:57:17.602333 +00:00
+
+- model: aurora.arbeconresource
+  pk: 16
+  fields:
+    resource_id: "10016"
+    motion_name: "Mticon_MolangEp20_trampoline"
+    show_name: "더 높이 콩콩"
+    created_at: 2023-10-25 10:57:17.602333 +00:00
+
+- model: aurora.arbeconresource
+  pk: 17
+  fields:
+    resource_id: "10017"
+    motion_name: "Mticon_MolangEp21_Dance"
+    show_name: "빙글빙글 댄스"
+    created_at: 2023-10-25 10:57:17.602333 +00:00
+
+- model: aurora.arbeconresource
+  pk: 18
+  fields:
+    resource_id: "10018"
+    motion_name: "Mticon_MolangEp22_beachball"
+    show_name: "몰랑 비치볼"
+    created_at: 2023-10-25 10:57:17.602333 +00:00
+
+- model: aurora.arbeconresource
+  pk: 19
+  fields:
+    resource_id: "10019"
+    motion_name: "Mticon_MolangEp24_doughnut"
+    show_name: "도너츠"
+    created_at: 2023-10-25 10:57:17.602333 +00:00
+
+- model: aurora.arbeconresource
+  pk: 20
+  fields:
+    resource_id: "20001"
+    motion_name: "MT_Ta_beach"
+    show_name: "해변"
+    created_at: 2023-10-25 10:57:17.602333 +00:00
+
+- model: aurora.arbeconresource
+  pk: 21
+  fields:
+    resource_id: "20002"
+    motion_name: "MT_Tary_guitar"
+    show_name: "기타"
+    created_at: 2023-10-25 10:57:17.602333 +00:00
+
+- model: aurora.arbeconresource
+  pk: 22
+  fields:
+    resource_id: "20003"
+    motion_name: "MT_Tary_Overtime"
+    show_name: "야근"
+    created_at: 2023-10-25 10:57:17.602333 +00:00
+
+- model: aurora.arbeconresource
+  pk: 23
+  fields:
+    resource_id: "20004"
+    motion_name: "MT_Tary_Shopping"
+    show_name: "쇼핑"
+    created_at: 2023-10-25 10:57:17.602333 +00:00
+
+- model: aurora.arbeconresource
+  pk: 24
+  fields:
+    resource_id: "20005"
+    motion_name: "MT_Tary_propose"
+    show_name: "프로포즈"
+    created_at: 2023-10-25 10:57:17.602333 +00:00
+
+- model: aurora.arbeconresource
+  pk: 25
+  fields:
+    resource_id: "20006"
+    motion_name: "MT_Tary_beauty"
+    show_name: "뷰티"
+    created_at: 2023-10-25 10:57:17.602333 +00:00
+
+- model: aurora.arbeconresource
+  pk: 26
+  fields:
+    resource_id: "20007"
+    motion_name: "MT_Tary_swimsuit"
+    show_name: "수영복"
+    created_at: 2023-10-25 10:57:17.602333 +00:00
+
+- model: aurora.arbeconresource
+  pk: 27
+  fields:
+    resource_id: "20008"
+    motion_name: "MT_Kung_birthday"
+    show_name: "생일축하"
+    created_at: 2023-10-25 10:57:17.602333 +00:00
+
+- model: aurora.arbeconresource
+  pk: 28
+  fields:
+    resource_id: "20009"
+    motion_name: "MT_Kung_hero"
+    show_name: "히어로"
+    created_at: 2023-10-25 10:57:17.602333 +00:00
+
+- model: aurora.arbeconresource
+  pk: 29
+  fields:
+    resource_id: "20010"
+    motion_name: "MT_Boo_hiphop"
+    show_name: "힙합"
+    created_at: 2023-10-25 10:57:17.602333 +00:00
+
+- model: aurora.arbeconresource
+  pk: 30
+  fields:
+    resource_id: "20011"
+    motion_name: "MT_Kung_magician"
+    show_name: "마술사"
+    created_at: 2023-10-25 10:57:17.602333 +00:00
+
+- model: aurora.arbeconresource
+  pk: 31
+  fields:
+    resource_id: "20012"
+    motion_name: "MT_Kung_CokePistol"
+    show_name: "쿵물총"
+    created_at: 2023-10-25 10:57:17.602333 +00:00
+
+- model: aurora.arbeconresource
+  pk: 32
+  fields:
+    resource_id: "20013"
+    motion_name: "MT_Tary_tour"
+    show_name: "여행"
+    created_at: 2023-10-25 10:57:17.602333 +00:00
+
+- model: aurora.arbeconresource
+  pk: 33
+  fields:
+    resource_id: "20014"
+    motion_name: "MT_Ta_movie"
+    show_name: "영화"
+    created_at: 2023-10-25 10:57:17.602333 +00:00
+
+- model: aurora.arbeconresource
+  pk: 34
+  fields:
+    resource_id: "20015"
+    motion_name: "MT_Tary_sleeping"
+    show_name: "잠"
+    created_at: 2023-10-25 10:57:17.602333 +00:00
+
+- model: aurora.arbeconresource
+  pk: 35
+  fields:
+    resource_id: "30001"
+    motion_name: "Mticon_StickyPinic"
+    show_name: "피크닉"
+    created_at: 2023-10-25 10:57:17.602333 +00:00
+
+- model: aurora.arbeconresource
+  pk: 36
+  fields:
+    resource_id: "30002"
+    motion_name: "MT_Sticky_beach"
+    show_name: "해변"
+    created_at: 2023-10-25 10:57:17.602333 +00:00
+
+- model: aurora.arbeconresource
+  pk: 37
+  fields:
+    resource_id: "30003"
+    motion_name: "MT_Sticky_guitar"
+    show_name: "기타"
+    created_at: 2023-10-25 10:57:17.602333 +00:00
+
+- model: aurora.arbeconresource
+  pk: 38
+  fields:
+    resource_id: "30004"
+    motion_name: "MT_Sticky_heart"
+    show_name: "하트"
+    created_at: 2023-10-25 10:57:17.602333 +00:00
+
+- model: aurora.arbeconresource
+  pk: 39
+  fields:
+    resource_id: "40001"
+    motion_name: "Mticon_ZombGirl"
+    show_name: "좀걸"
+    created_at: 2023-10-25 10:57:17.602333 +00:00
+
+- model: aurora.arbeconresource
+  pk: 40
+  fields:
+    resource_id: "40002"
+    motion_name: "MT_ZombWitch_rain"
+    show_name: "좀위치"
+    created_at: 2023-10-25 10:57:17.602333 +00:00
+
+- model: aurora.arbeconresource
+  pk: 41
+  fields:
+    resource_id: "40003"
+    motion_name: "MT_ZombKong_exercise"
+    show_name: "디톡스주스 운동"
+    created_at: 2023-10-25 10:57:17.602333 +00:00
+
+- model: aurora.arbeconresource
+  pk: 42
+  fields:
+    resource_id: "50001"
+    motion_name: "MT_InappRobin_basketball"
+    show_name: "로빈 농구"
+    created_at: 2023-10-25 10:57:17.602333 +00:00
+
+- model: aurora.arbeconresource
+  pk: 43
+  fields:
+    resource_id: "50002"
+    motion_name: "MT_InappJackie_skateboard"
+    show_name: "재키 스케이트보드"
+    created_at: 2023-10-25 10:57:17.602333 +00:00
+
+- model: aurora.arbeconresource
+  pk: 44
+  fields:
+    resource_id: "50003"
+    motion_name: "MT_Inapp_coffee"
+    show_name: "커피"
+    created_at: 2023-10-25 10:57:17.602333 +00:00
+
+- model: aurora.arbeconresource
+  pk: 45
+  fields:
+    resource_id: "50004"
+    motion_name: "MT_Inapp_book"
+    show_name: "독서"
+    created_at: 2023-10-25 10:57:17.602333 +00:00
+
+- model: aurora.arbeconresource
+  pk: 46
+  fields:
+    resource_id: "50005"
+    motion_name: "MT_inapp_exercise"
+    show_name: "운동"
+    created_at: 2023-10-25 10:57:17.602333 +00:00
+
+- model: aurora.arbeconresource
+  pk: 47
+  fields:
+    resource_id: "50006"
+    motion_name: "MT_Inapp_doughnut"
+    show_name: "도너츠"
+    created_at: 2023-10-25 10:57:17.602333 +00:00
+
+- model: aurora.arbeconresource
+  pk: 48
+  fields:
+    resource_id: "60001"
+    motion_name: "MT_bebe_dance"
+    show_name: "댄스"
+    created_at: 2023-10-25 10:57:17.602333 +00:00
+
+- model: aurora.arbeconresource
+  pk: 49
+  fields:
+    resource_id: "60002"
+    motion_name: "MT_bebe_propose"
+    show_name: "프로포즈"
+    created_at: 2023-10-25 10:57:17.602333 +00:00
+
+- model: aurora.arbeconresource
+  pk: 50
+  fields:
+    resource_id: "60003"
+    motion_name: "MT_bebe_DadYoung_present"
+    show_name: "선물"
+    created_at: 2023-10-25 10:57:17.602333 +00:00
+
+
