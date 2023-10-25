@@ -1,5 +1,5 @@
 from datetime import datetime
-import math
+import random
 import pandas as pd
 import numpy as np
 from django.contrib.auth.decorators import login_required
@@ -20,11 +20,6 @@ from django.db.models import (
     OuterRef,
     Subquery,
     Count,
-    Case,
-    When,
-    IntegerField,
-    Value,
-    Sum,
 )
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import time
@@ -98,6 +93,7 @@ def object_list(request, object_type="mg_id"):
             )
             .order_by("-created_at")
         )
+
     elif object_type == "scan_id":
         matching_image_url = (
             ScanInfo.objects.using("hippo")
@@ -155,9 +151,16 @@ def object_list(request, object_type="mg_id"):
         data = paginator.page(paginator.num_pages)
 
     if object_type == "mg_id":
+        mg_id_list = []
         for item in data:
             item.mg_id_count = int(item.mg_id_count or 0)
+            mg_id_list.append(item.mg_id)
+        mgId_shire_count_dict = esmodules.get_mgId_shire(mg_id_list)
+        for item in data:
+            item.shire_count = mgId_shire_count_dict[item.mg_id]
+
     elif object_type == "scan_id":
+        scan_id_list = []
         for item in data:
             user_id = item["user_id"]
             matching_username = next(
@@ -169,6 +172,10 @@ def object_list(request, object_type="mg_id"):
                 None,
             )
             item["username"] = matching_username
+            scan_id_list.append(item["scan_id"])
+        scanid_shire_dict = esmodules.get_doc_list(scan_id_list)
+        for item in data:
+            item["shire"] = scanid_shire_dict.get(item["scan_id"], None)
     else:
         for item in data:
             item["user_id_count"] = int(item["user_id_count"] or 0)
@@ -213,12 +220,6 @@ def mgid_detail(request, mg_id):
         ScanInfo.objects.using("hippo").filter(mg_id=mg_id).order_by("created_at")
     )
 
-    # user_id, username
-    matching_user_id = Users.objects.using("lama").values("user_id", "username")
-    matching_user_id_dict = {}
-    for _ in matching_user_id:
-        matching_user_id_dict[str(_["user_id"])] = _["username"]
-
     total_count = queryset.count()
     # 원하는 페이지당 항목 수 설정
     items_per_page = 18  # 페이지당 15개 항목을 표시하도록 설정
@@ -226,26 +227,33 @@ def mgid_detail(request, mg_id):
     # Paginator를 사용하여 페이지네이션 객체 생성
     paginator = Paginator(queryset, items_per_page)
     # 페이지 번호 지정
-    page_number = request.GET.get("page")  # URL 매개변수에서 페이지 번호를 가져옴
+    page_number = int(request.GET.get("page", 1))
 
-    # 페이지 번호가 없는 경우 기본값을 설정할 수 있습니다.
-    if not page_number:
-        page_number = 1
     # 페이지 번호에 해당하는 Page 객체 가져오기
     page = paginator.get_page(page_number)
 
-    # # 일반
-    # start_time = time.time()
-    # crop_img_list = {}
-    # for _ in page:
-    #     crop_img = show_draw_crop(_.img_url, _.meta_data)
-    #     crop_img_list[_.scan_id] = crop_img
-    # end_time = time.time()
-    # # 실행 시간 계산 (종료 시간 - 시작 시간)
-    # execution_time = end_time - start_time
+    scan_list = []
+    user_id_list = []
+    for _ in page:
+        scan_list.append(_.scan_id)
+        user_id_list.append(_.user_id)
 
-    # # 실행 시간 출력
-    # print(f"일반: {execution_time} seconds")
+    esmodules = EsModules()
+    scanid_shire_dict = esmodules.get_doc_list(scan_list)
+
+    # user_id, username
+    matching_user_id = (
+        Users.objects.using("lama")
+        .filter(user_id__in=user_id_list)
+        .values("user_id", "username")
+    )
+    matching_user_id_dict = {}
+    for _ in matching_user_id:
+        matching_user_id_dict[str(_["user_id"])] = _["username"]
+
+    for _ in page:
+        _.shire = scanid_shire_dict[_.scan_id]
+        _.username = matching_user_id_dict.get(_.user_id, _.user_id)
 
     # 멀티스레드
     start_time = time.time()
@@ -276,7 +284,6 @@ def mgid_detail(request, mg_id):
             "page": page,
             "mg_id_like_cnt": mg_id_like_cnt,
             "crop_img_list": crop_img_list,
-            "matching_user_id_dict": matching_user_id_dict,
         },
     )
 
@@ -284,11 +291,9 @@ def mgid_detail(request, mg_id):
 @login_required(login_url="aurora:login")
 def scanid_detail(request, scan_id):
     context = {"page_title": "mg ID 디테일 페이지"}
-    # uuid_obj를 사용하여 원하는 작업을 수행할 수 있습니다.
-    response = f"scan_id 값: {scan_id}"
     esmodules = EsModules()
     es_result = esmodules.get_key_log(key=scan_id)
-
+    content_data = []
     if es_result["hits"]["total"]["value"] > 0:
         query_result = es_result["hits"]["hits"][0]["_source"]["query-analysis-result"]
         search_result = es_result["hits"]["hits"][0]["_source"]["search-results"]
@@ -302,6 +307,27 @@ def scanid_detail(request, scan_id):
         scanIdToImgUrlDict = {
             record["scan_id"]: record["img_url"] for record in scan_info_objects
         }
+        mg_id_list = []
+        mg_id_list.append(query_result["mgId"])
+        mg_id_list += query_result["simMgIdList"]
+        # 하위 쿼리: mg_id와 content_type에 따른 content_id 목록을 가져옴
+        content_ids = (
+            Content.objects.using("pelican")
+            .filter(mg_id__in=mg_id_list, content_type="MEDIA")
+            .values_list("content_id", flat=True)
+            .order_by("-created_at")
+        )
+
+        # 상위 쿼리: content_id가 하위 쿼리에서 가져온 목록에 있는 media 객체를 가져옴
+        media_objects = (
+            Media.objects.using("pelican")
+            .filter(content_id__in=content_ids)
+            .values("media_list")
+        )
+
+        for _ in media_objects:
+            if _["media_list"]:
+                content_data.append(_["media_list"][0])
     else:
         # es_result에 검색 결과가 없는 경우에 대한 처리
         query_result = None
@@ -328,6 +354,7 @@ def scanid_detail(request, scan_id):
         crop_img = show_draw_crop(scan_img_url, crop_data)
     else:
         crop_img = None
+
     return render(
         request,
         "aurora/pages/operation/object-list-scan-id-detail.html",
@@ -338,6 +365,7 @@ def scanid_detail(request, scan_id):
             "query_result": query_result,
             "search_result": search_result,
             "scanIdToImgUrlDict": scanIdToImgUrlDict,
+            "content_data": content_data[:20],
         },
     )
 
@@ -356,18 +384,167 @@ def userid_detail(request, user_id):
     # Paginator를 사용하여 페이지네이션 객체 생성
     paginator = Paginator(queryset, items_per_page)
     # 페이지 번호 지정
-    page_number = request.GET.get("page")  # URL 매개변수에서 페이지 번호를 가져옴
+    page_number = int(request.GET.get("page", 1))
 
-    # 페이지 번호가 없는 경우 기본값을 설정할 수 있습니다.
-    if not page_number:
-        page_number = 1
     # 페이지 번호에 해당하는 Page 객체 가져오기
     page = paginator.get_page(page_number)
+
+    scan_list = []
+    user_id_list = []
+    mg_id_list = []
+    for _ in page:
+        scan_list.append(_.scan_id)
+        user_id_list.append(_.user_id)
+        mg_id_list.append(_.mg_id)
+
+    esmodules = EsModules()
+    scanid_shire_dict = esmodules.get_doc_list(scan_list)
+
     # user_id, username
-    matching_user_id = Users.objects.using("lama").values("user_id", "username")
+    matching_user_id = (
+        Users.objects.using("lama")
+        .filter(user_id__in=user_id_list)
+        .values("user_id", "username")
+    )
     matching_user_id_dict = {}
     for _ in matching_user_id:
         matching_user_id_dict[str(_["user_id"])] = _["username"]
+
+    mg_id_list = list(set(mg_id_list))
+
+    colors = [
+        "red",
+        "green",
+        "blue",
+        "yellow",
+        "orange",
+        "pink",
+        "purple",
+        "brown",
+        "gray",
+        "silver",
+        "gold",
+        "cyan",
+        "magenta",
+        "indigo",
+        "violet",
+        "aqua",
+        "teal",
+        "lavender",
+        "maroon",
+        "olive",
+        "beige",
+        "turquoise",
+        "coral",
+        "salmon",
+        "plum",
+        "orchid",
+        "ruby",
+        "pearl",
+        "ebony",
+        "ivory",
+        "tangerine",
+        "lemon",
+        "mint",
+        "lime",
+        "peach",
+        "charcoal",
+        "mauve",
+        "sepia",
+        "amethyst",
+        "periwinkle",
+        "lilac",
+        "celadon",
+        "emerald",
+        "chartreuse",
+        "azure",
+        "aquamarine",
+        "cobalt",
+        "sapphire",
+        "garnet",
+        "amber",
+        "topaz",
+        "bronze",
+        "sienna",
+        "terracotta",
+        "sand",
+        "khaki",
+        "forest",
+        "moss",
+        "pine",
+        "fern",
+        "caramel",
+        "cinnamon",
+        "chestnut",
+        "espresso",
+        "walnut",
+        "cognac",
+        "taupe",
+        "papaya",
+        "blush",
+        "rose",
+        "fuchsia",
+        "hotpink",
+        "thistle",
+        "wisteria",
+        "grape",
+        "eggplant",
+        "olivedrab",
+        "peru",
+        "rosybrown",
+        "slategray",
+        "dodgerblue",
+        "goldenrod",
+        "tomato",
+        "darkcyan",
+        "mediumvioletred",
+        "firebrick",
+        "darkslategray",
+        "mediumorchid",
+        "royalblue",
+        "darkorange",
+        "darkseagreen",
+        "cadetblue",
+        "purple",
+        "pink",
+        "lightcoral",
+    ]
+
+    # 중복을 허용하지 않고 1:1로 매핑하기 위해 중복을 제거한 두 리스트의 길이 중 작은 길이를 사용
+    min_length = min(len(mg_id_list), len(colors))
+
+    # 중복을 제거한 컬러 리스트를 무작위로 섞음
+    random.shuffle(colors)
+
+    # 1:1로 매핑된 결과를 저장할 딕셔너리
+    mapping_result = {}
+
+    for i in range(min_length):
+        mapping_result[mg_id_list[i]] = colors[i]
+
+    print(mapping_result)
+    for _ in page:
+        _.shire = scanid_shire_dict[_.scan_id]
+        _.color = mapping_result[_.mg_id]
+    # 멀티스레드
+    start_time = time.time()
+    crop_img_list = {}
+
+    # 멀티스레딩으로 이미지 처리 함수를 병렬로 실행
+    def process_page(page_item):
+        crop_img = show_draw_crop(page_item.img_url, page_item.meta_data)
+        crop_img_list[page_item.scan_id] = crop_img
+
+    # 스레드 풀 생성
+    max_threads = 4  # 최대 스레드 수 (조정 가능)
+    with concurrent.futures.ThreadPoolExecutor(max_threads) as executor:
+        # 페이지의 각 항목을 처리하는 스레드를 스케줄링
+        executor.map(process_page, page)
+
+    end_time = time.time()
+    # 실행 시간 계산 (종료 시간 - 시작 시간)
+    execution_time = end_time - start_time
+    print(f"멀티스레딩 : {execution_time} seconds")
 
     return render(
         request,
@@ -378,6 +555,7 @@ def userid_detail(request, user_id):
             "page": page,
             "total_count": total_count,
             "matching_user_id_dict": matching_user_id_dict,
+            "crop_img_list": crop_img_list,
         },
     )
 
@@ -688,20 +866,14 @@ def accountid_detail(request, account_id):
     account_data = (
         Account.objects.using("camel").filter(account_id=account_id).values()[0]
     )
-    print("*" * 20)
-    print("account_data")
-    print(account_data)
     user_data = Users.objects.using("lama").filter(account_id=account_id).values()[0]
-    print("*" * 20)
-    print("user_data")
-    print(user_data)
     report_count = (
         Report.objects.using("lama").filter(user_id=user_data["user_id"]).count()
     )
     block_count = (
         Block.objects.using("lama").filter(user_id=user_data["user_id"]).count()
     )
-    print("report_count", report_count, "block_count", block_count)
+
     scan_info_data = []
     fail_count = (
         ScanInfo.objects.using("hippo")
@@ -733,10 +905,6 @@ def accountid_detail(request, account_id):
     )
     for item in card_info_data:
         item["label"] = item.pop("type")
-    print("*" * 20)
-    print("card_info_data")
-    print(card_info_data)
-
     content_type_info_data = list(
         Content.objects.using("pelican")
         .filter(user_id=user_data["user_id"])
@@ -745,10 +913,6 @@ def accountid_detail(request, account_id):
     )
     for item in content_type_info_data:
         item["label"] = item.pop("content_type")
-
-    print("*" * 20)
-    print("content_type_info_data")
-    print(content_type_info_data)
 
     etc_content_info_data = list(
         Content.objects.using("pelican")
@@ -763,7 +927,6 @@ def accountid_detail(request, account_id):
         comment_cnt += _["comment_cnt"]
         like_cnt += _["like_cnt"]
         up_cnt += _["up_cnt"]
-    print(comment_cnt, like_cnt, up_cnt)
 
     post_cnt = (
         Post.objects.using("pelican")
@@ -794,8 +957,6 @@ def accountid_detail(request, account_id):
         "up_cnt": up_cnt,
         "up_ratio": up_ratio,
     }
-    print(scan_info_data)
-    print(etc_info_data)
     return render(
         request,
         "aurora/pages/operation/user-management-account-id-detail.html",
