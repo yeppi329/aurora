@@ -201,7 +201,7 @@ class Category(models.Model):
 class SummaryMediaDailyInfo(models.Model):
     summary_id = models.BigAutoField(primary_key=True)
     summary_dt = models.CharField(max_length=255, null=False, blank=False)     # 통계일 (YYYY-MM-DD)
-    content_type = models.SmallIntegerField(null=False, blank=False, default=0)
+    content_type = models.CharField(max_length=255, null=False, blank=False)
     content_cnt = models.BigIntegerField(default=0, null=False, blank=False)
     content_user_cnt = models.BigIntegerField(default=0, null=False, blank=False)
     like_cnt = models.BigIntegerField(default=0, null=False, blank=False)
@@ -221,7 +221,7 @@ class SummaryMediaDailyInfo(models.Model):
 class SummaryMediaMonthInfo(models.Model):
     summary_id = models.BigAutoField(primary_key=True)
     summary_dt = models.CharField(max_length=255, null=False, blank=False)     # 통계일 (YYYY-MM)
-    content_type = models.SmallIntegerField(null=False, blank=False, default=0)
+    content_type = models.CharField(max_length=255, null=False, blank=False)
     content_cnt = models.BigIntegerField(default=0, null=False, blank=False)
     content_user_cnt = models.BigIntegerField(default=0, null=False, blank=False)
     like_cnt = models.BigIntegerField(default=0, null=False, blank=False)
@@ -275,7 +275,7 @@ class SummaryArbeconMonthInfo(models.Model):
 class SummaryDrawingDailyInfo(models.Model):
     summary_id = models.BigAutoField(primary_key=True)
     summary_dt = models.CharField(max_length=255, null=False, blank=False)     # 통계일 (YYYY-MM-DD)
-    drawing_type = models.SmallIntegerField(null=False, blank=False, default=0)
+    drawing_type = models.CharField(max_length=255, null=False, blank=False)
     content_cnt = models.BigIntegerField(default=0, null=False, blank=False)
     content_user_cnt = models.BigIntegerField(default=0, null=False, blank=False)
     like_cnt = models.BigIntegerField(default=0, null=False, blank=False)
@@ -291,7 +291,7 @@ class SummaryDrawingDailyInfo(models.Model):
 class SummaryDrawingMonthInfo(models.Model):
     summary_id = models.BigAutoField(primary_key=True)
     summary_dt = models.CharField(max_length=255, null=False, blank=False)     # 통계일 (YYYY-MM-DD)
-    drawing_type = models.SmallIntegerField(null=False, blank=False, default=0)
+    drawing_type = models.CharField(max_length=255, null=False, blank=False)
     content_cnt = models.BigIntegerField(default=0, null=False, blank=False)
     content_user_cnt = models.BigIntegerField(default=0, null=False, blank=False)
     like_cnt = models.BigIntegerField(default=0, null=False, blank=False)
