@@ -288,7 +288,9 @@
                           {% endif %}
                         </td>
                         <td>
-                          mg_id : <a href="{% url 'operation:object-list-mg-id-detail' mg_id=item.mg_id %}">{{ item.mg_id }}</a><br>
+                          {%if item.mg_id %}
+                            mg_id : <a href="{% url 'operation:object-list-mg-id-detail' mg_id=item.mg_id %}">{{ item.mg_id }}</a><br>
+                          {% endif %}
                           scan_id : <a href="{% url 'operation:object-list-scan-id-detail' scan_id=item.scan_id %}">{{ item.scan_id }}</a>
                         </td>
                         <td>
