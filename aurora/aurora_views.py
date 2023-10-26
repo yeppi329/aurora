@@ -5,16 +5,20 @@ from aurora.models import (
     SummaryUserMonthInfo,
     SummaryUserDailyInfo,
     SummaryUserPeriodInfo,
+    SummaryContentDailyInfo,
+    SummaryScanDailyInfo
 )
 
 @login_required(login_url='aurora:login')
 def index(request):
     context = {"page_title": "Dashboard"}
     all_data = SummaryUserDailyInfo.objects.all().order_by('-summary_dt')
+    all_content_data = SummaryContentDailyInfo.objects.all().order_by('-summary_dt')
+    all_scan_data = SummaryScanDailyInfo.objects.all().order_by('-summary_dt')
     total_user_cnt = SummaryUserDailyInfo.objects.aggregate(latest_total_user=Max('total_user'))['latest_total_user']
     new_user_cnt = SummaryUserDailyInfo.objects.aggregate(latest_new_user=Max('new_user'))['latest_new_user']
     normal_user_cnt = total_user_cnt - new_user_cnt
-    context = {"all_data": all_data,"total_user_cnt":total_user_cnt,"new_user_cnt":new_user_cnt,"normal_user_cnt":normal_user_cnt}
+    context = {"all_data": all_data,"all_content_data":all_content_data,"all_scan_data": all_scan_data,"total_user_cnt":total_user_cnt,"new_user_cnt":new_user_cnt,"normal_user_cnt":normal_user_cnt}
 
     print("total_user_cnt",total_user_cnt,"new_user_cnt",new_user_cnt,"normal_user_cnt",normal_user_cnt)
     return render(request, 'aurora/index.html', context)
