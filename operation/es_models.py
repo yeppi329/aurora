@@ -526,3 +526,39 @@ class EsModules:
     def search(self, query_body):
         res = self.es.search(index=self.search_index, body=query_body)
         return res
+
+    def get_doc_list(self, doc_list):
+        scanid_shire_dict = {}
+        result = self.es.mget(
+            index=self.search_index,
+            body={"ids": doc_list},
+        )
+
+        for _ in result["docs"]:
+            if _ and "_source" in _:
+                scanid_shire_dict[_["_id"]] = _["_source"].get("shire", "None")
+            else:
+                scanid_shire_dict[_["_id"]] = "None"
+        return scanid_shire_dict
+
+    def get_mgId_shire(self, mgId_list):
+        mgId_shire_count_dict = {}
+        for _ in mgId_list:
+            query = {
+                "query": {"bool": {"must": {"term": {"mgId": _}}}},
+                "_source": {"excludes": ["t800", "mallorn"]},
+                "size": 0,  # 결과 문서를 반환하지 않음
+                "aggs": {
+                    "shire_counts": {
+                        "terms": {
+                            "field": "shire",
+                            "size": 10000,  # 충분히 큰 수로 설정하여 모든 값을 가져옴
+                        }
+                    }
+                },
+            }
+
+            result = self.es.search(index=self.search_index, body=query)
+            mgId_shire_count_dict[_] = result["aggregations"]["shire_counts"]["buckets"]
+        print(mgId_shire_count_dict)
+        return mgId_shire_count_dict

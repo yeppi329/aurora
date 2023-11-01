@@ -11,6 +11,10 @@
     .blue-border {
       border: 2px solid blue;
     }
+
+    .word-wrap {
+      white-space: normal; /* 텍스트 자동 줄 바꿈 설정 */
+    }
   </style>
   <div class="page-titles">
     <ol class="breadcrumb">
@@ -38,80 +42,122 @@
       <div class="card">
         <div class="card-body">
           <div class="row m-b-30">
-            <div class="col-md-5 col-xxl-5">
+            <div class="col-md-4 col-xxl-4">
               <div class="new-arrival-product mb-4 mb-xxl-4 mb-md-0">
                 <div class="new-arrivals-img-contnent">
                   {% if crop_img %}
-                    <img class="img-fluid" src="data:image/png;base64,{{ crop_img }}" alt=""/>
+                    <img class="img-fluid" src="data:image/png;base64,{{ crop_img }}" alt="" style="height: 320px; width: auto;"/>
                   {% else %}
-                    <img class="img-fluid" src="{{ scanIdToImgUrlDict|get_value_from_dict:scan_id }}" alt=""/>
+                    <img class="img-fluid" src="{{ scanIdToImgUrlDict|get_value_from_dict:scan_id }}" alt="" style="height: 320px; width: auto;"/>
                   {% endif %}
                 </div>
               </div>
             </div>
-            <div class="col-md-7 col-xxl-7">
+            <div class="col-md-8 col-xxl-8">
               <div class="new-arrival-content position-relative">
-                <ul class="list-group list-group-flush">
-                  <li class="list-group-item d-flex px-0 justify-content-between">
-                    <strong>scan_id</strong>
-                    <span class="mb-0" style="font-size: 14px">{{ scan_id }}</span>
-                  </li>
-                  {% if query_result.items %}
-                    {% for k, v in query_result.items %}
-                      {% if "crop" not in k %}
-                        <li class="list-group-item d-flex px-0 justify-content-between">
-                          <strong>{{ k }}</strong>
-                          {% if "mgId" == k %}
-                            <a href="{% url 'operation:object-list-mg-id-detail' mg_id=v %}">
-                              <span class="mb-0" style="font-size: 14px">{{ v }}</span>
-                            </a>
-                          {% elif "geohash" == k %}
-                            <span class="mb-0" data-bs-toggle="modal" data-bs-target="#{{ v }}" >{{ v }}</span>
-                            <!-- Modal -->
-                            <div class="modal fade" id="{{ v }}">
-                              <div class="modal-dialog" role="document">
-                                  <div class="modal-content">
-                                      <div class="modal-header">
-                                          <h5 class="modal-title">{{ v }}</h5>
-                                          <button type="button" class="btn-close" data-bs-dismiss="modal">
-                                          </button>
-                                      </div>
-                                      <div class="modal-body">
-                                        <iframe src="https://geohash.softeng.co/{{ v }}" width="100%" height="400" frameborder="0"></iframe>
-                                      </div>
-                                      <div class="modal-footer">
-                                          <button type="button" class="btn btn-danger light" data-bs-dismiss="modal">Close</button>
+                <div class="row">
+                  <div class="col-6">
+                    <ul class="list-group list-group-flush">
+                      <li class="list-group-item d-flex px-0 justify-content-between">
+                        <strong>scan_id</strong>
+                        <span class="mb-0" style="font-size: 14px">{{ scan_id }}</span>
+                      </li>
+                      <li class="list-group-item d-flex px-0 justify-content-between">
+                        <strong>mgId</strong>
+                        <span class="mb-0" style="font-size: 14px">{{ query_result.mgId }}</span>
+                      </li>
+                      <li class="list-group-item d-flex px-0 justify-content-between">
+                        <strong>shire</strong>
+                        <span class="mb-0" style="font-size: 14px">{{ query_result.shire }}</span>
+                      </li>
+                      <li class="list-group-item d-flex px-0 justify-content-between">
+                        <strong>simMgIdList</strong>
+                        <span class="mb-0" style="font-size: 14px">{{ query_result.simMgIdList }}</span>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="col-6">
+                    <ul class="list-group list-group-flush">
+                      <li style="margin-bottom: 10px;">
+                        <button type="button" class="btn btn-outline-primary btn-block">
+                          <a href="{% url 'operation:new-mg-id-detail' scan_id=scan_id %}">
+                            <span class="mb-0">추가검색</span>
+                          </a>
+                        </button>
+                      </li>
+                      <li style="margin-bottom: 10px;">
+                        <button type="button" class="btn btn-outline-primary btn-block" data-bs-toggle="modal" data-bs-target="#modal-media">Media view</button>
+                        <div class="modal fade bd-example-modal-lg" id="modal-media" style="display: none;" aria-hidden="true">
+                          <div class="modal-dialog modal-lg" role="document">
+                              <div class="modal-content">
+                                  <div class="modal-header">
+                                      <h5 class="modal-title">media (최대 20개)</h5>
+                                      <button type="button" class="btn-close" data-bs-dismiss="modal">
+                                      </button>
+                                  </div>
+                                  <div class="modal-body">
+                                      <div class="container">
+                                          <div class="row">
+                                            {% for i in content_data %}
+                                            <div class="col-3">
+                                              <div class="card">
+                                                <div class="card-body">
+                                                  <div class="row m-b-30">
+                                                    <div class="col-12">
+                                                      <div class="new-arrival-product mb-4 mb-xxl-4 mb-md-0">
+                                                        <div class="new-arrivals-img-contnent">
+                                                          {% if i.type == "IMAGE" %}
+                                                            <img src="{{i.resourceUrl}}" alt="Image" width="120" height="auto"/>
+                                                          {% elif i.type == "VIDEO"%}
+                                                            <video controls width="120" height="auto">
+                                                              <source src="{{i.resourceUrl}}" type="video/mp4">
+                                                            </video>                                                            
+                                                          {% endif %}
+                                                        </div>
+                                                      </div>               
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          {% endfor %}
+                                          </div>
                                       </div>
                                   </div>
+                                  <div class="modal-footer">
+                                      <button type="button" class="btn btn-danger light" data-bs-dismiss="modal">Close</button>
+                                      <button type="button" class="btn btn-primary">Save changes</button>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>                        
+                      </li>
+                      <li>
+                        {% if query_result %}
+                          <div class="accordion accordion-primary" id="accordion-one">
+                            <div class="accordion-item">
+                              <div class="accordion-header rounded-lg collapsed" id="headingOne" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-controls="collapseOne" aria-expanded="false" role="button">
+                                <span class="accordion-header-icon"></span>
+                                <span class="accordion-header-text">Metadata</span>
+                                <span class="accordion-header-indicator"></span>
+                              </div>
+                              <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-bs-parent="#accordion-one" style="">
+                                <ul class="list-group list-group-flush">
+                                    {% for k, v in query_result.items %}
+                                      <li class="list-group-item d-flex px-0 justify-content-between">
+                                        <strong>{{k}}</strong>
+                                        <span class="mb-0" style="font-size: 14px">{{ v }}</span>
+                                      </li>
+                                    {% endfor %}
+                                </ul>                              
                               </div>
                             </div>
-                          {% else %}
-                            <span class="mb-0" style="font-size: 14px">{{ v }}</span>
-                          {% endif %}
-                        </li>
-                      {% endif %}
-                    {% endfor %}
-                  </ul>
-                  <ul class="list-group list-group-flush">
-                    <li class="list-group-item d-flex px-0 justify-content-between">
-                      <strong>crop</strong>
-                      <span class="mb-0" style="font-size: 14px">
-                        <ul>
-                          {% for k, v in query_result.items %}
-                            {% if "crop" in k %}
-                              <li>{{ k }}
-                                :
-                                {{v}}</li>
-                            {% endif %}
-                          {% endfor %}
-                        </ul>
-                      </span>
-                  </ul>
-                {% else %}
-                  <p>
-                    No Data
-                  </p>
-                {% endif %}
+                          </div>
+                        {% endif %}                        
+                      </li>                      
+                    </ul>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -122,11 +168,11 @@
   <!-- search result -->
   <div class="row">
     {% for i in search_result %}
-      <div class="col-lg-12 col-xl-6 col-xxl-4">
+      <div class="col-3">
         <div class="card{% if i.source.mgId == query_result.mgId %} green-border {% else %} blue-border {% endif %}">
           <div class="card-body">
             <div class="row m-b-30">
-              <div class="col-md-5 col-xxl-12">
+              <div class="col-12">
                 <div class="new-arrival-product mb-4 mb-xxl-4 mb-md-0">
                   <div class="new-arrivals-img-contnent">
                     <a href="{% url 'operation:object-list-scan-id-detail' scan_id=i.scanId %}">
@@ -138,27 +184,26 @@
                     </a>
                   </div>
                 </div>
-              </div>
-              <div class="col-md-7 col-xxl-12">
                 <div class="new-arrival-content position-relative">
                   <ul class="list-group list-group-flush">
-                    <li class="list-group-item d-flex px-0 justify-content-between">
+                    <li class="list-group-item px-0">
                       <strong>scan_id</strong>
                       <a href="{% url 'operation:object-list-scan-id-detail' scan_id=i.scanId %}">
                         <span class="mb-0" style="font-size: 14px;">{{ i.scanId }}</span>
                       </a>
-                    <li class="list-group-item d-flex px-0 justify-content-between">
+                    </li>
+                    <li class="list-group-item px-0">
                       <strong>score</strong>
                       <span class="mb-0" style="font-size: 14px">{{ i.score }}</span>
                     </li>
-                    <li class="list-group-item d-flex px-0 justify-content-between">
+                    <li class="list-group-item px-0">
                       <strong>mg_id</strong>
                       <a href="{% url 'operation:object-list-mg-id-detail' mg_id=i.source.mgId %}">
-                        <span class="mb-0" style="font-size: 12px;">{{ i.source.mgId }}</span>
+                        <span class="mb-0" style="font-size: 14px;">{{ i.source.mgId }}</span>
                       </a>
                     </li>
                   </ul>
-                </div>
+                </div>                
               </div>
             </div>
           </div>
